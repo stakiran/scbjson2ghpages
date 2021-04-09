@@ -36,48 +36,8 @@ def count_first_space_or_tab(s):
         break
     return count
 
-def dir_without_magics(obj):
-    # See: https://www.askpython.com/python/examples/find-all-methods-of-class
-    return [method for method in dir(obj) if not method.startswith('__')]
-
-def ________Argument________():
-    pass
-
-def arguments_title(parser):
-    parser.add_argument('title_and_pageMethod', nargs=2)
-
-def arguments_substr(parser):
-    parser.add_argument('--title', default=False, action='store_true')
-    parser.add_argument('--lines', default=False, action='store_true')
-    parser.add_argument('keyword_and_pageMethod', nargs=2)
-
-def arguments_root(parser):
-    parser.add_argument('-i', '--input', default=None, required=True,
-        help='An input .json filename.')
-
-    parser.add_argument('--list-methods', default=False, action='store_true')
-
-def parse_arguments():
-    import argparse
-
-    parser_root = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-    subparsers = parser_root.add_subparsers(
-        dest = 'subcommand'
-    )
-
-    arguments_root(parser_root)
-
-    arguments_substr(subparsers.add_parser('substr'))
-    arguments_title(subparsers.add_parser('title'))
-
-    args = parser_root.parse_args()
-    return args
-
 def ________Wrapper________():
     pass
-
 
 class Project:
     def __init__(self, obj):
@@ -246,82 +206,38 @@ total {lineNumber} lines. '''.format(
             lineNumber=line_number,
         )
 
-def ________Main________():
+def ________Argument________():
     pass
 
-# @todo
-# - subcommand つくるところコピペが多いのでもうちょっと
-#   - Project つくるところ
-#   - do_xxx() を定義して, func_table で対応して...
-# - エラーが例外そのまま投げてて不親切
-# - 戻り値は do_xxx() から __main__ に返すべきでは
+def parse_arguments():
+    import argparse
 
-def do_without_subcommand(args):
-    if args.list_methods:
-        method_list = dir_without_magics(Page)
-        for method in method_list:
-            print(method)
-        return
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
 
-def do_substr(args):
-    keyword, page_method = args.keyword_and_pageMethod
+    parser.add_argument('-i', '--input', default=None, required=True,
+        help='An input .json filename.')
 
-    use_title = args.title
-    use_lines = args.lines
+    args = parser.parse_args()
+    return args
 
-    if not use_title and not use_lines:
-        raise RuntimeError('No valid option. You must give each of "title" or "lines".')
-
-    filename = args.input
-    s = file2str(filename)
-    obj = str2obj(s)
-    proj = Project(obj)
-
-    seeker = PageSeeker(proj)
-
-    if use_title:
-        page_insts = seeker.find_partially_from_title(keyword)
-    elif use_lines:
-        page_insts = seeker.find_partially_from_lines(keyword)
-
-    if len(page_insts) == 0:
-        print('No match with keyword "{}"..'.format(keyword))
-        return
-
-    for page_inst in page_insts:
-        returned_value = getattr(page_inst, page_method)
-        print(returned_value)
-
-def do_title(args):
-    title, page_method = args.title_and_pageMethod
-
-    filename = args.input
-    s = file2str(filename)
-    obj = str2obj(s)
-    proj = Project(obj)
-
-    seeker = PageSeeker(proj)
-    page = seeker.get(title)
-
-    returned_value = getattr(page, page_method)
-    print(returned_value)
+def ________Main________():
+    pass
 
 if __name__ == '__main__':
     args = parse_arguments()
 
-    subcommand = args.subcommand
- 
-    if not subcommand:
-        do_without_subcommand(args)
-        sys.exit(0)
- 
-    func_table = {
-        'substr' : do_substr,
-        'title' : do_title,
-    }
-    if not subcommand in func_table:
-        raise RuntimeError('No subcommand "{}", especially impl miss.'.format(subcommand))
+    filename = args.input
+    s = file2str(filename)
+    obj = str2obj(s)
+    proj = Project(obj)
+    seeker = PageSeeker(proj)
 
-    f = func_table[subcommand]
-    f(args)
-    sys.exit(0)
+    # 当面は testdata-for-to-markdown.json でテストする
+    # https://scrapbox.io/testdata-for-to-markdown/
+    #
+    # まずはページ 'page' の to markdown を一通り
+    page = seeker.get('page')
+ 
+    print(page)
