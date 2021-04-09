@@ -8,12 +8,14 @@
  		    - https://www.google.co.jp/
         - [textが後](https://scrapbox.io/sta/)
         - [textが先](https://scrapbox.io/sta/)
+    - ====
     - scrapbox link
  	      - [sta](https://scrapbox.io/sta)
     - direct url
  		    - → https://www.google.co.jp/
         - [textが後](https://scrapbox.io/sta/)
         - [textが先](https://scrapbox.io/sta/)
+    - ====
     - scrapbox link
         - aaa
  	      - [sta](https://scrapbox.io/sta)
@@ -22,3 +24,8 @@
  		    - → https://www.google.co.jp/
         - [textが後](https://scrapbox.io/sta/)
         - [textが先](https://scrapbox.io/sta/)
+    - ====
+    - scrapbox link
+ 	      - /sta
+    - direct url
+ 		    - google.co.jp
