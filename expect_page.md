@@ -16,11 +16,15 @@
     - list2
 - list3
 
+<br>
+
 - リストの後に直段落
 - リスト
 - リスト
 
 段落段落段落段落
+
+<br>
 
 直の連結
 
@@ -46,13 +50,19 @@ para6
 
 para7
 
+<br>
+
 段落段落（この段落の前後には空行があります）
+
+<br>
 
 - list1
 - list1
     - list2
     - list2
 - list1
+
+<br>
 
 文字装飾
 
@@ -72,14 +82,20 @@ para7
         - [textが後](https://scrapbox.io/sta/)
         - [textが先](https://scrapbox.io/sta/)
 
+<br>
+
 文章中の文字装飾
 
 - 文章中に[リンク](リンク.md)張ったり [スペース入れてリンク](スペース入れてリンク.md) 張ったり [#ハッシュタグ](ハッシュタグ.md) 入れたりなど細かい表記結構ばらける
+
+<br>
 
 文字装飾mix
 
 - ~~[リンクに対するstrike](リンクに対するstrike)~~
 - <blockquote>引用の中で `literal` したり **太字** したり[リンク](リンク.md)入れたり</blockquote>
+
+<br>
 
 めっちゃ深いリスト
 
