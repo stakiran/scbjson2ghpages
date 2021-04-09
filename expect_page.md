@@ -66,9 +66,9 @@ para7
     - [Link](link.md)
     - [#hashtag](hashtag.md)
     - scrapbox link
- 	      - [/sta](https://scrapbox.io/sta)
+        - [/sta](https://scrapbox.io/sta)
     - direct url
- 		    - https://www.google.co.jp/
+        - https://www.google.co.jp/
         - [textが後](https://scrapbox.io/sta/)
         - [textが先](https://scrapbox.io/sta/)
 
