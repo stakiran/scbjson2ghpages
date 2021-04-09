@@ -29,3 +29,8 @@
  	      - /sta
     - direct url
  		    - google.co.jp
+    - ====
+    - scrapboxLink
+ 	      - /sta
+    - directUrl
+ 		    - google.co.jp
