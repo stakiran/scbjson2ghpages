@@ -258,7 +258,7 @@ hello world
  以上、hello worldでした。いかがでしたか？
 ```
 
-## pattern1: ゼロインデントにしつつ、空行をはさむ
+## pattern1: ゼロインデントにしつつ、空行をはさむ（nインデントのリストも全部1インデントになってしまう）
 hello world
 
 - pythonの例
@@ -270,14 +270,47 @@ print('hello world.!')
 print 'hello world.!'
 ```
 
-  - まあpython2は今どき見ることないと思うので気にしなくていいけど
+    - まあpython2は今どき見ることないと思うので気にしなくていいけど
 - jsの例
 
 ```javascript
 console.log('hello world.!')
 ```
 
-  - console.logと打つのがだるい？ならこうすればいいじゃない
+    - console.logと打つのがだるい？ならこうすればいいじゃない
+
+```javascript
+// エイリアス設定して
+c = console.log
+
+// エイリアスを使う
+c('hello world.!')
+```
+
+- 以上、hello worldでした。いかがでしたか？
+
+## pattern2: 1インデント化を防ぐためにダミーリストを入れる(省略を想起する`...`を使ってみる)
+hello world
+
+- pythonの例
+
+```python
+print('hello world.!')
+
+# python2だとこうだよ
+print 'hello world.!'
+```
+
+- ...
+    - まあpython2は今どき見ることないと思うので気にしなくていいけど
+- jsの例
+
+```javascript
+console.log('hello world.!')
+```
+
+- ...
+    - console.logと打つのがだるい？ならこうすればいいじゃない
 
 ```javascript
 // エイリアス設定して
