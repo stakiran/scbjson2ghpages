@@ -232,3 +232,59 @@ scb でいう以下のようなケースを、どう表現すればいいか
 <br>
 
 段落 差3
+
+# block in the list をどうやって表現するか
+以下のようなリスト中のブロックは、markdownでは表現できない
+
+```scb
+hello world
+ pythonの例
+  code:python
+   print('hello world.!')
+   
+   # python2だとこうだよ
+   print 'hello world.!'
+  まあpython2は今どき見ることないと思うので気にしなくていいけど
+ jsの例
+  code:js
+   console.log('hello world.!')
+  console.logと打つのがだるい？ならこうすればいいじゃない
+   code:js
+    // エイリアス設定して
+    c = console.log
+    
+    // エイリアスを使う
+    c('hello world.!')
+ 以上、hello worldでした。いかがでしたか？
+```
+
+## pattern1: ゼロインデントにしつつ、空行をはさむ
+hello world
+
+- pythonの例
+
+```python
+print('hello world.!')
+
+# python2だとこうだよ
+print 'hello world.!'
+```
+
+  - まあpython2は今どき見ることないと思うので気にしなくていいけど
+- jsの例
+
+```javascript
+console.log('hello world.!')
+```
+
+  - console.logと打つのがだるい？ならこうすればいいじゃない
+
+```javascript
+// エイリアス設定して
+c = console.log
+
+// エイリアスを使う
+c('hello world.!')
+```
+
+- 以上、hello worldでした。いかがでしたか？
