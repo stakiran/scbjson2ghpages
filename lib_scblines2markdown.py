@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 class Moder:
+    NOMODE = 0
     BLANKLINE = 1
     PARAGRAPH = 2
     LIST = 3
@@ -11,19 +12,20 @@ class Moder:
     def __init__(self):
         pass
 
-    def set_as_prev(self, line):
+    def _clear(self):
+        self._mode_prev = NOMODE
+
+    def set_line(self, line):
+        # n行目のlineを受け取って、n行目のモードとn-1行目のモードにする
+        # n行目のモードは計算が必要
+        # n-1行目のモードは、今のn行目のモードを退避させる（がlist in blockなどn行続くこともある）
         pass
 
-    def set_as_current(self, line):
+    def _line_to_mode(self, line):
+        # input
+        # - currentmode(n-1行目のモードになる)
+        # - n行目のline
         pass
-
-    @property
-    def prevmode(self):
-        return self._mode_prev
-
-    @property
-    def currentmode(self):
-        return self._mode_current
 
     @classmethod
     def is_blankline(cls, line):
