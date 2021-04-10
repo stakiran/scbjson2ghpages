@@ -31,6 +31,20 @@ class TestModer(unittest.TestCase):
         self.assertTrue(f('  list n-indent'))
         self.assertTrue(f('  \t \t  list n-indent mixture'))
 
+    def test_is_paragraph(self):
+        f = LIB.Moder.is_list
+
+        self.assertFalse(f(''))
+        self.assertFalse(f(' list'))
+        self.assertFalse(f('code:xxx'))
+        self.assertFalse(f('table:xxx'))
+        self.assertFalse(f('  code:xxx'))
+        self.assertFalse(f(' table:xxx'))
+
+        self.assertTrue(f('1'))
+        self.assertTrue(f('aa'))
+        self.assertTrue(f('あいうえお'))
+
     def test_is_start_of_code(self):
         f = LIB.Moder.is_start_of_code
 
