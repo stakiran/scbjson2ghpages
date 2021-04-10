@@ -32,7 +32,7 @@ class TestModer(unittest.TestCase):
         self.assertTrue(f('  \t \t  list n-indent mixture'))
 
     def test_is_paragraph(self):
-        f = LIB.Moder.is_list
+        f = LIB.Moder.is_paragraph
 
         self.assertFalse(f(''))
         self.assertFalse(f(' list'))
