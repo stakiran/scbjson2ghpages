@@ -56,6 +56,26 @@ class Moder:
 
         return False
 
+    @classmethod
+    def is_start_of_table(cls, line):
+        # 不吉な臭い: DRYできるのでは?
+        if cls.is_blankline(line):
+            return False
+
+        stripped_line = line.strip()
+
+        CODE_TABLE = 'table:'
+        MINIMUM_LENGTH_OF_CODE_TABLE = len(CODE_TABLE)
+        is_too_short = len(stripped_line) <= MINIMUM_LENGTH_OF_CODE_TABLE
+        if is_too_short:
+            return False
+
+        is_matched_prefix = stripped_line.startswith(CODE_TABLE)
+        if is_matched_prefix:
+            return True
+
+        return False
+
 class Converter:
     def __init__(self):
         pass

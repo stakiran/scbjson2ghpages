@@ -46,5 +46,18 @@ class TestModer(unittest.TestCase):
         self.assertTrue(f('code:拡張子なし'))
         self.assertTrue(f('  code:javascript'))
 
+    def test_is_start_of_table(self):
+        f = LIB.Moder.is_start_of_table
+
+        self.assertFalse(f(''))
+        self.assertFalse(f('table:'))
+        self.assertFalse(f('  table:'))
+        self.assertFalse(f('code:xxx'))
+
+        self.assertTrue(f('table:a'))
+        self.assertTrue(f('table:aaa'))
+        self.assertTrue(f('table:あいうえお'))
+        self.assertTrue(f('  table:あいうえお'))
+
 if __name__ == '__main__':
     unittest.main()
