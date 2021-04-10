@@ -17,6 +17,14 @@ class Moder:
     def set_as_current(self, line):
         pass
 
+    @property
+    def prevmode(self):
+        return self._mode_prev
+
+    @property
+    def currentmode(self):
+        return self._mode_current
+
     @classmethod
     def is_blankline(cls, line):
         if len(line) == 0:
@@ -36,6 +44,28 @@ class Moder:
             return True
 
         return False
+
+    @classmethod
+    def is_paragraph(cls, line):
+        if cls.is_blankline(line):
+            return False
+
+        if cls.is_start_of_code(line):
+            return False
+        if cls.is_start_of_table(line):
+            return False
+
+        if cls.is_list(line):
+            return False
+
+        # 少なくとも空行ではないし,
+        # 特殊記法で始まりもしないし,
+        # リストでもない.
+        #  -> 段落
+        #
+        # 消去法で決定する.
+
+        return True
 
     @classmethod
     def is_start_of_code(cls, line):
