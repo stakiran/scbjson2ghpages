@@ -20,6 +20,10 @@ def file2str(filepath):
 def str2obj(s):
     return json.loads(s)
 
+def list2file(filepath, ls):
+    with open(filepath, encoding='utf8', mode='w') as f:
+        f.writelines(['{:}\n'.format(line) for line in ls] )
+
 def create_datetime_from_unixtime(number):
     return datetime.datetime.fromtimestamp(number)
 
@@ -240,10 +244,11 @@ if __name__ == '__main__':
     # https://scrapbox.io/testdata-for-to-markdown/
     #
     # まずはページ 'page' の to markdown を一通り
+
     page = seeker.get('page')
 
     scblines = page.lines
-    markdown_lines = lib_scblines2markdown.convert(scblines)
+    list2file('input_page.scb', scblines)
 
-    for line in markdown_lines:
-        print(line)
+    markdown_lines = lib_scblines2markdown.convert(scblines)
+    list2file('actual_page.md', markdown_lines)
