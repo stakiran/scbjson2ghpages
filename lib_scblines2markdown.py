@@ -220,7 +220,10 @@ class Moder:
         return False
 
 def count_indentdepth(line):
-    pass
+    i = 0
+    while line[i:1]==' ':
+        i += 1
+    return i
 
 def convert(scblines):
     lines = scblines

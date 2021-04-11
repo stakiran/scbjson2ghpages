@@ -125,5 +125,17 @@ class TestInBlockState(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             state.enter(mode_code, 2)
 
+class TestFuncs(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_count_indentdepth(self):
+        f = LIB.count_indentdepth
+
+        self.assertEqual(f('  list'), 2)
+
 if __name__ == '__main__':
     unittest.main()
