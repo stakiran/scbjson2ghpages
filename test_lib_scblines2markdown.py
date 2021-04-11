@@ -144,20 +144,20 @@ code:py ★3
      print(var) ★6
 ここはコードじゃない ★7
 
-block in the list
+block in the list ★9
  list1
   list2
    list3
     list4
-    code:py
-     import os
+    code:py ★14
+     import os ★15
      for var in os.environ:
-         print(var)
+         print(var) ★17
          if len(var)<=4:
-             print('4文字以内の変数だよ!')
-         #ここはまだコード
-     #ここはまだコード
-    ここはコードじゃない
+             print('4文字以内の変数だよ!') ★19
+         #ここはまだコード ★20
+     #ここはまだコード ★21
+    ここはコードじゃない ★22
     list4
    list3
   list2
@@ -183,10 +183,59 @@ block in the list
                 continue
 
             if i==4:
-                print(line)
                 self.assertTrue(user.state.is_in_block())
                 self.assertTrue(user.state.is_in_code_block())
                 self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==6:
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_code_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==7:
+                self.assertFalse(user.state.is_in_block())
+                continue
+
+            if i==14:
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_code_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==15:
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_code_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==17:
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_code_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==19:
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_code_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==20:
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_code_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==21:
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_code_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==22:
+                self.assertFalse(user.state.is_in_block())
                 continue
 
 class TestFuncs(unittest.TestCase):
