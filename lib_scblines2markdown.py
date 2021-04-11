@@ -282,8 +282,8 @@ def convert_step1(scblines):
 
     return outlines
 
-def _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblock_state):
-    extra_insertion = Moder.judge_extra_insertion(cur_indentdepth, prev_indentdepth, inblock_state)
+def _step2_append_extra_insertion(outlines, prev_indentdepth, cur_indentdepth, inblock_state):
+    extra_insertion = Moder.judge_extra_insertion(prev_indentdepth, cur_indentdepth, inblock_state)
 
     is_no_insertion = extra_insertion == ''
     if is_no_insertion:
@@ -325,7 +325,7 @@ def convert_step2(step1_converted_lines):
         if is_cur_blankline or is_prev_blankline:
             pass
         else:
-            _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblockstate_user)
+            _step2_append_extra_insertion(outlines, prev_indentdepth, cur_indentdepth, inblockstate_user)
 
         outlines.append(line)
 
