@@ -263,7 +263,6 @@ def convert_step2(step1_converted_lines):
     lines = step1_converted_lines
     outlines = []
 
-    mode_of_prevline = MODE.NOMODE
     inblock_state = InBlockState()
     cur_indentdepth = -1
     prev_indentdepth = -1
