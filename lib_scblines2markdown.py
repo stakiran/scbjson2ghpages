@@ -311,6 +311,7 @@ def convert_step2(step1_converted_lines):
     for i,line in enumerate(lines):
         prev_indentdepth = cur_indentdepth
         cur_indentdepth = count_indentdepth(line)
+        inblockstate_user.update(line, cur_indentdepth)
 
         is_prev_blankline = is_cur_blankline
         is_cur_blankline = Moder.is_blankline(line)
