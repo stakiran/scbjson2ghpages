@@ -12,6 +12,12 @@ class MODE:
 
 class Moder:
     @classmethod
+    def judge_extra_insertion(cls, mode_of_prevline, mode_of_curline):
+        ''' @return 余分に挿入すべき文字列.
+        @retval '' 何も挿入する必要がない. '''
+        return ''
+
+    @classmethod
     def determin_mode(cls, line):
         mode = MODE.INVALID
 
@@ -119,11 +125,11 @@ class Moder:
 
 def convert(scblines):
     lines = scblines
-
     outlines = []
 
     # step1: 空行
     # 空行は <br> と \n で置換するのがベストだと事前調査済.
+
     for line in lines:
         is_not_blankline = not Moder.is_blankline(line)
         if is_not_blankline:
@@ -133,11 +139,23 @@ def convert(scblines):
         outlines.append('')
 
     # step2: インデントの深さに伴う終端処理
-    # \n あるいはコードブロック終点(```)の挿入が必要なので, 該当箇所に挿入する.
+    # 終端として必要な文字列(extra insertion)を挿入する.
+    # -> \n, コードブロック終点(```) etc
+
     lines = outlines
+    outlines = []
+
     mode_of_prevline = MODE.NOMODE
+
     for i,line in enumerate(lines):
-        pass
+        outlines.append(line)
+
+        mode_of_curline = Moder.determin_mode(line)
+        extra_insertion = Moder.judge_extra_insertion(mode_of_prevline, mode_of_curline)
+        is_no_insertion = extra_insertion == ''
+        if is_no_insertion:
+            continue
+        outlines.append(extra_insertion)
 
     return outlines
 
