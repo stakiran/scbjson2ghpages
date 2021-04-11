@@ -23,6 +23,8 @@ class InBlockStateUser:
         self._update_case_of_not_in_block(line, cur_indentdepth)
 
     def _update_case_of_not_in_block(self, line, cur_indentdepth):
+        state = self.state
+
         if Moder.is_start_of_code(line):
             state.enter(MODE.START_OF_BLOCK_CODE, cur_indentdepth)
             return

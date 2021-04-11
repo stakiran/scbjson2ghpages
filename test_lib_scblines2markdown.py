@@ -125,6 +125,56 @@ class TestInBlockState(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             state.enter(mode_code, 2)
 
+class TestInBlockStateUser(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test(self):
+        user = LIB.InBlockStateUser()
+
+        testdata = '''title
+段落段落
+段落段落段落
+code:py
+ import os
+ for var in os.environ:
+     print(var)
+ここはコードじゃない
+
+block in the list
+ list1
+  list2
+   list3
+    list4
+    code:py
+     import os
+     for var in os.environ:
+         print(var)
+         if len(var)<=4:
+             print('4文字以内の変数だよ!')
+         #ここはまだコード
+     #ここはまだコード
+    ここはコードじゃない
+    list4
+   list3
+  list2
+ list1
+おしまい'''
+
+        def pair(index):
+            line = testdata_lines[index]
+            cur_indentdepth = LIB.count_indentdepth(line)
+            return [line, cur_indentdepth]
+
+        testdata_lines = testdata.split('\n')
+        L = testdata_lines
+
+        for i,_ in enumerate(testdata_lines):
+            user.update(*pair(i))
+
 class TestFuncs(unittest.TestCase):
     def setUp(self):
         pass
