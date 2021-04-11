@@ -66,7 +66,8 @@ class InBlockState:
 class Moder:
     @classmethod
     def judge_extra_insertion(cls, prev_indentdepth, cur_indentdepth, inblock_state):
-        ''' @return 余分に挿入すべき文字列.
+        ''' string への挿入を前提としているため, 行指向の場合は適宜解釈し直すこと.
+        @return 余分に挿入すべき文字列.
         @retval '' 何も挿入する必要がない. '''
 
         # returning values
@@ -247,9 +248,16 @@ def convert(scblines):
 
         mode_of_curline = Moder.determin_mode(line)
         extra_insertion = Moder.judge_extra_insertion(mode_of_prevline, mode_of_curline, inblock_state)
+
         is_no_insertion = extra_insertion == ''
         if is_no_insertion:
             continue
+
+        is_newline_insertion = extra_insertion == '\n'
+        if is_newline_insertion:
+            outlines.append('')
+            continue
+
         outlines.append(extra_insertion)
 
     return outlines
