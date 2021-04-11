@@ -135,7 +135,13 @@ class TestFuncs(unittest.TestCase):
     def test_count_indentdepth(self):
         f = LIB.count_indentdepth
 
+        self.assertEqual(f('list'), 0)
+        self.assertEqual(f(' list'), 1)
         self.assertEqual(f('  list'), 2)
+        self.assertEqual(f('      list'), 6)
+
+        self.assertEqual(f('   code:xxx'), 3)
+        self.assertEqual(f('table:table1'), 0)
 
 if __name__ == '__main__':
     unittest.main()
