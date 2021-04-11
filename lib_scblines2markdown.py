@@ -10,6 +10,39 @@ class MODE:
     START_OF_BLOCK_CODE = 10
     START_OF_BLOCK_TABLE = 11
 
+class InBlockStateUser:
+    def __init__(self):
+        self._inblockstate = InBlockState()
+
+    def update(self, line, cur_indentdepth):
+        state = self.state
+
+        if state.is_in_block():
+            self._update_case_of_in_block(line, cur_indentdepth)
+            return
+        self._update_case_of_not_in_block(line, cur_indentdepth)
+
+    def _update_case_of_not_in_block(self, line, cur_indentdepth):
+        if Moder.is_start_of_code(line):
+            state.enter(MODE.START_OF_BLOCK_CODE, cur_indentdepth)
+            return
+
+        if Moder.is_start_of_table(line):
+            state.enter(MODE.START_OF_BLOCK_TABLE, cur_indentdepth)
+            return
+
+    def _update_case_of_in_block(self, line, cur_indentdepth):
+        state = self.state
+
+        is_current_more_deep = cur_indentdepth > state.indentdepth_of_start
+        if is_current_more_deep:
+            pass
+        state.leave()
+
+    @property
+    def state(self):
+        return self._inblockstate
+
 class InBlockState:
     def __init__(self):
         self._clear()
