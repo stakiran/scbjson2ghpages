@@ -68,6 +68,47 @@ class Moder:
     def judge_extra_insertion(cls, prev_indentdepth, cur_indentdepth, inblock_state):
         ''' @return 余分に挿入すべき文字列.
         @retval '' 何も挿入する必要がない. '''
+
+        # returning values
+        # @todo たぶん ignore は [] で、addlinefeed は [''] じゃないと行指向的にやりづらい気がする
+        IGNORE = ''
+        ADD_LINEFEED = '\n'
+
+        # aliases
+        p = prev_indentdepth
+        c = cur_indentdepth
+        state = inblock_state
+
+        # 空行が続いている
+        if c==0 and p==0:
+            return IGNORE
+
+        # list or block が終わった
+        if c==0 and p>=1:
+            # ★1
+            return ''
+
+        # list or block が始まった
+        if c==1 and p==0:
+            return ADD_LINEFEED
+        # list or block が続いている(インデントは変わらず)
+        if c==1 and p==1:
+            return IGNORE
+        # list or block が続いている(インデントは深くなった)
+        if c==1 and p>1:
+            return IGNORE
+
+        # list or blockが終わった
+        if p==0:
+            # ★1
+            return ''
+
+        # list or block が続いている(インデントは変わらず or 深くなった)
+        is_more_deepen = c>=p
+        if is_more_deepen:
+            return IGNORE
+
+        # ★2
         return ''
 
     @classmethod
