@@ -267,16 +267,20 @@ def convert_step2(step1_converted_lines):
     cur_indentdepth = -1
     prev_indentdepth = -1
 
+    is_prev_blankline = False
+    is_cur_blankline = False
+
     # 空行は step1 で処理しているので extra insertion は不要.
-    # 「prevが空行だった」「curが空行」の 2 パターンあるので両方除外する.
-    # 除外ルーチンは extra insertion には含まれてないので, メタで(呼び出し元で)やる.
+    # - 「prevが空行だった」「curが空行」の 2 パターンあるので両方除外する
+    # - 除外ルーチンは extra insertion には含まれてないので, メタで(呼び出し元で)やる
 
     for i,line in enumerate(lines):
         prev_indentdepth = cur_indentdepth
         cur_indentdepth = count_indentdepth(line)
 
-        if Moder.is_blankline(line):
-            # 空行はすでに step1 で処理しているので, extra insertion は不要.
+        is_prev_blankline = is_cur_blankline
+        is_cur_blankline = Moder.is_blankline(line)
+        if is_cur_blankline or is_prev_blankline:
             pass
         else:
             _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblock_state)
