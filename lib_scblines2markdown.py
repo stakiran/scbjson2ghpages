@@ -242,6 +242,20 @@ def convert_step1(scblines):
 
     return outlines
 
+def _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblock_state):
+    extra_insertion = Moder.judge_extra_insertion(cur_indentdepth, prev_indentdepth, inblock_state)
+
+    is_no_insertion = extra_insertion == ''
+    if is_no_insertion:
+        return
+
+    is_newline_insertion = extra_insertion == '\n'
+    if is_newline_insertion:
+        outlines.append('')
+        return
+
+    outlines.append(extra_insertion)
+
 def convert_step2(step1_converted_lines):
     # step2: インデントの深さに伴う終端処理
     # 終端として必要な文字列(extra insertion)を挿入する.
@@ -261,15 +275,7 @@ def convert_step2(step1_converted_lines):
         prev_indentdepth = cur_indentdepth
         cur_indentdepth = count_indentdepth(line)
 
-        extra_insertion = Moder.judge_extra_insertion(cur_indentdepth, prev_indentdepth, inblock_state)
-        is_no_insertion = extra_insertion == ''
-        if is_no_insertion:
-            continue
-        is_newline_insertion = extra_insertion == '\n'
-        if is_newline_insertion:
-            outlines.append('')
-            continue
-        outlines.append(extra_insertion)
+        _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblock_state)
 
     return outlines
 
