@@ -221,7 +221,7 @@ class Moder:
 
 def count_indentdepth(line):
     i = 0
-    while line[i:1]==' ':
+    while line[i:i+1]==' ':
         i += 1
     return i
 
