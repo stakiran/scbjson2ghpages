@@ -79,7 +79,7 @@ class Moder:
         c = cur_indentdepth
         state = inblock_state
 
-        # 空行または段落が続いている
+        # 段落が続いている
         if c==0 and p==0:
             return ADD_LINEFEED
 
