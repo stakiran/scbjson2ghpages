@@ -23,6 +23,10 @@ class InBlockState:
     def enter(self, mode, indentdepth):
         ''' @param mode MODE.xxx の値(START_OF_XXXX)
         @param indentdepth '''
+        already_in_block = self.is_in_block()
+        if already_in_block:
+            raise RuntimeError('Already in block')
+
         self._mode = mode
         self._depth = indentdepth
 

@@ -118,10 +118,10 @@ class TestInBlockState(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             state.is_in_table_block()
 
+        # ブロックはネストしない
         state.enter(mode_code, 1)
         with self.assertRaises(RuntimeError):
             state.enter(mode_code, 2)
-
 
 if __name__ == '__main__':
     unittest.main()
