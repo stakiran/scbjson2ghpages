@@ -71,7 +71,6 @@ class Moder:
         @retval '' 何も挿入する必要がない. '''
 
         # returning values
-        # @todo たぶん ignore は [] で、addlinefeed は [''] じゃないと行指向的にやりづらい気がする
         IGNORE = ''
         ADD_LINEFEED = '\n'
 
