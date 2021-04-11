@@ -248,7 +248,7 @@ if __name__ == '__main__':
     page = seeker.get('page')
 
     scblines = page.lines
-    list2file('input_page.scb', scblines)
+    list2file('1_page_input.scb', scblines)
 
     markdown_lines = lib_scblines2markdown.convert(scblines)
-    list2file('actual_page.md', markdown_lines)
+    list2file('3_page_actual.md', markdown_lines)
