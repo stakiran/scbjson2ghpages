@@ -268,6 +268,10 @@ def convert_step2(step1_converted_lines):
     cur_indentdepth = -1
     prev_indentdepth = -1
 
+    # 空行は step1 で処理しているので extra insertion は不要.
+    # 「prevが空行だった」「curが空行」の 2 パターンあるので両方除外する.
+    # 除外ルーチンは extra insertion には含まれてないので, メタで(呼び出し元で)やる.
+
     for i,line in enumerate(lines):
         prev_indentdepth = cur_indentdepth
         cur_indentdepth = count_indentdepth(line)
