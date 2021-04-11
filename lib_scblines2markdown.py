@@ -93,7 +93,7 @@ class Moder:
         return False
 
 def convert(lines):
-    pass
+    return []
 
 if __name__ == '__main__':
-    print(Moder.is_start_of_code('code:js'))
+    pass

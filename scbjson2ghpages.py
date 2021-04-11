@@ -241,5 +241,9 @@ if __name__ == '__main__':
     #
     # まずはページ 'page' の to markdown を一通り
     page = seeker.get('page')
- 
-    print(page)
+
+    scblines = page.lines
+    markdown_lines = lib_scblines2markdown.convert(scblines)
+
+    for line in markdown_lines:
+        print(line)
