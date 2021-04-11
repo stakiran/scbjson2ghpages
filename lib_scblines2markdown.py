@@ -259,8 +259,8 @@ def convert(scblines):
         if is_br_tag_line:
             continue
 
-        cur_indentdepth = 0
-        prev_indentdepth = 0
+        prev_indentdepth = cur_indentdepth
+        cur_indentdepth = count_indentdepth(line)
 
         extra_insertion = Moder.judge_extra_insertion(cur_indentdepth, prev_indentdepth, inblock_state)
         is_no_insertion = extra_insertion == ''
