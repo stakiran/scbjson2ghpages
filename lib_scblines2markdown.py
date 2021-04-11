@@ -10,9 +10,54 @@ class MODE:
     START_OF_BLOCK_CODE = 10
     START_OF_BLOCK_TABLE = 11
 
+class InBlockState:
+    def __init__(self):
+        self._clear()
+
+    def _clear(self):
+        NO_DUPLICATED_VALUE_OF_INDENT_DEPTH = -1
+
+        self._mode = MODE.NOMODE
+        self._depth = NO_DUPLICATED_VALUE_OF_INDENT_DEPTH
+
+    def enter(self, mode, indentdepth):
+        ''' @param mode MODE.xxx の値(START_OF_XXXX)
+        @param indentdepth '''
+        self._mode = mode
+        self._depth = indentdepth
+
+    def leave(self):
+        self._clear()
+
+    def is_in_block(self):
+        is_not_in_block = self._mode != MODE.NOMODE
+        if is_not_in_block:
+            return False
+        return True
+
+    def is_in_code_block(self):
+        if self.is_not_in_block():
+            raise RuntimeError('is_in_code_block')
+        is_matched = self._mode == MODE.START_OF_BLOCK_CODE
+        if is_matched:
+            return True
+        return False
+
+    def is_in_table_block(self):
+        if self.is_not_in_block():
+            raise RuntimeError('is_in_table_block')
+        is_matched = self._mode == MODE.START_OF_BLOCK_TABLE
+        if is_matched:
+            return True
+        return False
+
+    @property
+    def indentdepth_of_start(self):
+        return self._depth
+
 class Moder:
     @classmethod
-    def judge_extra_insertion(cls, mode_of_prevline, mode_of_curline):
+    def judge_extra_insertion(cls, prev_indentdepth, cur_indentdepth, inblock_state):
         ''' @return 余分に挿入すべき文字列.
         @retval '' 何も挿入する必要がない. '''
         return ''
@@ -146,12 +191,13 @@ def convert(scblines):
     outlines = []
 
     mode_of_prevline = MODE.NOMODE
+    inblock_state = InBlockState()
 
     for i,line in enumerate(lines):
         outlines.append(line)
 
         mode_of_curline = Moder.determin_mode(line)
-        extra_insertion = Moder.judge_extra_insertion(mode_of_prevline, mode_of_curline)
+        extra_insertion = Moder.judge_extra_insertion(mode_of_prevline, mode_of_curline, inblock_state)
         is_no_insertion = extra_insertion == ''
         if is_no_insertion:
             continue
