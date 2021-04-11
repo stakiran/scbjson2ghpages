@@ -12,6 +12,31 @@ class MODE:
 
 class Moder:
     @classmethod
+    def determin_mode(cls, line):
+        mode = MODE.INVALID
+
+        if cls.is_start_of_code(line):
+            mode = MODE.START_OF_BLOCK_CODE
+            return mode
+        if cls.is_start_of_table(line):
+            mode = MODE.START_OF_BLOCK_TABLE
+            return mode
+
+        if cls.is_list(line):
+            mode = MODE.LIST
+            return mode
+
+        if cls.is_paragraph(line):
+            mode = MODE.PARAGRAPH
+            return mode
+
+        if cls.is_blankline(line):
+            mode = MODE.BLANKLINE
+            return mode
+
+        raise RuntimeError('不正なモード. ここに来ることはないはず.\n"{}"'.format(line))
+
+    @classmethod
     def is_blankline(cls, line):
         if len(line) == 0:
             return True
@@ -97,6 +122,8 @@ def convert(scblines):
 
     outlines = []
 
+    # step1: 空行
+    # 空行は <br> と \n で置換するのがベストだと事前調査済.
     for line in lines:
         is_not_blankline = not Moder.is_blankline(line)
         if is_not_blankline:
@@ -104,6 +131,13 @@ def convert(scblines):
             continue
         outlines.append('<br>')
         outlines.append('')
+
+    # step2: インデントの深さに伴う終端処理
+    # \n あるいはコードブロック終点(```)の挿入が必要なので, 該当箇所に挿入する.
+    lines = outlines
+    mode_of_prevline = MODE.NOMODE
+    for i,line in enumerate(lines):
+        pass
 
     return outlines
 

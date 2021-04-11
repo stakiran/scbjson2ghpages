@@ -73,5 +73,14 @@ class TestModer(unittest.TestCase):
         self.assertTrue(f('table:あいうえお'))
         self.assertTrue(f('  table:あいうえお'))
 
+    def test_determin_mode(self):
+        f = LIB.Moder.determin_mode
+        m = LIB.MODE
+
+        self.assertEqual(f(''), m.BLANKLINE)
+        self.assertEqual(f('code'), m.PARAGRAPH)
+        self.assertEqual(f(' code'), m.LIST)
+        self.assertEqual(f(' code:xxx'), m.START_OF_BLOCK_CODE)
+
 if __name__ == '__main__':
     unittest.main()
