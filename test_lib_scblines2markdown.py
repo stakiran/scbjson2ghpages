@@ -89,7 +89,7 @@ class TestInBlockState(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test(self):
+    def test_valid(self):
         state = LIB.InBlockState()
         mode_code = LIB.MODE.START_OF_BLOCK_CODE
         mode_table = LIB.MODE.START_OF_BLOCK_TABLE
@@ -107,6 +107,21 @@ class TestInBlockState(unittest.TestCase):
         self.assertTrue(state.is_in_block())
         self.assertFalse(state.is_in_code_block())
         self.assertTrue(state.is_in_table_block())
+
+    def test_invalid(self):
+        state = LIB.InBlockState()
+        mode_code = LIB.MODE.START_OF_BLOCK_CODE
+        mode_table = LIB.MODE.START_OF_BLOCK_TABLE
+
+        with self.assertRaises(RuntimeError):
+            state.is_in_code_block()
+        with self.assertRaises(RuntimeError):
+            state.is_in_table_block()
+
+        state.enter(mode_code, 1)
+        with self.assertRaises(RuntimeError):
+            state.enter(mode_code, 2)
+
 
 if __name__ == '__main__':
     unittest.main()
