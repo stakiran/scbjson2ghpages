@@ -30,22 +30,26 @@ class InBlockState:
         self._clear()
 
     def is_in_block(self):
-        is_not_in_block = self._mode != MODE.NOMODE
+        is_not_in_block = self._mode == MODE.NOMODE
         if is_not_in_block:
             return False
         return True
 
     def is_in_code_block(self):
-        if self.is_not_in_block():
+        is_not_in_block = not self.is_in_block()
+        if is_not_in_block:
             raise RuntimeError('is_in_code_block')
+
         is_matched = self._mode == MODE.START_OF_BLOCK_CODE
         if is_matched:
             return True
         return False
 
     def is_in_table_block(self):
-        if self.is_not_in_block():
+        is_not_in_block = not self.is_in_block()
+        if is_not_in_block:
             raise RuntimeError('is_in_table_block')
+
         is_matched = self._mode == MODE.START_OF_BLOCK_TABLE
         if is_matched:
             return True

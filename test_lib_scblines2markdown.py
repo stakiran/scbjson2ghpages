@@ -82,5 +82,22 @@ class TestModer(unittest.TestCase):
         self.assertEqual(f(' code'), m.LIST)
         self.assertEqual(f(' code:xxx'), m.START_OF_BLOCK_CODE)
 
+class TestInBlockState(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test(self):
+        state = LIB.InBlockState()
+        mode_code = LIB.MODE.START_OF_BLOCK_CODE
+        mode_table = LIB.MODE.START_OF_BLOCK_TABLE
+
+        state.enter(mode_code, 1)
+        self.assertTrue(state.is_in_block())
+        self.assertTrue(state.is_in_code_block())
+        self.assertFalse(state.is_in_table_block())
+
 if __name__ == '__main__':
     unittest.main()
