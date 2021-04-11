@@ -100,6 +100,7 @@ class TestInBlockState(unittest.TestCase):
         self.assertTrue(state.is_in_block())
         self.assertTrue(state.is_in_code_block())
         self.assertFalse(state.is_in_table_block())
+        self.assertEqual(state.indentdepth_of_start, 1)
 
         state.leave()
 
@@ -107,6 +108,7 @@ class TestInBlockState(unittest.TestCase):
         self.assertTrue(state.is_in_block())
         self.assertFalse(state.is_in_code_block())
         self.assertTrue(state.is_in_table_block())
+        self.assertEqual(state.indentdepth_of_start, 3)
 
     def test_invalid(self):
         state = LIB.InBlockState()
