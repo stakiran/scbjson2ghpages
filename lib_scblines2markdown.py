@@ -225,7 +225,7 @@ def count_indentdepth(line):
         i += 1
     return i
 
-def convert(scblines):
+def convert_step1(scblines):
     lines = scblines
     outlines = []
 
@@ -240,11 +240,14 @@ def convert(scblines):
         outlines.append('<br>')
         outlines.append('')
 
+    return outlines
+
+def convert_step2(step1_converted_lines):
     # step2: インデントの深さに伴う終端処理
     # 終端として必要な文字列(extra insertion)を挿入する.
     # -> \n, コードブロック終点(```) etc
 
-    lines = outlines
+    lines = step1_converted_lines
     outlines = []
 
     mode_of_prevline = MODE.NOMODE
