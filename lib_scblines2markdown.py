@@ -1,6 +1,7 @@
 # encoding: utf-8
 
-class Moder:
+class MODE:
+    INVALID = -1
     NOMODE = 0
     BLANKLINE = 1
     PARAGRAPH = 2
@@ -9,24 +10,7 @@ class Moder:
     START_OF_BLOCK_CODE = 10
     START_OF_BLOCK_TABLE = 11
 
-    def __init__(self):
-        pass
-
-    def _clear(self):
-        self._mode_prev = NOMODE
-
-    def set_line(self, line):
-        # n行目のlineを受け取って、n行目のモードとn-1行目のモードにする
-        # n行目のモードは計算が必要
-        # n-1行目のモードは、今のn行目のモードを退避させる（がlist in blockなどn行続くこともある）
-        pass
-
-    def _line_to_mode(self, line):
-        # input
-        # - currentmode(n-1行目のモードになる)
-        # - n行目のline
-        pass
-
+class Moder:
     @classmethod
     def is_blankline(cls, line):
         if len(line) == 0:
@@ -108,32 +92,8 @@ class Moder:
 
         return False
 
-class Converter:
-    def __init__(self):
-        pass
-
-    def _clear(self):
-        self._out_lines = []
-
-    def parse(self, lines):
-        self._clear()
-
-        self._lines = lines
-        for line in self._lines:
-            self._parse_line(line)
-
-    def _parse_line(self, line):
-        pass
-
 def convert(lines):
     pass
 
 if __name__ == '__main__':
-    moder = Moder()
-    print(Moder.is_blankline(''))
-    print(Moder.is_blankline(' list'))
-    print(Moder.is_list(' list'))
-    print(Moder.is_list('  '))
-    print(Moder.is_list(''))
-
     print(Moder.is_start_of_code('code:js'))
