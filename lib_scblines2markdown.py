@@ -92,8 +92,20 @@ class Moder:
 
         return False
 
-def convert(lines):
-    return []
+def convert(scblines):
+    lines = scblines
+
+    outlines = []
+
+    for line in lines:
+        is_not_blankline = not Moder.is_blankline(line)
+        if is_not_blankline:
+            outlines.append(line)
+            continue
+        outlines.append('<br>')
+        outlines.append('')
+
+    return outlines
 
 if __name__ == '__main__':
     pass
