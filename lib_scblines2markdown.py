@@ -273,7 +273,11 @@ def convert_step2(step1_converted_lines):
         prev_indentdepth = cur_indentdepth
         cur_indentdepth = count_indentdepth(line)
 
-        _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblock_state)
+        if Moder.is_blankline(line):
+            # 空行はすでに step1 で処理しているので, extra insertion は不要.
+            pass
+        else:
+            _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblock_state)
 
         outlines.append(line)
 
