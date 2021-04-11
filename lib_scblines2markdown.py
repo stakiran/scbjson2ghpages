@@ -100,7 +100,7 @@ class InBlockState:
 
 class Moder:
     @classmethod
-    def judge_extra_insertion(cls, prev_indentdepth, cur_indentdepth, inblock_state):
+    def judge_extra_insertion(cls, prev_indentdepth, cur_indentdepth, inblockstate_user):
         ''' string への挿入を前提としているため, 行指向の場合は適宜解釈し直すこと.
         @return 余分に挿入すべき文字列.
         @retval '' 何も挿入する必要がない. '''
@@ -112,7 +112,6 @@ class Moder:
         # aliases
         p = prev_indentdepth
         c = cur_indentdepth
-        state = inblock_state
 
         # 段落が続いている
         if c==0 and p==0:
@@ -298,7 +297,7 @@ def convert_step2(step1_converted_lines):
     lines = step1_converted_lines
     outlines = []
 
-    inblock_state = InBlockState()
+    inblockstate_user = InBlockStateUser()
     cur_indentdepth = -1
     prev_indentdepth = -1
 
@@ -318,7 +317,7 @@ def convert_step2(step1_converted_lines):
         if is_cur_blankline or is_prev_blankline:
             pass
         else:
-            _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblock_state)
+            _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblockstate_user)
 
         outlines.append(line)
 
