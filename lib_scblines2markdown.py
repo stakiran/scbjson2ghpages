@@ -110,6 +110,7 @@ class Moder:
             return IGNORE
 
         # ★2
+        # 加えて, 先頭行もここに入るはずなので要処理
         return ''
 
     @classmethod
@@ -218,6 +219,9 @@ class Moder:
 
         return False
 
+def count_indentdepth(line):
+    pass
+
 def convert(scblines):
     lines = scblines
     outlines = []
@@ -242,22 +246,27 @@ def convert(scblines):
 
     mode_of_prevline = MODE.NOMODE
     inblock_state = InBlockState()
+    cur_indentdepth = -1
+    prev_indentdepth = -1
 
     for i,line in enumerate(lines):
         outlines.append(line)
 
-        mode_of_curline = Moder.determin_mode(line)
-        extra_insertion = Moder.judge_extra_insertion(mode_of_prevline, mode_of_curline, inblock_state)
+        is_br_tag_line = line == '<br>'
+        if is_br_tag_line:
+            continue
 
+        cur_indentdepth = 0
+        prev_indentdepth = 0
+
+        extra_insertion = Moder.judge_extra_insertion(cur_indentdepth, prev_indentdepth, inblock_state)
         is_no_insertion = extra_insertion == ''
         if is_no_insertion:
             continue
-
         is_newline_insertion = extra_insertion == '\n'
         if is_newline_insertion:
             outlines.append('')
             continue
-
         outlines.append(extra_insertion)
 
     return outlines
