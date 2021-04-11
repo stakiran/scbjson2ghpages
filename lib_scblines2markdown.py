@@ -105,6 +105,13 @@ class Moder:
         @return 余分に挿入すべき文字列.
         @retval '' 何も挿入する必要がない. '''
 
+        # ★1のケース
+        def end_of_list_or_block(inblockstate_user):
+            state = inblockstate_user.state
+            if state.is_in_block():
+                return '```'
+            return '\n'
+
         # returning values
         IGNORE = ''
         ADD_LINEFEED = '\n'
@@ -119,8 +126,8 @@ class Moder:
 
         # list or block が終わった
         if c==0 and p>=1:
-            # ★1
-            return ''
+            extra_insertion = end_of_list_or_block(inblockstate_user)
+            return extra_insertion
 
         # list or block が始まった
         if c==1 and p==0:
@@ -134,8 +141,8 @@ class Moder:
 
         # list or blockが終わった
         if p==0:
-            # ★1
-            return ''
+            extra_insertion = end_of_list_or_block(inblockstate_user)
+            return extra_insertion
 
         # list or block が続いている(インデントは変わらず or 深くなった)
         is_more_deepen = c>=p
