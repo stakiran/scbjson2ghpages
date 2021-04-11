@@ -270,12 +270,12 @@ def convert_step2(step1_converted_lines):
     prev_indentdepth = -1
 
     for i,line in enumerate(lines):
-        outlines.append(line)
-
         prev_indentdepth = cur_indentdepth
         cur_indentdepth = count_indentdepth(line)
 
         _step2_append_extra_insertion(outlines, cur_indentdepth, prev_indentdepth, inblock_state)
+
+        outlines.append(line)
 
     return outlines
 
