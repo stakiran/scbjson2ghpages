@@ -38,7 +38,7 @@ class InBlockStateUser:
 
         is_current_more_deep = cur_indentdepth > state.indentdepth_of_start
         if is_current_more_deep:
-            pass
+            return
         state.leave()
 
     @property

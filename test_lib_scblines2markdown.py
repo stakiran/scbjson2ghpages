@@ -137,12 +137,12 @@ class TestInBlockStateUser(unittest.TestCase):
 
         testdata = '''title
 段落段落
-段落段落段落
-code:py
- import os
+段落段落段落 ★2
+code:py ★3
+ import os ★4
  for var in os.environ:
-     print(var)
-ここはコードじゃない
+     print(var) ★6
+ここはコードじゃない ★7
 
 block in the list
  list1
@@ -170,10 +170,24 @@ block in the list
             return [line, cur_indentdepth]
 
         testdata_lines = testdata.split('\n')
-        L = testdata_lines
 
-        for i,_ in enumerate(testdata_lines):
+        for i,line in enumerate(testdata_lines):
             user.update(*pair(i))
+
+            if i==2:
+                self.assertFalse(user.state.is_in_block())
+                continue
+
+            if i==3:
+                self.assertTrue(user.state.is_in_block())
+                continue
+
+            if i==4:
+                print(line)
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_code_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
 
 class TestFuncs(unittest.TestCase):
     def setUp(self):
