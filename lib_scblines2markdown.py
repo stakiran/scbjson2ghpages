@@ -80,9 +80,9 @@ class Moder:
         c = cur_indentdepth
         state = inblock_state
 
-        # 空行が続いている
+        # 空行または段落が続いている
         if c==0 and p==0:
-            return IGNORE
+            return ADD_LINEFEED
 
         # list or block が終わった
         if c==0 and p>=1:
@@ -254,10 +254,6 @@ def convert(scblines):
 
     for i,line in enumerate(lines):
         outlines.append(line)
-
-        is_br_tag_line = line == '<br>'
-        if is_br_tag_line:
-            continue
 
         prev_indentdepth = cur_indentdepth
         cur_indentdepth = count_indentdepth(line)
