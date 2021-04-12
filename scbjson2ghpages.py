@@ -253,5 +253,8 @@ if __name__ == '__main__':
     step1_converted_lines = lib_scblines2markdown.convert_step1(scblines)
     list2file('3_page_actual_step1.md', step1_converted_lines)
 
-    markdown_lines = lib_scblines2markdown.convert_step2(step1_converted_lines)
-    list2file('3_page_actual_step2.md', markdown_lines)
+    step2_converted_lines = lib_scblines2markdown.convert_step2(step1_converted_lines)
+    list2file('3_page_actual_step2.md', step2_converted_lines)
+
+    markdown_lines = lib_scblines2markdown.convert_step3(step2_converted_lines)
+    list2file('3_page_actual_step3.md', markdown_lines)

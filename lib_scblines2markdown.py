@@ -364,5 +364,16 @@ def convert_step2(step1_converted_lines):
 
     return outlines
 
+def convert_step3(step2_converted_lines):
+    # step3: インラインの Scrapbox 記法を Markdown のものに変換
+
+    lines = step2_converted_lines
+    outlines = []
+
+    for line in lines:
+        outlines.append(line)
+
+    return outlines
+
 if __name__ == '__main__':
     pass
