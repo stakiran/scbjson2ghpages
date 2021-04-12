@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+import re
+
 class MODE:
     INVALID = -1
     NOMODE = 0
@@ -364,6 +366,7 @@ def convert_step2(step1_converted_lines):
 
     return outlines
 
+RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     newline = line
 
@@ -375,12 +378,16 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         return line
 
     if is_in_block and state.is_in_table_block():
+        # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
+        # ないとみなして fall through しない.
         return '| テーブルは | あとで | {} | 実装します |'.format(line)
 
     if is_in_list:
         lstripped_newline = newline.lstrip()
         markdown_indent = '    '*(cur_indentdepth-1)
         newline = '{}- {}'.format(markdown_indent, lstripped_newline)
+
+    newline = re.sub(RE_BOLD, ' **\\2** ', newline)
 
     return newline
 
