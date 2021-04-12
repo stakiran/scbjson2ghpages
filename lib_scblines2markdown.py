@@ -14,7 +14,17 @@ class InBlockStateUser:
     def __init__(self):
         self._inblockstate = InBlockState()
 
+        # block から抜けた行の検出に必要.
+        # 抜けた時の行番号を InBlockState は保持しないので,
+        # 利用者(User)の側で保持する必要がある.
+        self._is_left_just_now = False
+
+    def _clear_just_now_leaving_flag(self):
+        self._is_left_just_now = False
+
     def update(self, line, cur_indentdepth):
+        self._clear_just_now_leaving_flag()
+
         state = self.state
 
         if state.is_in_block():
@@ -40,10 +50,14 @@ class InBlockStateUser:
         if is_current_more_deep:
             return
         state.leave()
+        self._is_left_just_now = True
 
     @property
     def state(self):
         return self._inblockstate
+
+    def is_left_just_now(self):
+        return self._is_left_just_now
 
 class InBlockState:
     def __init__(self):

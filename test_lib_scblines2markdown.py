@@ -137,12 +137,12 @@ class TestInBlockStateUser(unittest.TestCase):
 
         testdata = '''title
 段落段落
-段落段落段落 ★2
+段落段落段落 ★2 not justnow
 code:py ★3
  import os ★4
  for var in os.environ:
      print(var) ★6
-ここはコードじゃない ★7
+ここはコードじゃない ★7 justnow
 
 block in the list ★9
  list1
@@ -157,8 +157,8 @@ block in the list ★9
              print('4文字以内の変数だよ!') ★19
          #ここはまだコード ★20
      #ここはまだコード ★21
-    ここはコードじゃない ★22
-    list4
+    ここはコードじゃない ★22 justnow
+    list4 ★23 not justnow
    list3
   list2
  list1
@@ -176,6 +176,7 @@ block in the list ★9
 
             if i==2:
                 self.assertFalse(user.state.is_in_block())
+                self.assertFalse(user.is_left_just_now())
                 continue
 
             if i==3:
@@ -196,6 +197,7 @@ block in the list ★9
 
             if i==7:
                 self.assertFalse(user.state.is_in_block())
+                self.assertTrue(user.is_left_just_now())
                 continue
 
             if i==14:
@@ -236,6 +238,11 @@ block in the list ★9
 
             if i==22:
                 self.assertFalse(user.state.is_in_block())
+                self.assertTrue(user.is_left_just_now())
+                continue
+
+            if i==23:
+                self.assertFalse(user.is_left_just_now())
                 continue
 
 class TestFuncs(unittest.TestCase):
