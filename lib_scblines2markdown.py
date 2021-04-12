@@ -145,12 +145,12 @@ class Moder:
             return extra_insertion
 
         # list or block が続いている(インデントは変わらず or 深くなった)
+        # 先頭行のときもここに入る
         is_more_deepen = c>=p
         if is_more_deepen:
             return IGNORE
 
         # ★2
-        # 加えて, 先頭行もここに入るはずなので要処理
         return ''
 
     @classmethod
