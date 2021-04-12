@@ -87,8 +87,8 @@ para7
         - [/sta](https://scrapbox.io/sta)
     - direct url
         - https://www.google.co.jp/
-        - [textが後](https://scrapbox.io/sta/)
-        - [textが先](https://scrapbox.io/sta/)
+    - [textが後](https://scrapbox.io/sta/)
+    - [textが先](https://scrapbox.io/sta/)
 
 <br>
 

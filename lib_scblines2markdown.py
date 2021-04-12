@@ -366,6 +366,8 @@ def convert_step2(step1_converted_lines):
 
     return outlines
 
+RE_LINK_URL_TEXT = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(.+?)\]')
+RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
@@ -388,6 +390,10 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         markdown_indent = '    '*(cur_indentdepth-1)
         newline = '{}- {}'.format(markdown_indent, lstripped_newline)
 
+    # @todo 置換順はちゃんと根拠とともに整理する
+    # とりあえずリンクを先にしないと link in bold や link in strike が上手くいかないってのはわかってる
+    newline = re.sub(RE_LINK_URL_TEXT, '[\\4](http\\1://\\2)', newline)
+    newline = re.sub(RE_LINK_TEXT_URL, '[\\1](http\\3://\\4)', newline)
     newline = re.sub(RE_BOLD, '**\\2**', newline)
     newline = re.sub(RE_STRIKE, '~~\\2~~', newline)
 
