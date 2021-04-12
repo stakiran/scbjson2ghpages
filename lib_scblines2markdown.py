@@ -292,6 +292,9 @@ class Moder:
 
         return False
 
+def scb_to_markdown_in_line(line):
+    return line
+
 def count_indentdepth(line):
     i = 0
     while line[i:i+1]==' ':
@@ -370,8 +373,9 @@ def convert_step3(step2_converted_lines):
     lines = step2_converted_lines
     outlines = []
 
-    for line in lines:
-        outlines.append(line)
+    for scbline in lines:
+        markdown_line = scb_to_markdown_in_line(scbline)
+        outlines.append(markdown_line)
 
     return outlines
 
