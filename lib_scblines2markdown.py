@@ -103,14 +103,29 @@ class Moder:
     def judge_extra_insertion(cls, prev_indentdepth, cur_indentdepth, inblockstate_user):
         ''' string への挿入を前提としているため, 行指向の場合は適宜解釈し直すこと.
         @return 余分に挿入すべき文字列.
-        @retval '' 何も挿入する必要がない. '''
+        @retval '' 何も挿入する必要がない.
+        
+        アルゴリズムがえぐいので Scrapbox のメモも参照のこと. '''
 
+        # @todo ★1と★2内の返り値も定数に
         # ★1のケース
         def end_of_list_or_block(inblockstate_user):
             state = inblockstate_user.state
             if state.is_in_block():
                 return '```'
             return '\n'
+
+        # ★2のケース
+        def continuous_indent(cur_indentdepth, inblockstate_user):
+            state = inblockstate_user.state
+
+            is_not_in_block = not state.is_in_block()
+            is_in_list = is_not_in_block
+            if is_in_list:
+                return ''
+
+            # @todo たぶん leave() したばかりですフラグが必要
+            return ''
 
         # returning values
         IGNORE = ''
@@ -145,13 +160,15 @@ class Moder:
             return extra_insertion
 
         # list or block が続いている(インデントは変わらず or 深くなった)
-        # 先頭行のときもここに入る
+        # 先頭行のときもここに入る.
         is_more_deepen = c>=p
         if is_more_deepen:
             return IGNORE
 
-        # ★2
-        return ''
+        # list or block が続いている(インデントは変わらず or 深くなった or 浅くなった)
+        # インデント 1 以上の深さで block が終わっているケース, もここに入る.
+        extra_insertion = continuous_indent(c, inblockstate_user)
+        return extra_insertion
 
     @classmethod
     def determin_mode(cls, line):
