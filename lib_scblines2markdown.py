@@ -292,9 +292,6 @@ class Moder:
 
         return False
 
-def scb_to_markdown_in_line(line):
-    return line
-
 def count_indentdepth(line):
     i = 0
     while line[i:i+1]==' ':
@@ -367,14 +364,40 @@ def convert_step2(step1_converted_lines):
 
     return outlines
 
+def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
+    newline = line
+
+    state = inblockstate_user.state
+    is_in_list = cur_indentdepth>0
+    is_in_block = state.is_in_block()
+
+    if is_in_block and state.is_in_code_block():
+        return line
+
+    if is_in_block and state.is_in_table_block():
+        return '| テーブルは | あとで | {} | 実装します |'.format(line)
+
+    if is_in_list:
+        lstripped_newline = newline.lstrip()
+        markdown_indent = '    '*(cur_indentdepth-1)
+        newline = '{}- {}'.format(markdown_indent, lstripped_newline)
+
+    return newline
+
 def convert_step3(step2_converted_lines):
     # step3: インラインの Scrapbox 記法を Markdown のものに変換
 
     lines = step2_converted_lines
     outlines = []
 
+    inblockstate_user = InBlockStateUser()
+    cur_indentdepth = -1
+
     for scbline in lines:
-        markdown_line = scb_to_markdown_in_line(scbline)
+        cur_indentdepth = count_indentdepth(scbline)
+        inblockstate_user.update(scbline, cur_indentdepth)
+
+        markdown_line = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user)
         outlines.append(markdown_line)
 
     return outlines
