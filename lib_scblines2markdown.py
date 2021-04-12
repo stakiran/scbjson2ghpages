@@ -388,8 +388,8 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         markdown_indent = '    '*(cur_indentdepth-1)
         newline = '{}- {}'.format(markdown_indent, lstripped_newline)
 
-    newline = re.sub(RE_BOLD, ' **\\2** ', newline)
-    newline = re.sub(RE_STRIKE, ' ~~\\2~~ ', newline)
+    newline = re.sub(RE_BOLD, '**\\2**', newline)
+    newline = re.sub(RE_STRIKE, '~~\\2~~', newline)
 
     return newline
 
