@@ -81,7 +81,7 @@ para7
 - `literal`
 - <blockquote>引用</blockquote>
 - リンク
-    - [Link](link.md)
+    - [Link](Link.md)
     - [#hashtag](hashtag.md)
     - scrapbox link
         - [/sta](https://scrapbox.io/sta)
