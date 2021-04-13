@@ -366,7 +366,7 @@ def convert_step2(step1_converted_lines):
 
     return outlines
 
-RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)]')
+RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
 RE_LINK_URL_TEXT = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(.+?)\]')
 RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
