@@ -390,7 +390,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         return line
 
     # 2
-    # block
+    # in block
     # テーブル変換
 
     if is_in_block and state.is_in_table_block():
@@ -415,6 +415,12 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     # 4
     # in line
     # リンク
+    #
+    # link to another page の正規表現が扱える集合がえぐいので, 以下戦略を取る.
+    # - 1: まずは限定的なリンク表記から処理する
+    # - 2: 最後に link to another page を処理する
+    #      このとき, 1: で処理した分は markdown link 書式になっているため
+    #      ] の直後に ( が来ないパターンを弾くことで 1: を弾ける
 
     newline = re.sub(RE_LINK_ANOTHER_PROJECT, '[/\\1](https://scrapbox.io/\\1)', newline)
 
@@ -426,6 +432,8 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     # 5
     # in line
     # 装飾系
+    #
+    # リンク記法を装飾するケースがあるため, リンクの後に処理する
 
     newline = re.sub(RE_BOLD, '**\\2**', newline)
     newline = re.sub(RE_STRIKE, '~~\\2~~', newline)
