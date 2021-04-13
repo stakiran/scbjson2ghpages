@@ -366,6 +366,7 @@ def convert_step2(step1_converted_lines):
 
     return outlines
 
+RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
 RE_LINK_ANOTHER_PAGE = re.compile(r'\[([^\-\*/])(.+?)\]([^\(]|$)')
 RE_LINK_URL_TEXT = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(.+?)\]')
@@ -379,21 +380,41 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     is_in_list = cur_indentdepth>0
     is_in_block = state.is_in_block()
 
+    # @todo 置換順はちゃんと根拠とともに整理する
+
+    # 1
+    # in block
+    # コードブロックの中身はそのまま
+
     if is_in_block and state.is_in_code_block():
         return line
+
+    # 2
+    # block
+    # テーブル変換
 
     if is_in_block and state.is_in_table_block():
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
         return '| テーブルは | あとで | {} | 実装します |'.format(line)
 
+    # 3
+    # in line
+    # 最初に処理すべきはリストと引用.
+    #
+    # 引用から処理する.
+    # - リストは引用を含むため, 引用変換時にはリストのインデントを保持する必要がある
+
+    newline = re.sub(RE_QUOTE, '\\1<blockquote>\\2</blockquote>', newline)
+
     if is_in_list:
         lstripped_newline = newline.lstrip()
         markdown_indent = '    '*(cur_indentdepth-1)
         newline = '{}- {}'.format(markdown_indent, lstripped_newline)
 
-    # @todo 置換順はちゃんと根拠とともに整理する
-    # とりあえずリンクを先にしないと link in bold や link in strike が上手くいかないってのはわかってる
+    # 4
+    # in line
+    # リンク
 
     newline = re.sub(RE_LINK_ANOTHER_PROJECT, '[/\\1](https://scrapbox.io/\\1)', newline)
 
@@ -401,6 +422,10 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     newline = re.sub(RE_LINK_TEXT_URL, '[\\1](http\\3://\\4)', newline)
 
     newline = re.sub(RE_LINK_ANOTHER_PAGE, '[\\1\\2](\\1\\2.md)\\3', newline)
+
+    # 5
+    # in line
+    # 装飾系
 
     newline = re.sub(RE_BOLD, '**\\2**', newline)
     newline = re.sub(RE_STRIKE, '~~\\2~~', newline)

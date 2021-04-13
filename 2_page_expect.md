@@ -101,7 +101,7 @@ para7
 文字装飾mix
 
 - ~~[リンクに対するstrike](リンクに対するstrike)~~
-- <blockquote>引用の中で `literal` したり **太字** したり[リンク](リンク.md)入れたり</blockquote>
+- <blockquote>引用の中で `literal` したり **太字**したり[リンク](リンク.md)入れたり</blockquote>
 
 <br>
 
