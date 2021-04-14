@@ -421,6 +421,7 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
             continue
 
         if mode==mode_initial:
+            surrounder = ''
             if c=='[':
                 mode = mode_first_leftbracket
                 continue
