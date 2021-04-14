@@ -395,6 +395,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     if is_in_block and state.is_in_table_block():
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
+        # @todo と思ったけどリンクは使えるのでサポートすべき
         return '| テーブルは | あとで | {} | 実装します |'.format(line)
 
     # 3
