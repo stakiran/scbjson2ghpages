@@ -407,7 +407,7 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
 
     mode = mode_initial
     surrounder = ''
-    for c in line:
+    for i,c in enumerate(line):
         if mode==mode_link_not_in_decoration_start:
             if c==']':
                 mode = mode_initial
@@ -421,13 +421,13 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
             continue
 
         if mode==mode_initial:
-            surrounder = ''
             if c=='[':
                 mode = mode_first_leftbracket
                 continue
             continue
 
         if mode==mode_first_leftbracket:
+            surrounder = ''
             if c=='-':
                 mode = mode_decoration_char
                 surrounder = '~~'
