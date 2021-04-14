@@ -366,6 +366,50 @@ def convert_step2(step1_converted_lines):
 
     return outlines
 
+def _scb_to_markdown_in_line_about_link_in_decoration(line):
+    # `[- [xxx]xxx[xxx][xxx]xxx[xxx]xxx]yyy[- [xxx]zzz]`
+
+    # [- [a]]
+    # 最低でも 7 文字はあるはず
+    if len(line)<7:
+        return line
+
+    firstchar = line[0]
+    secondchar = line[1]
+    thirdchar = line[2]
+    is_not_decoration = firstchar != '['
+    if is_not_decoration:
+        return line
+    is_not_decoration = thirdchar != ' '
+    if is_not_decoration:
+        return line
+
+    surrounder = ''
+    is_strike_decoration = secondchar == '*'
+    is_bold_decoration = secondchar == '*'
+    if is_strike_decoration:
+        surrounder = '~~'
+    elif is_bold_decoration:
+        surrounder = '**'
+    else:
+        return line
+
+    bracket_nest = 0
+    for c in line:
+        if c=='[':
+            bracket_nest += 1
+            continue
+
+        if c==']':
+            bracket_nest -= 1
+            continue
+
+        is_end_of_decoration = bracket_nest == 0
+        if is_end_of_decoration:
+            pass
+
+    return line
+
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
 RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
