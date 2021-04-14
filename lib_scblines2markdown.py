@@ -367,6 +367,7 @@ def convert_step2(step1_converted_lines):
     return outlines
 
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
+RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
 RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
 RE_LINK_ANOTHER_PAGE = re.compile(r'\[([^\-\*/])(.+?)\]([^\(]|$)')
 RE_LINK_URL_TEXT = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(.+?)\]')
@@ -421,6 +422,8 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     # - 2: 最後に link to another page を処理する
     #      このとき, 1: で処理した分は markdown link 書式になっているため
     #      ] の直後に ( が来ないパターンを弾くことで 1: を弾ける
+
+    newline = re.sub(RE_HASHTAG, '[#\\2](\\2.md)', newline)
 
     newline = re.sub(RE_LINK_ANOTHER_PROJECT, '[/\\1](https://scrapbox.io/\\1)', newline)
 
