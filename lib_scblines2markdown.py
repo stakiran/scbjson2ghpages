@@ -423,7 +423,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     #      このとき, 1: で処理した分は markdown link 書式になっているため
     #      ] の直後に ( が来ないパターンを弾くことで 1: を弾ける
 
-    newline = re.sub(RE_HASHTAG, '[#\\2](\\2.md)', newline)
+    newline = re.sub(RE_HASHTAG, '\\1[#\\2](\\2.md)\\3', newline)
 
     newline = re.sub(RE_LINK_ANOTHER_PROJECT, '[/\\1](https://scrapbox.io/\\1)', newline)
 
