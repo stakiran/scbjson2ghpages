@@ -381,8 +381,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     is_in_list = cur_indentdepth>0
     is_in_block = state.is_in_block()
 
-    # @todo 置換順はちゃんと根拠とともに整理する
-
     # 1
     # in block
     # コードブロックの中身はそのまま
