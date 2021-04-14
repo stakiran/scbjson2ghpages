@@ -367,46 +367,114 @@ def convert_step2(step1_converted_lines):
     return outlines
 
 def _scb_to_markdown_in_line_about_link_in_decoration(line):
-    # `[- [xxx]xxx[xxx][xxx]xxx[xxx]xxx]yyy[- [xxx]zzz]`
+    # link in decoration とは
+    # - 装飾文法の中にリンクが存在するケース
+    #   例: [- [xxx]xxx[xxx][xxx]xxx[xxx]xxx]yyy[- [xxx]zzz]
+    # - ブラケット開始 `[` がネストしているせいで, 正規表現で上手く展開できない
+    # - なのでここでは以下の工夫をする
+    #   - 「リンクを含む装飾文法」を愚直に検出して,
+    #   - 装飾文法部分を先に置換してしまう.
+    #
+    # Q:先にリンクを置換した後, 装飾文法を置換するのは?
+    #   Ans: だめです
+    #        リンクを置換しても []() となってしまい, まだブラケット開始がネストしているため.
+    #
+    # Q:ただのdecorationは置換する?
+    #   Ans: しない
+    #        なるべく正規表現による置換に任せる方針.
 
     # [- [a]]
     # 最低でも 7 文字はあるはず
     if len(line)<7:
         return line
 
-    firstchar = line[0]
-    secondchar = line[1]
-    thirdchar = line[2]
-    is_not_decoration = firstchar != '['
-    if is_not_decoration:
-        return line
-    is_not_decoration = thirdchar != ' '
-    if is_not_decoration:
-        return line
+    # 状態
+    # 定数考えたりインクリメントしたりするのだるいのでランダム文字列にした
 
+    mode_initial = 'v01yRhNu'
+    mode_first_leftbracket = 'AgMr3fC6'
+    mode_decoration_char = 'SkcB88e3'
+    mode_start = 's2XjnzAh'
+
+    mode_link_not_in_decoration_start = 'yuRrkcZE'
+
+    mode_literal_in_decoration_start = 'sfJ6ZD4T'
+
+    mode_second_leftbracket = 'xN9fVtnc'
+    mode_start_after_nested_link_found = 'T3WcGMBP'
+
+    # 状態遷移
+
+    mode = mode_initial
     surrounder = ''
-    is_strike_decoration = secondchar == '*'
-    is_bold_decoration = secondchar == '*'
-    if is_strike_decoration:
-        surrounder = '~~'
-    elif is_bold_decoration:
-        surrounder = '**'
-    else:
-        return line
-
-    bracket_nest = 0
     for c in line:
-        if c=='[':
-            bracket_nest += 1
+        if mode==mode_link_not_in_decoration_start:
+            if c==']':
+                mode = mode_initial
+                continue
             continue
 
-        if c==']':
-            bracket_nest -= 1
+        if mode==mode_literal_in_decoration_start:
+            if c=='`':
+                mode = mode_start
+                continue
             continue
 
-        is_end_of_decoration = bracket_nest == 0
-        if is_end_of_decoration:
-            pass
+        if mode==mode_initial:
+            if c=='[':
+                mode = mode_first_leftbracket
+                continue
+            continue
+
+        if mode==mode_first_leftbracket:
+            if c=='-':
+                mode = mode_decoration_char
+                surrounder = '~~'
+                continue
+            if c=='*':
+                mode = mode_decoration_char
+                surrounder = '**'
+                continue
+            mode = mode_link_not_in_decoration_start
+            continue
+
+        if mode==mode_decoration_char:
+            if c==' ':
+                mode = mode_start
+                continue
+            mode = mode_link_not_in_decoration_start
+            continue
+
+        if mode==mode_start:
+            if c==']':
+                mode = mode_initial
+                continue
+            if c=='`':
+                mode = mode_literal_in_decoration_start
+                continue
+            if c=='[':
+                mode = mode_second_leftbracket
+                continue
+            continue
+
+        if mode==mode_second_leftbracket:
+            if c==']':
+                mode = mode_start_after_nested_link_found
+                continue
+            continue
+
+        if mode==mode_start_after_nested_link_found:
+            if c==']':
+                # ここで decoration を展開する
+                mode = mode_initial
+                continue
+            if c=='`':
+                mode = mode_literal_in_decoration_start
+                continue
+            if c=='[':
+                mode = mode_second_leftbracket
+                continue
+            continue
 
     return line
 
