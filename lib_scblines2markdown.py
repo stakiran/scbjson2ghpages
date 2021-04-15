@@ -407,7 +407,7 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
 
     surround_startpos = -1
     surround_endpos = -1
-    newline = ''
+    surround_positions = []
 
     mode = mode_initial
     surrounder = ''
@@ -472,6 +472,7 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
         if mode==mode_start_after_nested_link_found:
             if c==']':
                 surround_endpos = i
+                surround_positions.append([surround_startpos, surround_endpos])
                 mode = mode_initial
                 continue
             if c=='`':
@@ -482,11 +483,11 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
                 continue
             continue
 
-    is_not_changed = newline == ''
+    is_not_changed = len(surround_positions) == 0
     if is_not_changed:
         return line
 
-    return newline
+    return 'REPLACED!'
 
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
