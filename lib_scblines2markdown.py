@@ -440,6 +440,9 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
             if c=='[':
                 mode = mode_first_leftbracket
                 continue
+            if c=='`':
+                mode = mode_literal_in_decoration_start
+                continue
             continue
 
         if mode==mode_first_leftbracket:
