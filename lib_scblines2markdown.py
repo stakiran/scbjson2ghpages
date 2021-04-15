@@ -527,7 +527,8 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
         line_by_list[g:g] = list(surrounder)
         print('4..>'+''.join(line_by_list))
 
-        adjuster = 1
+        # 1回処理したら次の start の位置ずれるかと思ったが, ずれなかった(ajuster = 0).
+        adjuster = 0
 
     newline = ''.join(line_by_list)
     return newline

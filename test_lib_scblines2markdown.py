@@ -283,6 +283,29 @@ class TestLinkInDecoration(unittest.TestCase):
         expect = 'xxx~~[link]~~xxx'
         self.assertEqual(expect, f(line))
 
+    def test_2_replaced(self):
+        f = LIB._scb_to_markdown_in_line_about_link_in_decoration
+
+        line = '[- [link]][- [link]]'
+        expect = '~~[link]~~~~[link]~~'
+        self.assertEqual(expect, f(line))
+
+        line = '[- [link]]xxx[- [link]]'
+        expect = '~~[link]~~xxx~~[link]~~'
+        self.assertEqual(expect, f(line))
+
+        line = 'xxx[- [link]]xxx[- [link]]'
+        expect = 'xxx~~[link]~~xxx~~[link]~~'
+        self.assertEqual(expect, f(line))
+
+        line = '[- [link]]xxx[- [link]]xxx'
+        expect = '~~[link]~~xxx~~[link]~~xxx'
+        self.assertEqual(expect, f(line))
+
+        line = 'xxx[- [link]]xxx[- [link]]xxx'
+        expect = 'xxx~~[link]~~xxx~~[link]~~xxx'
+        self.assertEqual(expect, f(line))
+
     def xtest_1_replaced(self):
         f = LIB._scb_to_markdown_in_line_about_link_in_decoration
 
