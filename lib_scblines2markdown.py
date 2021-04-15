@@ -498,6 +498,11 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
     if is_not_changed:
         return line
 
+    # 置換処理は最後に一気に行う.
+    # - line を list にして 1 文字ずつ注意深く書き換えていくスタイル
+    # - surrounder が 2 文字であるという前提
+    #   strike が ~~、太字が ** なので今のところ機能している.
+
     line_by_list = list(line)
     adjuster = 0
     print('{}'.format(line))
@@ -512,15 +517,14 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
             line_by_list.pop(s)
         print('1..>'+''.join(line_by_list))
 
-        line_by_list.insert(s, surrounder) # @todo ['~','~']を挿入しないとだめだ
+        line_by_list[s:s] = list(surrounder)
         print('2..>'+''.join(line_by_list))
 
         g = g-1
-        line_by_list.insert(g, surrounder)
+        line_by_list.pop(g)
         print('3..>'+''.join(line_by_list))
 
-        g = g+1
-        line_by_list.pop(g)
+        line_by_list[g:g] = list(surrounder)
         print('4..>'+''.join(line_by_list))
 
         adjuster = 1
