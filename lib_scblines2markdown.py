@@ -405,6 +405,10 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
 
     # 状態遷移
 
+    surround_startpos = -1
+    surround_endpos = -1
+    newline = ''
+
     mode = mode_initial
     surrounder = ''
     for i,c in enumerate(line):
@@ -428,6 +432,7 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
 
         if mode==mode_first_leftbracket:
             surrounder = ''
+            surround_startpos = i
             if c=='-':
                 mode = mode_decoration_char
                 surrounder = '~~'
@@ -466,7 +471,7 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
 
         if mode==mode_start_after_nested_link_found:
             if c==']':
-                # ここで decoration を展開する
+                surround_endpos = i
                 mode = mode_initial
                 continue
             if c=='`':
@@ -477,7 +482,11 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
                 continue
             continue
 
-    return line
+    is_not_changed = newline == ''
+    if is_not_changed:
+        return line
+
+    return newline
 
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
