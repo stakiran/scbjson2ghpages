@@ -306,7 +306,7 @@ class TestLinkInDecoration(unittest.TestCase):
         expect = 'xxx~~[link]~~xxx~~[link]~~xxx'
         self.assertEqual(expect, f(line))
 
-    def xtest_1_replaced(self):
+    def test_1_replaced(self):
         f = LIB._scb_to_markdown_in_line_about_link_in_decoration
 
         line = '[link]`[- [in-literal]]`[link]'
