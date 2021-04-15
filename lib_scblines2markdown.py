@@ -512,7 +512,7 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
             line_by_list.pop(s)
         print('1..>'+''.join(line_by_list))
 
-        line_by_list.insert(s, surrounder)
+        line_by_list.insert(s, surrounder) # @todo ['~','~']を挿入しないとだめだ
         print('2..>'+''.join(line_by_list))
 
         g = g-1
