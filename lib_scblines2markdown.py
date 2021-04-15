@@ -545,6 +545,11 @@ RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
+    # Q:斜体はサポートしない？
+    #   Ans: しない.
+    #        個人的に使っていないから
+    #        実装がだるいから(特に link in dcoration の部分)
+
     newline = line
 
     state = inblockstate_user.state
@@ -583,6 +588,14 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         newline = '{}- {}'.format(markdown_indent, lstripped_newline)
 
     # 4
+    # link in decoration
+    # - [- [link]] のようにリンクに対して装飾する記法がありうる.
+    # - これは開始記号 `[` がネストする関係上, 置換処理が難しいので別関数でやる.
+    # - 処理の結果として, ~~[link]~~ のように外側の装飾だけ置換される.
+
+    newline = _scb_to_markdown_in_line_about_link_in_decoration(newline)
+
+    # 5
     # in line
     # リンク
     #
@@ -601,11 +614,9 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
 
     newline = re.sub(RE_LINK_ANOTHER_PAGE, '[\\1\\2](\\1\\2.md)\\3', newline)
 
-    # 5
+    # 6
     # in line
-    # 装飾系
-    #
-    # リンク記法を装飾するケースがあるため, リンクの後に処理する
+    # 装飾系単体
 
     newline = re.sub(RE_BOLD, '**\\2**', newline)
     newline = re.sub(RE_STRIKE, '~~\\2~~', newline)

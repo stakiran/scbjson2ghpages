@@ -267,6 +267,9 @@ class TestLinkInDecoration(unittest.TestCase):
         line = '[link]`[- [in-literal]]`[link]'
         self.assertEqual(line, f(line))
 
+        line = '`[- [in-literal]]`'
+        self.assertEqual(line, f(line))
+
     def test_1_replaced(self):
         f = LIB._scb_to_markdown_in_line_about_link_in_decoration
 
