@@ -508,9 +508,7 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
 
     line_by_list = list(line)
     adjuster = 0
-    print('{}'.format(line))
     for surround_position in surround_positions:
-        print(surround_position)
         s, g = surround_position
 
         s = s + adjuster
@@ -518,17 +516,13 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
         # sの位置から3文字削除
         for _ in range(3):
             line_by_list.pop(s)
-        print('1..>'+''.join(line_by_list))
 
         line_by_list[s:s] = list(surrounder)
-        print('2..>'+''.join(line_by_list))
 
         g = g-1
         line_by_list.pop(g)
-        print('3..>'+''.join(line_by_list))
 
         line_by_list[g:g] = list(surrounder)
-        print('4..>'+''.join(line_by_list))
 
         # 1回処理したら次の start の位置ずれるかと思ったが, ずれなかった(ajuster = 0).
         adjuster = 0
