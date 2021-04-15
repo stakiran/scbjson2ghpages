@@ -245,6 +245,35 @@ block in the list ★9
                 self.assertFalse(user.is_left_just_now())
                 continue
 
+class TestLinkInDecoration(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test(self):
+        f = LIB._scb_to_markdown_in_line_about_link_in_decoration
+
+        line = ''
+        self.assertEqual(line, f(line))
+        line = '[link]'
+        self.assertEqual(line, f(line))
+        line = '[* bold]'
+        self.assertEqual(line, f(line))
+        line = '[link][link]'
+        self.assertEqual(line, f(line))
+
+        line = '[- [link]]'
+        expect = '~~[link]~~'
+        self.assertEqual(expect, f(line))
+
+        # まだ通らないものたち
+        '''
+        line = '[link]`[- [in-literal]]`[link]'
+        self.assertEqual(line, f(line))
+        '''
+
 class TestFuncs(unittest.TestCase):
     def setUp(self):
         pass
