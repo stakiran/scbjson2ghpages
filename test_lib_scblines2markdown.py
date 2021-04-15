@@ -252,7 +252,7 @@ class TestLinkInDecoration(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test(self):
+    def test_not_replaced(self):
         f = LIB._scb_to_markdown_in_line_about_link_in_decoration
 
         line = ''
@@ -264,15 +264,30 @@ class TestLinkInDecoration(unittest.TestCase):
         line = '[link][link]'
         self.assertEqual(line, f(line))
 
+    def test_1_replaced(self):
+        f = LIB._scb_to_markdown_in_line_about_link_in_decoration
+
         line = '[- [link]]'
         expect = '~~[link]~~'
         self.assertEqual(expect, f(line))
 
-        # まだ通らないものたち
-        '''
+        line = '[- [link]]xxx'
+        expect = '~~[link]~~xxx'
+        self.assertEqual(expect, f(line))
+
+        line = 'xxx[- [link]]'
+        expect = 'xxx~~[link]~~'
+        self.assertEqual(expect, f(line))
+
+        line = 'xxx[- [link]]xxx'
+        expect = 'xxx~~[link]~~xxx'
+        self.assertEqual(expect, f(line))
+
+    def xtest_1_replaced(self):
+        f = LIB._scb_to_markdown_in_line_about_link_in_decoration
+
         line = '[link]`[- [in-literal]]`[link]'
         self.assertEqual(line, f(line))
-        '''
 
 class TestFuncs(unittest.TestCase):
     def setUp(self):
