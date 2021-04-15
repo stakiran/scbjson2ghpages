@@ -412,6 +412,13 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
     mode = mode_initial
     surrounder = ''
     for i,c in enumerate(line):
+        # 無効状態系
+        # 受理状態に辿り着かない(辿り着かせない)ための状態.
+        # 例: リテラル内は一切合切スルーする(mode_literal_in_decoration_start).
+        #
+        # スルーすべき範囲を超えたら, 有効状態系に戻る.
+        # ----
+
         if mode==mode_link_not_in_decoration_start:
             if c==']':
                 mode = mode_initial
@@ -424,7 +431,12 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
                 continue
             continue
 
+        # 有効状態系
+        # 受理状態に向けて進んでいく.
+        # ----
+
         if mode==mode_initial:
+            surround_startpos = i
             if c=='[':
                 mode = mode_first_leftbracket
                 continue
@@ -432,7 +444,6 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
 
         if mode==mode_first_leftbracket:
             surrounder = ''
-            surround_startpos = i
             if c=='-':
                 mode = mode_decoration_char
                 surrounder = '~~'
@@ -487,7 +498,35 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
     if is_not_changed:
         return line
 
-    return 'REPLACED!'
+    line_by_list = list(line)
+    adjuster = 0
+    print('{}'.format(line))
+    for surround_position in surround_positions:
+        print(surround_position)
+        s, g = surround_position
+
+        s = s + adjuster
+
+        # sの位置から3文字削除
+        for _ in range(3):
+            line_by_list.pop(s)
+        print('1..>'+''.join(line_by_list))
+
+        line_by_list.insert(s, surrounder)
+        print('2..>'+''.join(line_by_list))
+
+        g = g-1
+        line_by_list.insert(g, surrounder)
+        print('3..>'+''.join(line_by_list))
+
+        g = g+1
+        line_by_list.pop(g)
+        print('4..>'+''.join(line_by_list))
+
+        adjuster = 1
+
+    newline = ''.join(line_by_list)
+    return newline
 
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
