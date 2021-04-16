@@ -265,3 +265,4 @@ if __name__ == '__main__':
         seeker = PageSeeker(proj)
         page = seeker.get(args.page_to_scb)
         print(page.rawstring)
+        sys.exit(0)
