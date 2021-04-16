@@ -228,18 +228,7 @@ def parse_arguments():
 def ________Main________():
     pass
 
-MYFULLPATH = os.path.abspath(sys.argv[0])
-MYDIR = os.path.dirname(MYFULLPATH)
-
-if __name__ == '__main__':
-    args = parse_arguments()
-
-    filename = args.input
-    s = file2str(filename)
-    obj = str2obj(s)
-    proj = Project(obj)
-    seeker = PageSeeker(proj)
-
+def tester_at_the_moment():
     # 当面は testdata-for-to-markdown.json でテストする
     # https://scrapbox.io/testdata-for-to-markdown/
     #
@@ -258,3 +247,15 @@ if __name__ == '__main__':
 
     markdown_lines = lib_scblines2markdown.convert_step3(step2_converted_lines)
     list2file('3_page_actual_step3.md', markdown_lines)
+
+MYFULLPATH = os.path.abspath(sys.argv[0])
+MYDIR = os.path.dirname(MYFULLPATH)
+
+if __name__ == '__main__':
+    args = parse_arguments()
+
+    filename = args.input
+    s = file2str(filename)
+    obj = str2obj(s)
+    proj = Project(obj)
+    seeker = PageSeeker(proj)
