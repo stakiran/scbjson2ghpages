@@ -222,6 +222,9 @@ def parse_arguments():
     parser.add_argument('-i', '--input', default=None, required=True,
         help='An input .json filename.')
 
+    parser.add_argument('--page-to-scb', default=None, type=str,
+        help='A page name to output the normalized contents .scb file.')
+
     args = parser.parse_args()
     return args
 
@@ -253,9 +256,12 @@ MYDIR = os.path.dirname(MYFULLPATH)
 
 if __name__ == '__main__':
     args = parse_arguments()
-
     filename = args.input
-    s = file2str(filename)
-    obj = str2obj(s)
-    proj = Project(obj)
-    seeker = PageSeeker(proj)
+
+    if args.page_to_scb:
+        s = file2str(filename)
+        obj = str2obj(s)
+        proj = Project(obj)
+        seeker = PageSeeker(proj)
+        page = seeker.get(args.page_to_scb)
+        print(page.rawstring)
