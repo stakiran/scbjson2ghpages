@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import os
 import unittest
 
 import scbjson2ghpages as MAIN
@@ -26,6 +27,14 @@ How to test:
   一致しない場合, どこが違うかは WinMerge など手作業で調べる.
 '''
 
+def file2list(filepath):
+    ret = []
+    with open(filepath, encoding='utf8', mode='r') as f:
+        ret = [line.rstrip('\n') for line in f.readlines()]
+    return ret
+
+TESTDATA_DIRECTORY = 'testdata'
+
 class TestModer(unittest.TestCase):
     def setUp(self):
         pass
@@ -34,8 +43,23 @@ class TestModer(unittest.TestCase):
         pass
 
     def test_page(self):
-        self.assertTrue(True)
+        pagename = 'page'
+        in_filepath = os.path.join(TESTDATA_DIRECTORY, '1_{}_input.scb'.format(pagename))
+        out1_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step1.md'.format(pagename))
+        out2_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step2.md'.format(pagename))
+        out3_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step3.md'.format(pagename))
+        actual_filepath = out3_filepath
 
+        scblines = file2list(in_filepath)
+
+        step1_converted_lines = LIB.convert_step1(scblines)
+        MAIN.list2file(out1_filepath, step1_converted_lines)
+
+        step2_converted_lines = LIB.convert_step2(step1_converted_lines)
+        MAIN.list2file(out2_filepath, step2_converted_lines)
+
+        markdown_lines = LIB.convert_step3(step2_converted_lines)
+        MAIN.list2file(actual_filepath, markdown_lines)
 
 if __name__ == '__main__':
     unittest.main()
