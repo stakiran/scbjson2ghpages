@@ -628,6 +628,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     return newline
 
 RE_ICON_TO_REMOVE = re.compile(r'\(.+?\.icon(\*[0-9]+){0,1}\.md\)')
+RE_ICON_TO_REPLACE_TO_IMG = re.compile(r'\[(.+?)\.icon(\*[0-9]+){0,1}\]')
 def _icon_grammer_to_img_tag(line):
     # ここで画像まわりの処理をする
     # - (事前に Gyazo API で画像の URL と縦横比を手に入れてデータ化しておく)
@@ -637,8 +638,20 @@ def _icon_grammer_to_img_tag(line):
 
     newline = line
 
-    # (.icon) こっちの方を丸々消す
+    # () で囲まれた部分は要らないので丸々消す
     newline = re.sub(RE_ICON_TO_REMOVE, '', newline)
+
+    # @todo Gyazo APIから手に入れたデータを反映する
+    #       が, 外部データの使用をここでやるのは違うと思うので
+    #       目立つ目印をつけおいて, 処理時間は呼び出し元でやりたい.
+    # @todo icon*X による X 回リピートを実装する
+    image_source = 'https://scrapbox.io/files/606ee118baecf50022fe5b1e.png'
+    sizeoption = 'height="32"'
+    newline = re.sub(
+        RE_ICON_TO_REPLACE_TO_IMG,
+        '<img src="{}" {} />'.format(image_source, sizeoption),
+        newline
+    )
 
     return newline
 
