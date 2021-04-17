@@ -608,8 +608,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     newline = re.sub(RE_LINK_URL_TEXT, '[\\4](http\\1://\\2)', newline)
     newline = re.sub(RE_LINK_TEXT_URL, '[\\1](http\\3://\\4)', newline)
 
-    newline = re.sub(RE_LINK_ANOTHER_PAGE, '[\\1\\2](\\1\\2.md)\\3', newline)
-
     IMAGE_URL_PREFIX = 'https://i.gyazo.com/'
     EXTENSION = '.jpg'
     newline = re.sub(
@@ -617,6 +615,8 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         '![]({}\\2{})'.format(IMAGE_URL_PREFIX, EXTENSION),
         newline
     )
+
+    newline = re.sub(RE_LINK_ANOTHER_PAGE, '[\\1\\2](\\1\\2.md)\\3', newline)
 
     # 6
     # in line
