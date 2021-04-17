@@ -627,6 +627,21 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
 
     return newline
 
+RE_ICON_TO_REMOVE = re.compile(r'\(.+?\.icon(\*[0-9]+){0,1}\.md\)')
+def _icon_grammer_to_img_tag(line):
+    # ここで画像まわりの処理をする
+    # - (事前に Gyazo API で画像の URL と縦横比を手に入れてデータ化しておく)
+    # - icon記法のimgタグ化. 対象は以下二つ
+    #   [sta.icon](sta.icon.md)
+    #   [sta.icon*3](sta.icon*3.md)
+
+    newline = line
+
+    # (.icon) こっちの方を丸々消す
+    newline = re.sub(RE_ICON_TO_REMOVE, '', newline)
+
+    return newline
+
 def convert_step3(step2_converted_lines):
     # step3: インラインの Scrapbox 記法を Markdown のものに変換
 
@@ -641,15 +656,9 @@ def convert_step3(step2_converted_lines):
         inblockstate_user.update(scbline, cur_indentdepth)
 
         markdown_line = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user)
+        markdown_line_without_icon_grammer = _icon_grammer_to_img_tag(markdown_line)
 
-        # ここで画像まわりの処理をする
-        # - (事前に Gyazo API で画像の URL と縦横比を手に入れてデータ化しておく)
-        # - icon記法のimgタグ化
-        #   対象は以下二つ
-        #     [sta.icon](sta.icon.md)
-        #     [sta.icon*3](sta.icon*3.md)
-
-        outlines.append(markdown_line)
+        outlines.append(markdown_line_without_icon_grammer)
 
     return outlines
 
