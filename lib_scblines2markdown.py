@@ -631,6 +631,10 @@ def _icon_grammer_to_img_tag(line):
     # icon記法は普通のリンクとして処理されているので, 以下のようになっている.
     #   [sta.icon*3](sta.icon*3.md)
     # そのままだと鬱陶しいので, ひとまず :emoji: にしておく.
+    #
+    # Q:icon*3 のような n-repeat は反映しない?
+    #   Ans: しない.
+    #        画像の実装を端折ってるのと同じ理由.
 
     newline = line
 
