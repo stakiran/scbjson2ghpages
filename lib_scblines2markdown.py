@@ -641,6 +641,14 @@ def convert_step3(step2_converted_lines):
         inblockstate_user.update(scbline, cur_indentdepth)
 
         markdown_line = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user)
+
+        # ここで画像まわりの処理をする
+        # - (事前に Gyazo API で画像の URL と縦横比を手に入れてデータ化しておく)
+        # - icon記法のimgタグ化
+        #   対象は以下二つ
+        #     [sta.icon](sta.icon.md)
+        #     [sta.icon*3](sta.icon*3.md)
+
         outlines.append(markdown_line)
 
     return outlines
