@@ -536,6 +536,7 @@ RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
 RE_LINK_ANOTHER_PAGE = re.compile(r'\[([^\-\*/])(.+?)\]([^\(]|$)')
 RE_LINK_URL_TEXT = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(.+?)\]')
 RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
+RE_LINK_IMAGE = re.compile(r'\[(https\://gyazo\.com/)(.+?)\]')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
@@ -591,10 +592,11 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
 
     # 5
     # in line
-    # リンク
+    # リンクと画像
     #
     # link to another page の正規表現が扱える集合がえぐいので, 以下戦略を取る.
     # - 1: まずは限定的なリンク表記から処理する
+    #      画像もリンクの一種として扱う(記法が本質的にリンクと同じ)
     # - 2: 最後に link to another page を処理する
     #      このとき, 1: で処理した分は markdown link 書式になっているため
     #      ] の直後に ( が来ないパターンを弾くことで 1: を弾ける
@@ -607,6 +609,14 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     newline = re.sub(RE_LINK_TEXT_URL, '[\\1](http\\3://\\4)', newline)
 
     newline = re.sub(RE_LINK_ANOTHER_PAGE, '[\\1\\2](\\1\\2.md)\\3', newline)
+
+    IMAGE_URL_PREFIX = 'https://i.gyazo.com/'
+    EXTENSION = '.jpg'
+    newline = re.sub(
+        RE_LINK_IMAGE,
+        '![]({}\\2{})'.format(IMAGE_URL_PREFIX, EXTENSION),
+        newline
+    )
 
     # 6
     # in line
