@@ -536,7 +536,7 @@ RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
 RE_LINK_ANOTHER_PAGE = re.compile(r'\[([^\-\*/])(.+?)\]([^\(]|$)')
 RE_LINK_URL_TEXT = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(.+?)\]')
 RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
-RE_LINK_IMAGE = re.compile(r'\[(https\://gyazo\.com/)(.+?)\]')
+RE_LINK_MEDIAURL = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
@@ -608,13 +608,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     newline = re.sub(RE_LINK_URL_TEXT, '[\\4](http\\1://\\2)', newline)
     newline = re.sub(RE_LINK_TEXT_URL, '[\\1](http\\3://\\4)', newline)
 
-    IMAGE_URL_PREFIX = 'https://i.gyazo.com/'
-    EXTENSION = '.jpg'
-    newline = re.sub(
-        RE_LINK_IMAGE,
-        '![]({}\\2{})'.format(IMAGE_URL_PREFIX, EXTENSION),
-        newline
-    )
+    newline = re.sub(RE_LINK_MEDIAURL, '[media](\\1\\2\\3\\4)', newline)
 
     newline = re.sub(RE_LINK_ANOTHER_PAGE, '[\\1\\2](\\1\\2.md)\\3', newline)
 
