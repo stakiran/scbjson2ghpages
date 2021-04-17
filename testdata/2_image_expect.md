@@ -11,9 +11,9 @@
 
 <br>
 
-- ユーザーアイコンはどうしましょうか[sta.icon]
-    - わかるー（x3 してます）[sta.icon*3]
-    - わかるー[sta.icon][sta.icon][sta.icon]
+- ユーザーアイコンはどうしましょうか<img src="https://scrapbox.io/files/606ee118baecf50022fe5b1e.png" height="32" />
+    - わかるー（x3 してます）<img src="https://scrapbox.io/files/606ee118baecf50022fe5b1e.png" height="32" />
+    - わかるー<img src="https://scrapbox.io/files/606ee118baecf50022fe5b1e.png" height="32" /><img src="https://scrapbox.io/files/606ee118baecf50022fe5b1e.png" height="32" /><img src="https://scrapbox.io/files/606ee118baecf50022fe5b1e.png" height="32" />
 
 <br>
 
