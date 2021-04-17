@@ -544,6 +544,10 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     #   Ans: しない.
     #        個人的に使っていないから
     #        実装がだるいから(特に link in dcoration の部分)
+    #
+    # Q:画像はサポートしない？
+    #   Ans: しない.
+    #        実装が難しい(Gyazo APIからデータ取ってきて整形する等)ので今はしない.
 
     newline = line
 
@@ -592,11 +596,11 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
 
     # 5
     # in line
-    # リンクと画像
+    # リンクとメディア(画像と動画)
     #
     # link to another page の正規表現が扱える集合がえぐいので, 以下戦略を取る.
     # - 1: まずは限定的なリンク表記から処理する
-    #      画像もリンクの一種として扱う(記法が本質的にリンクと同じ)
+    #      メディアもリンクの一種として扱う(記法が本質的にリンクと同じ)
     # - 2: 最後に link to another page を処理する
     #      このとき, 1: で処理した分は markdown link 書式になっているため
     #      ] の直後に ( が来ないパターンを弾くことで 1: を弾ける
@@ -622,30 +626,24 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     return newline
 
 RE_ICON_TO_REMOVE = re.compile(r'\(.+?\.icon(\*[0-9]+){0,1}\.md\)')
-RE_ICON_TO_REPLACE_TO_IMG = re.compile(r'\[(.+?)\.icon(\*[0-9]+){0,1}\]')
+RE_ICON_TO_REPLACE = re.compile(r'\[(.+?)(\.icon)(\*[0-9]+){0,1}\]')
 def _icon_grammer_to_img_tag(line):
-    # ここで画像まわりの処理をする
-    # - (事前に Gyazo API で画像の URL と縦横比を手に入れてデータ化しておく)
-    # - icon記法のimgタグ化. 対象は以下二つ
-    #   [sta.icon](sta.icon.md)
+    # icon記法は普通のリンクとして処理されているので, 以下のようになっている.
     #   [sta.icon*3](sta.icon*3.md)
+    # そのままだと鬱陶しいので, ひとまず :emoji: にしておく.
 
     newline = line
 
-    # () で囲まれた部分は要らないので丸々消す
+    # [sta.icon*3](sta.icon*3.md)
+    #             ^^^^^^^^^^^^^^^
+    #             まずこっちは要らないので消す
     newline = re.sub(RE_ICON_TO_REMOVE, '', newline)
 
-    # @todo Gyazo APIから手に入れたデータを反映する
-    #       が, 外部データの使用をここでやるのは違うと思うので
-    #       目立つ目印をつけおいて, 処理時間は呼び出し元でやりたい.
-    # @todo icon*X による X 回リピートを実装する
-    image_source = 'https://scrapbox.io/files/606ee118baecf50022fe5b1e.png'
-    sizeoption = 'height="32"'
-    newline = re.sub(
-        RE_ICON_TO_REPLACE_TO_IMG,
-        '<img src="{}" {} />'.format(image_source, sizeoption),
-        newline
-    )
+    # [sta.icon*3]
+    #   |
+    #   V
+    # :sta:
+    newline = re.sub(RE_ICON_TO_REPLACE, ':\\1:', newline)
 
     return newline
 
