@@ -565,10 +565,10 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     is_in_list = cur_indentdepth>0
     is_in_block = state.is_in_block()
 
-    # 1
     # in block
-    # コードブロックの中身はそのまま
+    # ================
 
+    # コードブロックの中身
     if is_in_block and state.is_in_code_block():
         # ただし code:xxx の開始行も in code block 判定なので
         # 置換処理もここでやるしかない.
@@ -577,18 +577,16 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
         return newline
 
-    # 2
-    # in block
-    # テーブル変換
-
+    # テーブル
     if is_in_block and state.is_in_table_block():
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
         # @todo と思ったけどリンクは使えるのでサポートすべき
         return '| テーブルは | あとで | {} | 実装します |'.format(line)
 
-    # 3
     # in line
+    # ================
+
     # 最初に処理すべきはリストと引用.
     #
     # 引用から処理する.
@@ -601,7 +599,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         markdown_indent = '    '*(cur_indentdepth-1)
         newline = '{}- {}'.format(markdown_indent, lstripped_newline)
 
-    # 4
     # link in decoration
     # - [- [link]] のようにリンクに対して装飾する記法がありうる.
     # - これは開始記号 `[` がネストする関係上, 置換処理が難しいので別関数でやる.
@@ -609,8 +606,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
 
     newline = _scb_to_markdown_in_line_about_link_in_decoration(newline)
 
-    # 5
-    # in line
     # リンクとメディア(画像と動画)
     #
     # link to another page の正規表現が扱える集合がえぐいので, 以下戦略を取る.
@@ -631,8 +626,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
 
     newline = re.sub(RE_LINK_ANOTHER_PAGE, '[\\1\\2](\\1\\2.md)\\3', newline)
 
-    # 6
-    # in line
     # 装飾系単体
 
     newline = re.sub(RE_BOLD, '**\\2**', newline)
