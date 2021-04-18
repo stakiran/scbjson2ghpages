@@ -61,6 +61,9 @@ class InBlockStateUser:
     def is_left_just_now(self):
         return self._is_left_just_now
 
+    def is_left_from_codeblock_just_now(self):
+        return True
+
 class InBlockState:
     def __init__(self):
         self._clear()
