@@ -23,11 +23,12 @@ class InBlockStateUser:
 
         self._is_left_from_codeblock_just_now = False
 
-    def _clear_just_now_leaving_flag(self):
+    def _clear_just_now_leaving_flags(self):
         self._is_left_just_now = False
+        self._is_left_from_codeblock_just_now = False
 
     def update(self, line, cur_indentdepth):
-        self._clear_just_now_leaving_flag()
+        self._clear_just_now_leaving_flags()
 
         state = self.state
 
@@ -53,6 +54,9 @@ class InBlockStateUser:
         is_current_more_deep = cur_indentdepth > state.indentdepth_of_start
         if is_current_more_deep:
             return
+
+        if state.is_in_code_block:
+            self._is_left_from_codeblock_just_now = True
         state.leave()
         self._is_left_just_now = True
 
