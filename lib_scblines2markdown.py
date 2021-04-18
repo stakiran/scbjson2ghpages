@@ -139,8 +139,7 @@ class Moder:
 
         # ★1のケース
         def end_of_list_or_block(inblockstate_user):
-            state = inblockstate_user.state
-            if state.is_in_block():
+            if inblockstate_user.is_left_from_codeblock_just_now():
                 return END_OF_CODE
             return ADD_LINEFEED
 
