@@ -582,6 +582,13 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         # @todo と思ったけどリンクは使えるのでサポートすべき
         return '| テーブルは | あとで | {} | 実装します |'.format(line)
 
+    # 7
+    # in line
+    # コードブロック開始
+    # コードブロックにはネストがないため, リストより前に処理しておく必要がある.
+
+    newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
+
     # 3
     # in line
     # 最初に処理すべきはリストと引用.
@@ -632,13 +639,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
 
     newline = re.sub(RE_BOLD, '**\\2**', newline)
     newline = re.sub(RE_STRIKE, '~~\\2~~', newline)
-
-    # 7
-    # in line
-    # コードブロック開始
-    # 他の文法とは衝突しないので置換は最後でいい.
-
-    newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
 
     return newline
 
