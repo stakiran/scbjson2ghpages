@@ -548,6 +548,7 @@ RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
 RE_LINK_MEDIAURL = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
+RE_CODE_BLOCK_START = re.compile(r'^( )*code\:(.+)$')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     # Q:斜体はサポートしない？
     #   Ans: しない.
@@ -631,6 +632,13 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
 
     newline = re.sub(RE_BOLD, '**\\2**', newline)
     newline = re.sub(RE_STRIKE, '~~\\2~~', newline)
+
+    # 7
+    # in line
+    # コードブロック開始
+    # 他の文法とは衝突しないので置換は最後でいい.
+
+    newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
 
     return newline
 
