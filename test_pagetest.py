@@ -42,8 +42,7 @@ class TestModer(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_page(self):
-        pagename = 'page'
+    def _test_onepage(self, pagename):
         in_filepath = os.path.join(TESTDATA_DIRECTORY, '1_{}_input.scb'.format(pagename))
         expect_filepath = os.path.join(TESTDATA_DIRECTORY, '2_{}_expect.md'.format(pagename))
         out1_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step1.md'.format(pagename))
@@ -63,51 +62,15 @@ class TestModer(unittest.TestCase):
         expect_lines = file2list(expect_filepath)
 
         self.assertEqual(expect_lines, actual_lines)
+
+    def test_page(self):
+        self._test_onepage('page')
 
     def test_image(self):
-        pagename = 'image'
-        in_filepath = os.path.join(TESTDATA_DIRECTORY, '1_{}_input.scb'.format(pagename))
-        expect_filepath = os.path.join(TESTDATA_DIRECTORY, '2_{}_expect.md'.format(pagename))
-        out1_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step1.md'.format(pagename))
-        out2_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step2.md'.format(pagename))
-        out3_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step3.md'.format(pagename))
-        actual_filepath = out3_filepath
-
-        scblines = file2list(in_filepath)
-        step1_converted_lines = LIB.convert_step1(scblines)
-        MAIN.list2file(out1_filepath, step1_converted_lines)
-        step2_converted_lines = LIB.convert_step2(step1_converted_lines)
-        MAIN.list2file(out2_filepath, step2_converted_lines)
-        markdown_lines = LIB.convert_step3(step2_converted_lines)
-        MAIN.list2file(actual_filepath, markdown_lines)
-        actual_lines = markdown_lines
-
-        expect_lines = file2list(expect_filepath)
-
-        self.assertEqual(expect_lines, actual_lines)
+        self._test_onepage('image')
 
     def test_codeblock(self):
-        pagename = 'codeblock'
-        in_filepath = os.path.join(TESTDATA_DIRECTORY, '1_{}_input.scb'.format(pagename))
-        expect_filepath = os.path.join(TESTDATA_DIRECTORY, '2_{}_expect.md'.format(pagename))
-        out1_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step1.md'.format(pagename))
-        out2_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step2.md'.format(pagename))
-        out3_filepath = os.path.join(TESTDATA_DIRECTORY, '3_{}_actual_step3.md'.format(pagename))
-        actual_filepath = out3_filepath
-
-        scblines = file2list(in_filepath)
-        step1_converted_lines = LIB.convert_step1(scblines)
-        MAIN.list2file(out1_filepath, step1_converted_lines)
-        step2_converted_lines = LIB.convert_step2(step1_converted_lines)
-        MAIN.list2file(out2_filepath, step2_converted_lines)
-        markdown_lines = LIB.convert_step3(step2_converted_lines)
-        MAIN.list2file(actual_filepath, markdown_lines)
-        actual_lines = markdown_lines
-
-        expect_lines = file2list(expect_filepath)
-
-        self.assertEqual(expect_lines, actual_lines)
-
+        self._test_onepage('codeblock')
 
 if __name__ == '__main__':
     unittest.main()
