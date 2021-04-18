@@ -133,7 +133,7 @@ class Moder:
         アルゴリズムがえぐいので Scrapbox のメモも参照のこと. '''
 
         # returning values
-        END_OF_CODE = '```'
+        END_OF_CODE = '```\n'
         IGNORE = ''
         ADD_LINEFEED = '\n'
 
