@@ -138,6 +138,7 @@ class Moder:
         ADD_LINEFEED = '\n'
 
         # ★1のケース
+        # コードブロックの時は特別な終端を入れる必要がある.
         def end_of_list_or_block(inblockstate_user):
             if inblockstate_user.is_left_from_codeblock_just_now():
                 return END_OF_CODE
