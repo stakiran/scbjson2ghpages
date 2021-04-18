@@ -137,6 +137,13 @@ class Moder:
         IGNORE = ''
         ADD_LINEFEED = '\n'
 
+        # コードブロックの時は空行は要らない(``` の次行にすぐコード内容が続く).
+        def start_of_list_or_block(inblockstate_user):
+            state = inblockstate_user.state
+            if state.is_in_code_block():
+                return IGNORE
+            return ADD_LINEFEED
+
         # ★1のケース
         # コードブロックの時は特別な終端を入れる必要がある.
         def end_of_list_or_block(inblockstate_user):
@@ -173,7 +180,9 @@ class Moder:
 
         # list or block が始まった
         if c==1 and p==0:
-            return ADD_LINEFEED
+            extra_insertion = start_of_list_or_block(inblockstate_user)
+            return extra_insertion
+
         # list or block が続いている(インデントは変わらず)
         if c==1 and p==1:
             return IGNORE
