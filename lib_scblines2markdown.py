@@ -570,7 +570,12 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     # コードブロックの中身はそのまま
 
     if is_in_block and state.is_in_code_block():
-        return line
+        # ただし code:xxx の開始行も in code block 判定なので
+        # 置換処理もここでやるしかない.
+        #
+        # パフォーマンスがダメそうなら, 開始行を in code block 判定にしない等の追加処理が必要か.
+        newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
+        return newline
 
     # 2
     # in block
@@ -581,13 +586,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         # ないとみなして fall through しない.
         # @todo と思ったけどリンクは使えるのでサポートすべき
         return '| テーブルは | あとで | {} | 実装します |'.format(line)
-
-    # 7
-    # in line
-    # コードブロック開始
-    # コードブロックにはネストがないため, リストより前に処理しておく必要がある.
-
-    newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
 
     # 3
     # in line
