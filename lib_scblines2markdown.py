@@ -21,6 +21,8 @@ class InBlockStateUser:
         # 利用者(User)の側で保持する必要がある.
         self._is_left_just_now = False
 
+        self._is_left_from_codeblock_just_now = False
+
     def _clear_just_now_leaving_flag(self):
         self._is_left_just_now = False
 
@@ -62,7 +64,7 @@ class InBlockStateUser:
         return self._is_left_just_now
 
     def is_left_from_codeblock_just_now(self):
-        return True
+        return self._is_left_from_codeblock_just_now
 
 class InBlockState:
     def __init__(self):
