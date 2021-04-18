@@ -587,9 +587,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         # @todo と思ったけどリンクは使えるのでサポートすべき
         return '| テーブルは | あとで | {} | 実装します |'.format(line)
 
-    if is_in_block:
-        raise RuntimeError('Invalid start of block. Must be either code or table.')
-
     # 3
     # in line
     # 最初に処理すべきはリストと引用.
