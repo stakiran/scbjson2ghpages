@@ -142,7 +142,7 @@ code:py ★3
  import os ★4
  for var in os.environ:
      print(var) ★6
-ここはコードじゃない ★7 justnow
+ここはコードじゃない ★7 justnow/just_from_codeblock_now
 
 block in the list ★9
  list1
@@ -156,9 +156,9 @@ block in the list ★9
          if len(var)<=4:
              print('4文字以内の変数だよ!') ★19
          #ここはまだコード ★20
-     #ここはまだコード ★21
-    ここはコードじゃない ★22 justnow
-    list4 ★23 not justnow
+     #ここはまだコード ★21 not just_from_codeblock_now
+    ここはコードじゃない ★22 justnow/just_from_codeblock_now
+    list4 ★23 not justnow/not just_from_codeblock_now
    list3
   list2
  list1
@@ -198,6 +198,7 @@ block in the list ★9
             if i==7:
                 self.assertFalse(user.state.is_in_block())
                 self.assertTrue(user.is_left_just_now())
+                self.assertTrue(user.is_left_from_codeblock_just_now())
                 continue
 
             if i==14:
@@ -234,15 +235,18 @@ block in the list ★9
                 self.assertTrue(user.state.is_in_block())
                 self.assertTrue(user.state.is_in_code_block())
                 self.assertFalse(user.state.is_in_table_block())
+                self.assertFalse(user.is_left_from_codeblock_just_now())
                 continue
 
             if i==22:
                 self.assertFalse(user.state.is_in_block())
                 self.assertTrue(user.is_left_just_now())
+                self.assertTrue(user.is_left_from_codeblock_just_now())
                 continue
 
             if i==23:
                 self.assertFalse(user.is_left_just_now())
+                self.assertFalse(user.is_left_from_codeblock_just_now())
                 continue
 
 class TestLinkInDecoration(unittest.TestCase):

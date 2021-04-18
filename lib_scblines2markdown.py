@@ -124,7 +124,7 @@ class Moder:
         アルゴリズムがえぐいので Scrapbox のメモも参照のこと. '''
 
         # returning values
-        START_OF_CODE = '```'
+        END_OF_CODE = '```'
         IGNORE = ''
         ADD_LINEFEED = '\n'
 
@@ -132,7 +132,7 @@ class Moder:
         def end_of_list_or_block(inblockstate_user):
             state = inblockstate_user.state
             if state.is_in_block():
-                return START_OF_CODE
+                return END_OF_CODE
             return ADD_LINEFEED
 
         # ★2のケース
