@@ -123,13 +123,17 @@ class Moder:
         
         アルゴリズムがえぐいので Scrapbox のメモも参照のこと. '''
 
-        # @todo ★1と★2内の返り値も定数に
+        # returning values
+        START_OF_CODE = '```'
+        IGNORE = ''
+        ADD_LINEFEED = '\n'
+
         # ★1のケース
         def end_of_list_or_block(inblockstate_user):
             state = inblockstate_user.state
             if state.is_in_block():
-                return '```'
-            return '\n'
+                return START_OF_CODE
+            return ADD_LINEFEED
 
         # ★2のケース
         def continuous_indent(cur_indentdepth, inblockstate_user):
@@ -141,13 +145,9 @@ class Moder:
             if is_not_in_block and is_left_from_block_just_now:
                 # @todo ネストしたブロックなので, ネスト削除とダミーリスト挿入が必要.
                 #       ブロック開始時含めて追加処理が必要.
-                return '\n'
+                return ADD_LINEFEED
 
-            return ''
-
-        # returning values
-        IGNORE = ''
-        ADD_LINEFEED = '\n'
+            return IGNORE
 
         # aliases
         p = prev_indentdepth
