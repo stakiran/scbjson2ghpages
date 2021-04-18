@@ -338,5 +338,36 @@ class TestFuncs(unittest.TestCase):
         self.assertEqual(f('   code:xxx'), 3)
         self.assertEqual(f('table:table1'), 0)
 
+    def test_clear_indent_from_codeblock_line(self):
+        f = LIB.clear_indent_from_codeblock_line
+
+        indentdepth = 0
+        line   = 'line'
+        expect = 'line'
+        self.assertEqual(f(indentdepth, line), expect)
+
+        indentdepth = 0
+        line   = ' line'
+        expect = ' line'
+        self.assertEqual(f(indentdepth, line), expect)
+
+        # [scb]
+        # hoge
+        #  list1
+        #  code:py
+        #   for _ in range(4):
+        #       print('4 times.')
+        #  list1
+
+        indentdepth = 1
+        line   = '  for _ in range(4):'
+        expect = 'for _ in range(4):'
+        self.assertEqual(f(indentdepth, line), expect)
+
+        indentdepth = 1
+        line   = '      print(\'4 times.\')'
+        expect = '    print(\'4 times.\')'
+        self.assertEqual(f(indentdepth, line), expect)
+
 if __name__ == '__main__':
     unittest.main()

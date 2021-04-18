@@ -548,6 +548,41 @@ def _scb_to_markdown_in_line_about_link_in_decoration(line):
     newline = ''.join(line_by_list)
     return newline
 
+def clear_indent_from_codeblock_line(indentdepth, line):
+    # code:xxx が示すコードから,
+    # この行が持つインデント数(indentdepth) + 1 個のインデントを取り除く.
+    #
+    # list0
+    #  list1
+    #   list2
+    #   code:py
+    #    print('...')
+    #    if True:
+    #        print('...')
+    # ^^^
+    # ここを取り除きたい.
+    # ここでは indentdepth=2 なので, 2+1=3 個取り除く必要がある
+    
+    # 既に normalize scb なので, タブは考慮しなくて良い.
+
+    if indentdepth==0:
+        return line
+
+    clearning_indent = ' '*(indentdepth+1)
+    length_of_clearning_indent = len(clearning_indent)
+
+    is_too_shorten = len(line)<length_of_clearning_indent
+    if is_too_shorten:
+        return line
+
+    is_matched = line[0:length_of_clearning_indent] == clearning_indent
+    is_not_matched = not is_matched
+    if is_not_matched:
+        return line
+
+    newline = line[length_of_clearning_indent:]
+    return newline
+
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
 RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
@@ -579,11 +614,9 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
 
     # コードブロックの中身
     if is_in_block and state.is_in_code_block():
-        # ただし code:xxx の開始行も in code block 判定なので
-        # 置換処理もここでやるしかない.
-        #
-        # パフォーマンスがダメそうなら, 開始行を in code block 判定にしない等の追加処理が必要か.
+        # code:xxx の開始行も in code block 判定なので, ここで置換処理をする.
         newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
+        # markdown は nested codeblock が存在しないので、コードブロック内のインデントもクリアする.
         return newline
 
     # テーブル
