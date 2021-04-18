@@ -1,0 +1,27 @@
+code:python
+ import os
+ print('environment variables')
+ print(os.environ)
+
+code:環境変数.py
+ import os
+ print('environment variables')
+ print(os.environ)
+
+code:js
+ // code:js と書いてます
+ console.log('yeah!')
+
+code:javascript
+ // code:javascript と書いてます
+ console.log('yeah!')
+
+code:ahk
+ ; GitHubではハイライト対応しているはずです
+ ::d[[::
+  FormatTime, now,, yyyy/MM/dd
+  Clipboard = %now%
+  Send,^v
+  ;SendInput %now%
+ return
+
