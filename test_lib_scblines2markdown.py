@@ -341,14 +341,21 @@ class TestFuncs(unittest.TestCase):
     def test_clear_indent_from_codeblock_line(self):
         f = LIB.clear_indent_from_codeblock_line
 
+        # [scb]
+        # code:py
+        #  for _ in range(4):
+        #      print('4 times.')
+        # ^
+        # ここを取り除きたい
+
         indentdepth = 0
-        line   = 'line'
-        expect = 'line'
+        line   = ' for _ in range(4):'
+        expect = 'for _ in range(4):'
         self.assertEqual(f(indentdepth, line), expect)
 
         indentdepth = 0
-        line   = ' line'
-        expect = ' line'
+        line   = '     print(\'4 times.\')'
+        expect = '    print(\'4 times.\')'
         self.assertEqual(f(indentdepth, line), expect)
 
         # [scb]
@@ -357,7 +364,7 @@ class TestFuncs(unittest.TestCase):
         #  code:py
         #   for _ in range(4):
         #       print('4 times.')
-        #  list1
+        # ^^
 
         indentdepth = 1
         line   = '  for _ in range(4):'
@@ -366,6 +373,26 @@ class TestFuncs(unittest.TestCase):
 
         indentdepth = 1
         line   = '      print(\'4 times.\')'
+        expect = '    print(\'4 times.\')'
+        self.assertEqual(f(indentdepth, line), expect)
+
+        # [scb]
+        # hoge
+        #  list1
+        #   list2
+        #    list3
+        #    code:py
+        #     for _ in range(4):
+        #         print('4 times.')
+        # ^^^^
+
+        indentdepth = 3
+        line   = '    for _ in range(4):'
+        expect = 'for _ in range(4):'
+        self.assertEqual(f(indentdepth, line), expect)
+
+        indentdepth = 3
+        line   = '        print(\'4 times.\')'
         expect = '    print(\'4 times.\')'
         self.assertEqual(f(indentdepth, line), expect)
 

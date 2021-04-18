@@ -561,12 +561,9 @@ def clear_indent_from_codeblock_line(indentdepth, line):
     #        print('...')
     # ^^^
     # ここを取り除きたい.
-    # ここでは indentdepth=2 なので, 2+1=3 個取り除く必要がある
-    
+    # ここでは indentdepth=2 なので, 2+1=3 個取り除く必要がある.
+    #
     # 既に normalize scb なので, タブは考慮しなくて良い.
-
-    if indentdepth==0:
-        return line
 
     clearning_indent = ' '*(indentdepth+1)
     length_of_clearning_indent = len(clearning_indent)
@@ -617,6 +614,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         # code:xxx の開始行も in code block 判定なので, ここで置換処理をする.
         newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
         # markdown は nested codeblock が存在しないので、コードブロック内のインデントもクリアする.
+        newline = clear_indent_from_codeblock_line(state.indentdepth_of_start, newline)
         return newline
 
     # テーブル
