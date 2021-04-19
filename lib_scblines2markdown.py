@@ -580,6 +580,33 @@ def clear_indent_from_codeblock_line(indentdepth, line):
     newline = line[length_of_clearning_indent:]
     return newline
 
+RE_CODE_BLOCK_START = re.compile(r'^( )*code\:(.+)$')
+def line_to_start_of_coedblock_if_possible(line):
+    newline = line
+    newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
+
+    # 1  code:xxx     => ```xxx
+    # 2  code:xxx.ext => ```ext
+    # 3  上記以外
+
+    # 3
+    splitted_by_triplebackquote = newline.split('```')
+    is_not_start_of_code_line = len(splitted_by_triplebackquote)==1
+    if is_not_start_of_code_line:
+        return line
+
+    # 1
+    prefix, langname_part = newline.split('```')
+    splitted_by_dot = langname_part.split('.')
+    has_not_extension = len(splitted_by_dot)==1
+    if has_not_extension:
+        return newline
+
+    # 2
+    ext = splitted_by_dot[-1]
+    newline = '{}```{}'.format(prefix, ext)
+    return newline
+
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
 RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
@@ -589,7 +616,6 @@ RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
 RE_LINK_MEDIAURL = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
-RE_CODE_BLOCK_START = re.compile(r'^( )*code\:(.+)$')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     # Q:斜体はサポートしない？
     #   Ans: しない.
@@ -612,7 +638,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
     # コードブロックの中身
     if is_in_block and state.is_in_code_block():
         # code:xxx の開始行も in code block 判定なので, ここで置換処理をする.
-        newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
+        newline = line_to_start_of_coedblock_if_possible(newline)
         # markdown は nested codeblock が存在しないので、コードブロック内のインデントもクリアする.
         newline = clear_indent_from_codeblock_line(state.indentdepth_of_start, newline)
         return newline
