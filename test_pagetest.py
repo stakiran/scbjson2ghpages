@@ -66,13 +66,11 @@ class TestModer(unittest.TestCase):
         expect_contents = LB.join(expect_lines)
         self.assertEqual(expect_contents, actual_contents)
 
-    '''
     def test_page(self):
         self._test_onepage('page')
 
-    def test_image(self):
+    def xtest_image(self):
         self._test_onepage('image')
-    '''
 
     def test_codeblock(self):
         self._test_onepage('codeblock')
