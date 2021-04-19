@@ -31,10 +31,10 @@ console.log('yeah!')
 ```ahk
 ; GitHubではハイライト対応しているはずです
 ::d[[::
-FormatTime, now,, yyyy/MM/dd
-Clipboard = %now%
-Send,^v
-;SendInput %now%
+ FormatTime, now,, yyyy/MM/dd
+ Clipboard = %now%
+ Send,^v
+ ;SendInput %now%
 return
 ```
 
