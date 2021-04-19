@@ -69,7 +69,7 @@ class TestModer(unittest.TestCase):
     def test_page(self):
         self._test_onepage('page')
 
-    def xtest_image(self):
+    def test_image(self):
         self._test_onepage('image')
 
     def test_codeblock(self):
