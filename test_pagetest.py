@@ -61,13 +61,18 @@ class TestModer(unittest.TestCase):
 
         expect_lines = file2list(expect_filepath)
 
-        self.assertEqual(expect_lines, actual_lines)
+        LB = '\n'
+        actual_contents = LB.join(actual_lines)
+        expect_contents = LB.join(expect_lines)
+        self.assertEqual(expect_contents, actual_contents)
 
+    '''
     def test_page(self):
         self._test_onepage('page')
 
     def test_image(self):
         self._test_onepage('image')
+    '''
 
     def test_codeblock(self):
         self._test_onepage('codeblock')
