@@ -6,7 +6,7 @@ print(os.environ)
 
 <br>
 
-```python
+```py
 import os
 print('environment variables')
 print(os.environ)
@@ -14,7 +14,7 @@ print(os.environ)
 
 <br>
 
-```javascript
+```js
 // code:js と書いてます
 console.log('yeah!')
 ```
