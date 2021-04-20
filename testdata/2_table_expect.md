@@ -21,7 +21,7 @@ table:link in table
 
 |  | a | b | c |
 | --- | --- | --- | --- |
-| 1 | aaa | aaa | [リンク](リンク).md |
+| 1 | aaa | aaa | [リンク](リンク.md) |
 | 2 | aaa | aaa | aaa |
 
 <br>
