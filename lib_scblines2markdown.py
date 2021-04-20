@@ -643,8 +643,19 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
         newline = clear_indent_from_codeblock_line(state.indentdepth_of_start, newline)
         return newline
 
-    # テーブル
+    # テーブルの中身
     if is_in_block and state.is_in_table_block():
+        # テーブルタイトル
+        # scb 記法の table:xxx にあたる表現は Markdown table には無いので, 
+        # タイトルを示す行としてつくる.
+        if Moder.is_start_of_table(line):
+            return line
+
+        # テーブルタイトルとテーブルコンテンツの間には空行がある.
+        # コンテンツではないので無視.
+        if Moder.is_blankline(line):
+            return ''
+
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
         # @todo と思ったけどリンクは使えるのでサポートすべき
