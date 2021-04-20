@@ -12,6 +12,36 @@ class MODE:
     START_OF_BLOCK_CODE = 10
     START_OF_BLOCK_TABLE = 11
 
+class LinesContext:
+    def __init__(self, lines):
+        self._lines = lines
+
+        self._nextline = None
+        self._is_first_of_tablecontents = False
+
+    def update(self, current_linenumber):
+        self._disable_first_of_tablecontents()
+        self._update_nextline(current_linenumber)
+
+    def _update_nextline(self, current_linenumber):
+        is_over = (current_linenumber-1)>=len(self._lines)
+        if is_over:
+            self._nextline = None
+        self._nextline = self._lines[current_linenumber+1]
+
+    def enable_first_of_tablecontents(self):
+        self._is_first_of_tablecontents = True
+
+    def _disable_first_of_tablecontents(self):
+        self._is_first_of_tablecontents = False
+
+    @property
+    def nextline(self):
+        return self._nextline
+
+    def is_first_of_tablecontents(self):
+        return self._is_first_of_tablecontents
+
 class InBlockStateUser:
     def __init__(self):
         self._inblockstate = InBlockState()
