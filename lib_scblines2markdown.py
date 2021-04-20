@@ -651,7 +651,7 @@ RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
 RE_LINK_MEDIAURL = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
-def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user):
+def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_context):
     # Q:斜体はサポートしない？
     #   Ans: しない.
     #        個人的に使っていないから
@@ -786,7 +786,7 @@ def convert_step3(step2_converted_lines):
         inblockstate_user.update(scbline, cur_indentdepth)
         context.update(linenumber)
 
-        markdown_line = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user)
+        markdown_line = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user, context)
         markdown_line_without_icon_grammer = _icon_grammer_to_img_tag(markdown_line)
 
         outlines.append(markdown_line_without_icon_grammer)
