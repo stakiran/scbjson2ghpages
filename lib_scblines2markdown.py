@@ -20,7 +20,6 @@ class LinesContext:
         self._is_first_of_tablecontents = False
 
     def update(self, current_linenumber):
-        self._disable_first_of_tablecontents()
         self._update_nextline(current_linenumber)
 
     def _update_nextline(self, current_linenumber):
@@ -41,7 +40,9 @@ class LinesContext:
         return self._nextline
 
     def is_first_of_tablecontents(self):
-        return self._is_first_of_tablecontents
+        retval = self._is_first_of_tablecontents
+        self._disable_first_of_tablecontents()
+        return retval
 
 class InBlockStateUser:
     def __init__(self):
