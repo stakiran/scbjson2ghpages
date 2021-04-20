@@ -115,10 +115,8 @@ class TestInBlockState(unittest.TestCase):
         mode_code = LIB.MODE.START_OF_BLOCK_CODE
         mode_table = LIB.MODE.START_OF_BLOCK_TABLE
 
-        with self.assertRaises(RuntimeError):
-            state.is_in_code_block()
-        with self.assertRaises(RuntimeError):
-            state.is_in_table_block()
+        self.assertFalse(state.is_in_code_block())
+        self.assertFalse(state.is_in_table_block())
 
         # ブロックはネストしない
         state.enter(mode_code, 1)
