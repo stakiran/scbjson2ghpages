@@ -318,6 +318,46 @@ class TestLinkInDecoration(unittest.TestCase):
         expect = 'xxx~~[link]~~xxx~~[link]~~xxx'
         self.assertEqual(expect, f(line))
 
+class TestLinesContext(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test(self):
+        s='''1行目
+2行目
+3行目
+4行目'''
+        lines = s.split('\n')
+
+        context = LIB.LinesContext(lines)
+
+        self.assertIsNone(context.nextline)
+        self.assertFalse(context.is_first_of_tablecontents())
+
+        linenumber = 0
+        context.update(linenumber)
+        self.assertEqual(context.nextline, '2行目')
+        self.assertFalse(context.is_first_of_tablecontents())
+
+        linenumber = 1
+        context.update(linenumber)
+        context.enable_first_of_tablecontents()
+        self.assertEqual(context.nextline, '3行目')
+        self.assertTrue(context.is_first_of_tablecontents())
+
+        linenumber = 2
+        context.update(linenumber)
+        self.assertEqual(context.nextline, '4行目')
+        self.assertFalse(context.is_first_of_tablecontents(), 'クリアされる')
+
+        linenumber = 3
+        context.update(linenumber)
+        self.assertIsNone(context.nextline)
+        self.assertFalse(context.is_first_of_tablecontents())
+
 class TestFuncs(unittest.TestCase):
     def setUp(self):
         pass
