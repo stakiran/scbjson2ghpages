@@ -689,7 +689,12 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
         # テーブルタイトルとテーブルコンテンツの間には空行がある.
         # コンテンツではないので無視.
         if Moder.is_blankline(line):
+            lines_context.enable_first_of_tablecontents()
             return ''
+
+        if lines_context.is_first_of_tablecontents():
+            # @todo このタイミングだけ2行分増やすことになるが, 2行以上増やす展開は想定してない.....
+            return '| - | - | - |'
 
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
