@@ -75,7 +75,7 @@ class TestModer(unittest.TestCase):
     def test_codeblock(self):
         self._test_onepage('codeblock')
 
-    def test_codeblock(self):
+    def test_table(self):
         self._test_onepage('table')
 
 if __name__ == '__main__':
