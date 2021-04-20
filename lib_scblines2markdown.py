@@ -24,9 +24,10 @@ class LinesContext:
         self._update_nextline(current_linenumber)
 
     def _update_nextline(self, current_linenumber):
-        is_over = (current_linenumber-1)>=len(self._lines)
+        is_over = current_linenumber>=(len(self._lines)-1)
         if is_over:
             self._nextline = None
+            return
         self._nextline = self._lines[current_linenumber+1]
 
     def enable_first_of_tablecontents(self):
