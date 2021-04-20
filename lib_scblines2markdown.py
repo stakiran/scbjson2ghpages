@@ -55,7 +55,7 @@ class InBlockStateUser:
         if is_current_more_deep:
             return
 
-        if state.is_in_code_block:
+        if state.is_in_code_block():
             self._is_left_from_codeblock_just_now = True
         state.leave()
         self._is_left_just_now = True
