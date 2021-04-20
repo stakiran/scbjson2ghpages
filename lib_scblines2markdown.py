@@ -55,6 +55,10 @@ class InBlockStateUser:
         if is_current_more_deep:
             return
 
+        is_in_between_tabletitle_and_tablecontents = cur_indentdepth==0 and state.is_in_table_block()
+        if is_in_between_tabletitle_and_tablecontents:
+            return
+
         if state.is_in_code_block():
             self._is_left_from_codeblock_just_now = True
         state.leave()
