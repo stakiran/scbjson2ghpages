@@ -778,6 +778,7 @@ def convert_step3(step2_converted_lines):
     outlines = []
 
     inblockstate_user = InBlockStateUser()
+    context = LinesContext(lines)
     cur_indentdepth = -1
 
     for scbline in lines:
