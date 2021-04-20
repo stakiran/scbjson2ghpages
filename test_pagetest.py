@@ -76,7 +76,11 @@ class TestModer(unittest.TestCase):
         self._test_onepage('codeblock')
 
     def test_table(self):
+        LIB.DP_scb_to_markdown_in_line = True
+
         self._test_onepage('table')
+
+        LIB.DP_scb_to_markdown_in_line = False
 
 if __name__ == '__main__':
     unittest.main()

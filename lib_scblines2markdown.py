@@ -2,6 +2,15 @@
 
 import re
 
+def dp(msg, flag):
+    if not flag:
+        return
+    print(msg)
+
+DP_scb_to_markdown_in_line = False
+def dp_scb_to_markdown_in_line(msg):
+    dp(msg, DP_scb_to_markdown_in_line)
+
 class MODE:
     INVALID = -1
     NOMODE = 0
@@ -670,6 +679,15 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
 
     # in block
     # ================
+
+    dp_scb_to_markdown_in_line('indent:{}, B:{}, C:{}, T:{}, L:{}\t{}'.format(
+        cur_indentdepth,
+        is_in_block,
+        state.is_in_code_block(),
+        state.is_in_table_block(),
+        is_in_list,
+        line,
+    ))
 
     # コードブロックの中身
     if is_in_block and state.is_in_code_block():
