@@ -109,6 +109,8 @@ class InBlockStateUser:
             return
 
         if lines_context.is_table_top_blank():
+            # table top blank 問題
+            # 
             # tabletitle と tablecontents の間には step2 の都合上, 空行が入るが,
             # テーブルは続いているので in block 状態は解除しない.
             return
@@ -715,9 +717,12 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
     # テーブルの中身
     if is_in_block and state.is_in_table_block():
         # テーブルタイトル
-        # scb 記法の table:xxx にあたる表現は Markdown table には無いので, 
-        # タイトルを示す行としてつくる.
+        # - scb 記法の table:xxx にあたる表現は Markdown table には無いので, 
+        #   タイトルを示す行としてつくる
+        # - table top blank 問題を回避するためのフラグ操作もここでやる.
+        #   (line単体ではできないので, メタで(lines contextで)やるしかない)
         if Moder.is_start_of_table(line):
+            lines_context.enable_table_top_blank()
             return line
 
         # テーブルタイトルとテーブルコンテンツの間には空行がある.
