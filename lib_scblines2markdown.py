@@ -80,13 +80,13 @@ class InBlockStateUser:
         self._is_left_just_now = False
         self._is_left_from_codeblock_just_now = False
 
-    def update(self, line, cur_indentdepth):
+    def update(self, line, cur_indentdepth, lines_context):
         self._clear_just_now_leaving_flags()
 
         state = self.state
 
         if state.is_in_block():
-            self._update_case_of_in_block(line, cur_indentdepth)
+            self._update_case_of_in_block(line, cur_indentdepth, lines_context)
             return
         self._update_case_of_not_in_block(line, cur_indentdepth)
 
@@ -101,7 +101,7 @@ class InBlockStateUser:
             state.enter(MODE.START_OF_BLOCK_TABLE, cur_indentdepth)
             return
 
-    def _update_case_of_in_block(self, line, cur_indentdepth):
+    def _update_case_of_in_block(self, line, cur_indentdepth, lines_context):
         state = self.state
 
         is_current_more_deep = cur_indentdepth > state.indentdepth_of_start
@@ -414,6 +414,8 @@ def convert_step2(step1_converted_lines):
     lines = step1_converted_lines
     outlines = []
 
+    lines_context_dummy = LinesContext(lines)
+
     inblockstate_user = InBlockStateUser()
     cur_indentdepth = -1
     prev_indentdepth = -1
@@ -428,7 +430,7 @@ def convert_step2(step1_converted_lines):
     for i,line in enumerate(lines):
         prev_indentdepth = cur_indentdepth
         cur_indentdepth = count_indentdepth(line)
-        inblockstate_user.update(line, cur_indentdepth)
+        inblockstate_user.update(line, cur_indentdepth, lines_context_dummy)
 
         is_prev_blankline = is_cur_blankline
         is_cur_blankline = Moder.is_blankline(line)
@@ -820,7 +822,7 @@ def convert_step3(step2_converted_lines):
     for linenumber,scbline in enumerate(lines):
         cur_indentdepth = count_indentdepth(scbline)
         context.update(linenumber)
-        inblockstate_user.update(scbline, cur_indentdepth)
+        inblockstate_user.update(scbline, cur_indentdepth, context)
 
         markdown_line = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user, context)
         markdown_line_without_icon_grammer = _icon_grammer_to_img_tag(markdown_line)
