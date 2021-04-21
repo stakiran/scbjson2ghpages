@@ -108,8 +108,9 @@ class InBlockStateUser:
         if is_current_more_deep:
             return
 
-        is_in_between_tabletitle_and_tablecontents = cur_indentdepth==0 and state.is_in_table_block()
-        if is_in_between_tabletitle_and_tablecontents:
+        if lines_context.is_table_top_blank():
+            # tabletitle と tablecontents の間には step2 の都合上, 空行が入るが,
+            # テーブルは続いているので in block 状態は解除しない.
             return
 
         if state.is_in_code_block():
