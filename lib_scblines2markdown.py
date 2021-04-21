@@ -819,8 +819,8 @@ def convert_step3(step2_converted_lines):
 
     for linenumber,scbline in enumerate(lines):
         cur_indentdepth = count_indentdepth(scbline)
-        inblockstate_user.update(scbline, cur_indentdepth)
         context.update(linenumber)
+        inblockstate_user.update(scbline, cur_indentdepth)
 
         markdown_line = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user, context)
         markdown_line_without_icon_grammer = _icon_grammer_to_img_tag(markdown_line)
