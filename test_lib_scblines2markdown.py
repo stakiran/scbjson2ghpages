@@ -326,6 +326,9 @@ class TestLinesContext(unittest.TestCase):
         pass
 
     def test(self):
+        # enable/disable 系は first_of_tablecontents だけガッツリテスト
+        # 他は仕組みが同じなので軽く見るだけ
+
         s='''1行目
 2行目
 3行目
@@ -345,13 +348,16 @@ class TestLinesContext(unittest.TestCase):
         linenumber = 1
         context.update(linenumber)
         context.enable_first_of_tablecontents()
+        context.enable_table_top_blank()
         self.assertEqual(context.nextline, '3行目')
         self.assertTrue(context.is_first_of_tablecontents())
+        self.assertTrue(context.is_table_top_blank())
 
         linenumber = 2
         context.update(linenumber)
         self.assertEqual(context.nextline, '4行目')
         self.assertFalse(context.is_first_of_tablecontents(), 'クリアされる')
+        self.assertFalse(context.is_table_top_blank(), 'クリアされる')
 
         linenumber = 3
         context.update(linenumber)

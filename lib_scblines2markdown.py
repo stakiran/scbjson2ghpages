@@ -27,6 +27,7 @@ class LinesContext:
 
         self._nextline = None
         self._is_first_of_tablecontents = False
+        self._is_table_top_blank = False
 
     def update(self, current_linenumber):
         self._update_nextline(current_linenumber)
@@ -44,6 +45,12 @@ class LinesContext:
     def _disable_first_of_tablecontents(self):
         self._is_first_of_tablecontents = False
 
+    def enable_table_top_blank(self):
+        self._is_table_top_blank = True
+
+    def _disable_table_top_blank(self):
+        self._is_table_top_blank = False
+
     @property
     def nextline(self):
         return self._nextline
@@ -51,6 +58,11 @@ class LinesContext:
     def is_first_of_tablecontents(self):
         retval = self._is_first_of_tablecontents
         self._disable_first_of_tablecontents()
+        return retval
+
+    def is_table_top_blank(self):
+        retval = self._is_table_top_blank
+        self._disable_table_top_blank()
         return retval
 
 class InBlockStateUser:
