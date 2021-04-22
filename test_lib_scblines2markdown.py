@@ -165,9 +165,10 @@ block in the list ★9
         def pair(index):
             line = testdata_lines[index]
             cur_indentdepth = LIB.count_indentdepth(line)
-            return [line, cur_indentdepth]
+            return [line, cur_indentdepth, lines_context]
 
         testdata_lines = testdata.split('\n')
+        lines_context = LIB.LinesContext(testdata_lines)
 
         for i,line in enumerate(testdata_lines):
             user.update(*pair(i))
