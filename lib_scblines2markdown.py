@@ -749,10 +749,16 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
         if lines_context.is_first_of_tablecontents():
             return [line, '| - | - | - |']
 
+        # (space-indent)(scb-table-line-with-tab-delimitor)
+        # ^^^^^^^^^^^^^^
+        # ここは邪魔なので省いてから変換する
+        scb_tableline = newline.lstrip(' ')
+        newline = tab_delimitor_line_to_markdown_table_line(scb_tableline)
+
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
         # @todo と思ったけどリンクは使えるのでサポートすべき
-        return '| テーブルは | あとで | {} | 実装します |'.format(line)
+        return newline
 
     # in line
     # ================
