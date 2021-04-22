@@ -746,9 +746,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
             lines_context.enable_first_of_tablecontents()
             return ''
 
-        if lines_context.is_first_of_tablecontents():
-            return [line, '| - | - | - |']
-
         # (space-indent)(scb-table-line-with-tab-delimitor)
         # ^^^^^^^^^^^^^^
         # ここは邪魔なので省いてから変換する
@@ -757,7 +754,9 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
 
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
-        # @todo と思ったけどリンクは使えるのでサポートすべき
+        # @todo と思ったけどリンクは使えるのでサポートしたい……
+        if lines_context.is_first_of_tablecontents():
+            return [newline, '| - | - | - |']
         return newline
 
     # in line
