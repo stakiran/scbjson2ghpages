@@ -468,5 +468,28 @@ class TestFuncs(unittest.TestCase):
         expect = '|  |  | spaces |  |  | spaces |  |  | '
         self.assertEqual(f(instr), expect)
 
+    def test_restore_prefix_tabdelimitor(self):
+        f = LIB.restore_prefix_tabdelimitor
+
+        instr  = '\tA\t\tA\t\tA\t\t'
+        expect = '\tA\t\tA\t\tA\t\t'
+        self.assertEqual(f(instr), expect)
+
+        instr  = '\t A\t\tA\t\tA\t\t'
+        expect = '\t A\t\tA\t\tA\t\t'
+        self.assertEqual(f(instr), expect)
+
+        instr  = ' A\t\tA\t\tA\t\t'
+        expect = '\tA\t\tA\t\tA\t\t'
+        self.assertEqual(f(instr), expect)
+
+        instr  = '   A\t\tA\t\tA\t\t'
+        expect = '\t\t\tA\t\tA\t\tA\t\t'
+        self.assertEqual(f(instr), expect)
+
+        instr  = '   \t A\t\tA\t\tA\t\t'
+        expect = '\t\t\t\t A\t\tA\t\tA\t\t'
+        self.assertEqual(f(instr), expect)
+
 if __name__ == '__main__':
     unittest.main()

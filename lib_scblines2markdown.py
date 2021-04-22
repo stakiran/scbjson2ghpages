@@ -642,6 +642,9 @@ def clear_indent_from_codeblock_line(indentdepth, line):
     newline = line[length_of_clearning_indent:]
     return newline
 
+def clear_indent_from_tableblock_line(indentdepth, line):
+    return clear_indent_from_codeblock_line(indentdepth, line)
+
 RE_CODE_BLOCK_START = re.compile(r'^( )*code\:(.+)$')
 def line_to_start_of_coedblock_if_possible(line):
     newline = line
@@ -680,6 +683,24 @@ def tab_delimitor_line_to_markdown_table_line(tab_delimitor_line):
         outline += ' | '
 
     return outline
+
+def restore_prefix_tabdelimitor(line):
+    if len(line)==0:
+        return line
+
+    if line[0]!=' ':
+        return line
+
+    newline = ''
+    converted_count = 0
+    for c in line:
+        if c==' ':
+            newline += '\t'
+            converted_count += 1
+        else:
+            break
+    newline += line[converted_count:]
+    return newline
 
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
@@ -749,7 +770,9 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
         # (space-indent)(scb-table-line-with-tab-delimitor)
         # ^^^^^^^^^^^^^^
         # ここは邪魔なので省いてから変換する
-        scb_tableline = newline.lstrip(' ')
+        # ただし normalize の影響で空値要素分のtab delimitorもspaceになっているので少々ややこしい
+        scb_tableline = clear_indent_from_tableblock_line(state.indentdepth_of_start, newline)
+        scb_tableline = restore_prefix_tabdelimitor(scb_tableline)
         newline = tab_delimitor_line_to_markdown_table_line(scb_tableline)
 
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
