@@ -669,6 +669,18 @@ def line_to_start_of_coedblock_if_possible(line):
     newline = '{}```{}'.format(prefix, ext)
     return newline
 
+def tab_delimitor_line_to_markdown_table_line(tab_delimitor_line):
+    ls = tab_delimitor_line.split('\t')
+
+    outline = ''
+    outline += '| '
+
+    for element in ls:
+        outline += element
+        outline += ' | '
+
+    return outline
+
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
 RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')

@@ -441,5 +441,32 @@ class TestFuncs(unittest.TestCase):
         expect = '    print(\'4 times.\')'
         self.assertEqual(f(indentdepth, line), expect)
 
+    def test_tab_delimitor_line_to_markdown_table_line(self):
+        f = LIB.tab_delimitor_line_to_markdown_table_line
+
+        instr  = '\t'.join(['a'])
+        expect = '| a | '
+        self.assertEqual(f(instr), expect)
+
+        instr  = '\t'.join(['a', 'bb'])
+        expect = '| a | bb | '
+        self.assertEqual(f(instr), expect)
+
+        instr  = '\t'.join(['a', 'bb', 'ccc'])
+        expect = '| a | bb | ccc | '
+        self.assertEqual(f(instr), expect)
+
+        instr  = '\t'.join(['', 'space', 'prefix'])
+        expect = '|  | space | prefix | '
+        self.assertEqual(f(instr), expect)
+
+        instr  = '\t'.join(['space', 'suffix', ''])
+        expect = '| space | suffix |  | '
+        self.assertEqual(f(instr), expect)
+
+        instr  = '\t'.join(['', '', 'spaces', '', '', 'spaces', '', ''])
+        expect = '|  |  | spaces |  |  | spaces |  |  | '
+        self.assertEqual(f(instr), expect)
+
 if __name__ == '__main__':
     unittest.main()
