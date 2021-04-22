@@ -735,7 +735,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
             return ''
 
         if lines_context.is_first_of_tablecontents():
-            return ['line', '| - | - | - |']
+            return [line, '| - | - | - |']
 
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
