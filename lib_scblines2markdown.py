@@ -679,6 +679,9 @@ RE_LINK_MEDIAURL = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_context):
+    ''' @retval line
+    @retval [line, table_separator] これを table starter set と呼ぶ. '''
+
     # Q:斜体はサポートしない？
     #   Ans: しない.
     #        個人的に使っていないから
@@ -732,8 +735,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
             return ''
 
         if lines_context.is_first_of_tablecontents():
-            # @todo このタイミングだけ2行分増やすことになるが, 2行以上増やす展開は想定してない.....
-            return '| - | - | - |'
+            return ['line', '| - | - | - |']
 
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
@@ -830,9 +832,13 @@ def convert_step3(step2_converted_lines):
         context.update(linenumber)
         inblockstate_user.update(scbline, cur_indentdepth, context)
 
-        markdown_line = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user, context)
+        either_line_or_tablestarterset = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user, context)
+        if isinstance(either_line_or_tablestarterset, list):
+            markdown_line, table_separator = either_line_or_tablestarterset
+            outlines.append(table_separator)
+        else:
+            markdown_line = either_line_or_tablestarterset
         markdown_line_without_icon_grammer = _icon_grammer_to_img_tag(markdown_line)
-
         outlines.append(markdown_line_without_icon_grammer)
 
     return outlines
