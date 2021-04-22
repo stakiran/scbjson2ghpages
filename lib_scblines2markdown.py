@@ -852,11 +852,15 @@ def convert_step3(step2_converted_lines):
         either_line_or_tablestarterset = scb_to_markdown_in_line(scbline, cur_indentdepth, inblockstate_user, context)
         if isinstance(either_line_or_tablestarterset, list):
             markdown_line, table_separator = either_line_or_tablestarterset
-            outlines.append(table_separator)
         else:
             markdown_line = either_line_or_tablestarterset
+            table_separator = ''
+
         markdown_line_without_icon_grammer = _icon_grammer_to_img_tag(markdown_line)
+
         outlines.append(markdown_line_without_icon_grammer)
+        if table_separator:
+            outlines.append(table_separator)
 
     return outlines
 
