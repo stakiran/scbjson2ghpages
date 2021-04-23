@@ -676,11 +676,12 @@ def tab_delimitor_line_to_markdown_table_line(tab_delimitor_line):
     ls = tab_delimitor_line.split('\t')
 
     outline = ''
-    outline += '| '
+    outline += '|'
 
     for element in ls:
+        outline += ' '
         outline += element
-        outline += ' | '
+        outline += ' |'
 
     return outline
 

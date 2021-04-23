@@ -445,27 +445,27 @@ class TestFuncs(unittest.TestCase):
         f = LIB.tab_delimitor_line_to_markdown_table_line
 
         instr  = '\t'.join(['a'])
-        expect = '| a | '
+        expect = '| a |'
         self.assertEqual(f(instr), expect)
 
         instr  = '\t'.join(['a', 'bb'])
-        expect = '| a | bb | '
+        expect = '| a | bb |'
         self.assertEqual(f(instr), expect)
 
         instr  = '\t'.join(['a', 'bb', 'ccc'])
-        expect = '| a | bb | ccc | '
+        expect = '| a | bb | ccc |'
         self.assertEqual(f(instr), expect)
 
         instr  = '\t'.join(['', 'space', 'prefix'])
-        expect = '|  | space | prefix | '
+        expect = '|  | space | prefix |'
         self.assertEqual(f(instr), expect)
 
         instr  = '\t'.join(['space', 'suffix', ''])
-        expect = '| space | suffix |  | '
+        expect = '| space | suffix |  |'
         self.assertEqual(f(instr), expect)
 
         instr  = '\t'.join(['', '', 'spaces', '', '', 'spaces', '', ''])
-        expect = '|  |  | spaces |  |  | spaces |  |  | '
+        expect = '|  |  | spaces |  |  | spaces |  |  |'
         self.assertEqual(f(instr), expect)
 
     def test_restore_prefix_tabdelimitor(self):

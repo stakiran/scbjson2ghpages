@@ -14,7 +14,6 @@ table:matrix_空白セルあり
 | 緊急でない | 第一領域 | 第ニ領域 |
 | 緊急である | 第三領域 | 第四領域 |
 
-
 <br>
 
 table:link in table
