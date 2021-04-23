@@ -779,7 +779,10 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
         # ないとみなして fall through しない.
         # @todo と思ったけどリンクは使えるのでサポートしたい……
         if lines_context.is_first_of_tablecontents():
-            return [newline, '| - | - | - |']
+            pipecount = len(newline.split('|')) - 1
+            cellcount = pipecount - 1
+            table_separator = '|' + ' - |'*cellcount
+            return [newline, table_separator]
         return newline
 
     # in line
