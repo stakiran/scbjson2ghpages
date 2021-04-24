@@ -217,10 +217,14 @@ class Moder:
 
             is_not_in_block = not state.is_in_block()
             is_left_from_block_just_now = inblockstate_user.is_left_just_now()
+            is_left_from_codeblock_just_now = inblockstate_user.is_left_from_codeblock_just_now()
+
+            # @todo ダミーリスト挿入が必要.
+
+            if is_not_in_block and is_left_from_codeblock_just_now:
+                return END_OF_CODE
 
             if is_not_in_block and is_left_from_block_just_now:
-                # @todo ネストしたブロックなので, ネスト削除とダミーリスト挿入が必要.
-                #       ブロック開始時含めて追加処理が必要.
                 return ADD_LINEFEED
 
             return IGNORE
