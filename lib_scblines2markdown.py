@@ -445,6 +445,23 @@ def convert_step2(step1_converted_lines):
 
         outlines.append(line)
 
+    # append_extra_insertion で処理できない分の後処理
+    #
+    # - list
+    #     - list
+    # ★ここに空行を差し込む処理
+    # ```python
+    # print('hello')
+    # ```
+    #
+    # - ... ★ここに左記のようなダミーリストを差し込む処理
+    #     - list
+
+    lines = outlines
+    outlines = []
+    for i,line in enumerate(lines):
+        outlines.append(line)
+
     return outlines
 
 def _scb_to_markdown_in_line_about_link_in_decoration(line):
