@@ -73,14 +73,13 @@ class TestModer(unittest.TestCase):
         self._test_onepage('image')
 
     def test_codeblock(self):
-        LIB.DP_scb_to_markdown_in_line = True
         self._test_onepage('codeblock')
-        LIB.DP_scb_to_markdown_in_line = False
 
     def test_table(self):
-        LIB.DP_scb_to_markdown_in_line = True
         self._test_onepage('table')
-        LIB.DP_scb_to_markdown_in_line = False
+
+    def test_nestedblock(self):
+        self._test_onepage('nested_block')
 
 if __name__ == '__main__':
     unittest.main()
