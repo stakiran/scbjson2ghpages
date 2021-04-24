@@ -246,9 +246,6 @@ class Moder:
         # list or block が続いている(インデントは変わらず)
         if c==1 and p==1:
             return IGNORE
-        # list or block が続いている(インデントは深くなった)
-        if c==1 and p>1:
-            return IGNORE
 
         # list or blockが終わった
         if p==0:
