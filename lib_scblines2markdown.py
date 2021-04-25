@@ -514,7 +514,10 @@ def convert_step2(step1_converted_lines):
                 is_cur_in_block,
                 line,
             ))
-            outlines.append('- ...')
+            DUMMYLIST_CONTENT = '...'
+            dummylist = create_dummylist(cur_indentdepth, DUMMYLIST_CONTENT)
+            dp_convert_step2_after_append(dummylist)
+            outlines.extend(dummylist)
 
         outlines.append(line)
 

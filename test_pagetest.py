@@ -76,12 +76,12 @@ class TestModer(unittest.TestCase):
         self._test_onepage('codeblock')
 
     def test_table(self):
-        LIB.DP_convert_step2_after_append = True
         self._test_onepage('table')
-        LIB.DP_dp_convert_step2_after_append = False
 
     def test_nestedblock(self):
+        LIB.DP_convert_step2_after_append = True
         self._test_onepage('nested_block')
+        LIB.DP_dp_convert_step2_after_append = False
 
 if __name__ == '__main__':
     unittest.main()
