@@ -555,22 +555,22 @@ class TestFuncs(unittest.TestCase):
 
         cur_indentdepth = 2
         expect = [
-            '- {}'.format(using_content),
+            ' {}'.format(using_content),
         ]
         self.assertEqual(f(cur_indentdepth, using_content), expect)
 
         cur_indentdepth = 3
         expect = [
-            '- {}'.format(using_content),
-            '    - {}'.format(using_content),
+            ' {}'.format(using_content),
+            '  {}'.format(using_content),
         ]
         self.assertEqual(f(cur_indentdepth, using_content), expect)
 
         cur_indentdepth = 4
         expect = [
-            '- {}'.format(using_content),
-            '    - {}'.format(using_content),
-            '        - {}'.format(using_content),
+            ' {}'.format(using_content),
+            '  {}'.format(using_content),
+            '   {}'.format(using_content),
         ]
         self.assertEqual(f(cur_indentdepth, using_content), expect)
 
