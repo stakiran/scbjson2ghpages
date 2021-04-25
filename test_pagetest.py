@@ -81,7 +81,7 @@ class TestModer(unittest.TestCase):
         self._test_onepage('table')
 
     def test_nestedblock(self):
-        LIB.DP_judge_extra_insertion = True
+        LIB.DP_scb_to_markdown_in_line = True
         self._test_onepage('nested_block')
 
 if __name__ == '__main__':

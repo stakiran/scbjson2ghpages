@@ -2,14 +2,14 @@
 
 import re
 
-def dp(msg, flag):
+def dp(msg, flag, caption=''):
     if not flag:
         return
-    print(msg)
+    print(caption + msg)
 
 DP_scb_to_markdown_in_line = False
 def dp_scb_to_markdown_in_line(msg):
-    dp(msg, DP_scb_to_markdown_in_line)
+    dp(msg, DP_scb_to_markdown_in_line, '[step3]')
 
 DP_convert_step2_after_append = False
 def dp_convert_step2_after_append(msg):
@@ -882,7 +882,8 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
         #   (line単体ではできないので, メタで(lines contextで)やるしかない)
         if Moder.is_start_of_table(line):
             lines_context.enable_table_top_blank()
-            return line
+            tabletitle = line
+            return tabletitle
 
         # テーブルタイトルとテーブルコンテンツの間には空行がある.
         # コンテンツではないので無視.
