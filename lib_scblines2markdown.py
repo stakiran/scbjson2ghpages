@@ -11,6 +11,10 @@ DP_scb_to_markdown_in_line = False
 def dp_scb_to_markdown_in_line(msg):
     dp(msg, DP_scb_to_markdown_in_line)
 
+DP_convert_step2_after_append = False
+def dp_convert_step2_after_append(msg):
+    dp(msg, DP_convert_step2_after_append)
+
 class MODE:
     INVALID = -1
     NOMODE = 0
@@ -487,6 +491,12 @@ def convert_step2(step1_converted_lines):
         # (B)
         # - ただしここは tabletitle と tablecontents の間の空行を通る時にも入るので, 弾く
         if not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
+            dp_convert_step2_after_append('is_prev_in_list, cur_indent, is_cur_in_block = {}, {}, {}, L:{}'.format(
+                is_prev_in_list,
+                cur_indentdepth,
+                is_cur_in_block,
+                line,
+            ))
             outlines.append('- ...')
 
         outlines.append(line)
