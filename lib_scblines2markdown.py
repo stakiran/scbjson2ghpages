@@ -512,6 +512,7 @@ def convert_step2(step1_converted_lines):
 
         is_prev_in_block = is_cur_in_block
         is_cur_in_block = state.is_in_block()
+        is_cur_in_codeblock = state.is_in_code_block()
 
         is_prev_in_list = prev_indentdepth > 0
 
@@ -524,7 +525,8 @@ def convert_step2(step1_converted_lines):
             lines_context.enable_table_top_blank()
 
         # (A)
-        if is_prev_in_list and not is_prev_in_block and is_cur_in_block:
+        # - ただしテーブルの場合は(tabletitleをリストの一行として扱うのが自然なので)差し込まない
+        if is_prev_in_list and not is_prev_in_block and is_cur_in_codeblock:
             ADD_LINEFEED = ''
             outlines.append(ADD_LINEFEED)
 
