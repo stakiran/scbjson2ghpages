@@ -103,6 +103,7 @@ class TestInBlockState(unittest.TestCase):
         self.assertEqual(state.indentdepth_of_start, 1)
 
         state.leave()
+        self.assertLess(state.indentdepth_of_start, 0)
 
         state.enter(mode_table, 3)
         self.assertTrue(state.is_in_block())
