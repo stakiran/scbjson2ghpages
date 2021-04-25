@@ -825,6 +825,12 @@ def restore_prefix_tabdelimitor(line):
     newline += line[converted_count:]
     return newline
 
+def to_markdown_list_grammer(line, cur_indentdepth):
+    lstripped_line = line.lstrip()
+    markdown_indent = '    '*(cur_indentdepth-1)
+    newline = '{}- {}'.format(markdown_indent, lstripped_line)
+    return newline
+
 RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
 RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
@@ -876,8 +882,9 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
     # テーブルの中身
     if is_in_block and state.is_in_table_block():
         # テーブルタイトル
-        # - scb 記法の table:xxx にあたる表現は Markdown table には無いので, 
-        #   タイトルを示す行としてつくる
+        # - scb 記法の table:xxx にあたる表現は Markdown table には無い
+        #   - タイトルを示す行としてつくることにする
+        #   - ただし in list 時はリスト記法の反映も必要
         # - table top blank 問題を回避するためのフラグ操作もここでやる.
         #   (line単体ではできないので, メタで(lines contextで)やるしかない)
         if Moder.is_start_of_table(line):
@@ -927,9 +934,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
     newline = re.sub(RE_QUOTE, '\\1<blockquote>\\2</blockquote>', newline)
 
     if is_in_list:
-        lstripped_newline = newline.lstrip()
-        markdown_indent = '    '*(cur_indentdepth-1)
-        newline = '{}- {}'.format(markdown_indent, lstripped_newline)
+        newline = to_markdown_list_grammer(newline, cur_indentdepth)
 
     # link in decoration
     # - [- [link]] のようにリンクに対して装飾する記法がありうる.
