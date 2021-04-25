@@ -13,7 +13,7 @@ def dp_scb_to_markdown_in_line(msg):
 
 DP_convert_step2_after_append = False
 def dp_convert_step2_after_append(msg):
-    dp(msg, DP_convert_step2_after_append)
+    dp(msg, DP_convert_step2_after_append, '[step2]')
 
 DP_judge_extra_insertion = False
 def dp_judge_extra_insertion(msg):
@@ -537,6 +537,17 @@ def convert_step2(step1_converted_lines):
 
         is_cur_in_tableblock = state.is_in_table_block()
 
+        dp_convert_step2_after_append('(pL, pB, pSoT), (cB, cCB, cTB, cSoT) = ({}, {}, {}), ({}, {}, {}, {}) L:{}'.format(
+            is_prev_in_list,
+            is_prev_in_block,
+            is_prev_start_of_table,
+            is_cur_in_block,
+            is_cur_in_codeblock,
+            is_cur_in_tableblock,
+            is_cur_start_of_table,
+            line,
+        ))
+
         # (B)の除外判定用.
         # (B)は tabletitle と tablecontents の間の空行を通る時にも入るので弾く必要がある.
         if state.is_in_table_block() and is_cur_start_of_table:
@@ -553,15 +564,8 @@ def convert_step2(step1_converted_lines):
 
         # (B)
         if not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
-            dp_convert_step2_after_append('is_prev_in_list, cur_indent, is_cur_in_block = {}, {}, {}, L:{}'.format(
-                is_prev_in_list,
-                cur_indentdepth,
-                is_cur_in_block,
-                line,
-            ))
             DUMMYLIST_CONTENT = '...'
             dummylist = create_dummylist(cur_indentdepth, DUMMYLIST_CONTENT)
-            dp_convert_step2_after_append(dummylist)
             outlines.extend(dummylist)
 
         # (C)
