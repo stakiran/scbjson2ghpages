@@ -459,7 +459,30 @@ def convert_step2(step1_converted_lines):
 
     lines = outlines
     outlines = []
+
+    lines_context_dummy = LinesContext(lines)
+    inblockstate_user = InBlockStateUser()
+    cur_indentdepth = -1
+    prev_indentdepth = -1
+    is_cur_in_block = False
+    is_prev_in_block = False
+
     for i,line in enumerate(lines):
+        prev_indentdepth = cur_indentdepth
+        cur_indentdepth = count_indentdepth(line)
+
+        inblockstate_user.update(line, cur_indentdepth, lines_context_dummy)
+        state = inblockstate_user.state
+
+        is_prev_in_block = is_cur_in_block
+        is_cur_in_block = state.is_in_block()
+
+        is_prev_in_list = prev_indentdepth > 0
+
+        if is_prev_in_list and not is_prev_in_block and is_cur_in_block:
+            ADD_LINEFEED = ''
+            outlines.append(ADD_LINEFEED)
+
         outlines.append(line)
 
     return outlines
