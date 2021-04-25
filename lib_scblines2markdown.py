@@ -480,7 +480,7 @@ def convert_step2(step1_converted_lines):
         outlines.append(line)
 
     # append_extra_insertion で処理できない分の後処理
-    #
+
     # paragraph
     #  list1
     #   list2
@@ -490,6 +490,15 @@ def convert_step2(step1_converted_lines):
     # ```
     #
     #  ... ★ここに左記のようなダミーリストを差し込む処理(B)
+    #   list2
+
+    # paragraph
+    #  list1
+    #   list2
+    #   table:xxx
+    # ★ここに空行を差し込む処理(C)
+    #    a b
+    #    c d
     #   list2
 
     lines = outlines
@@ -516,9 +525,11 @@ def convert_step2(step1_converted_lines):
 
         is_prev_in_list = prev_indentdepth > 0
 
+        is_cur_start_of_table = Moder.is_start_of_table(line)
+
         # (B)の除外判定用.
         # (B)は tabletitle と tablecontents の間の空行を通る時にも入るので弾く必要がある.
-        if state.is_in_table_block() and Moder.is_start_of_table(line):
+        if state.is_in_table_block() and is_cur_start_of_table:
             dp_convert_step2_after_append('enable table_top_blank about line:{}'.format(
                 line,
             ))
@@ -542,6 +553,9 @@ def convert_step2(step1_converted_lines):
             dummylist = create_dummylist(cur_indentdepth, DUMMYLIST_CONTENT)
             dp_convert_step2_after_append(dummylist)
             outlines.extend(dummylist)
+
+        # (C)
+        
 
         outlines.append(line)
 
