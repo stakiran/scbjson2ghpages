@@ -261,8 +261,8 @@ table:xxx ★2
  list1 ★6
  table:xxx ★7
   a	b
-  c	d ★8
- list1 ★9
+  c	d ★9
+ list1 ★10
 おしまい'''
 
         def pair(index):
@@ -284,6 +284,21 @@ table:xxx ★2
             if i==2 or i==3 or i==4:
                 self.assertTrue(user.state.is_in_block())
                 self.assertTrue(user.state.is_in_table_block())
+                continue
+
+            if i==5:
+                self.assertFalse(user.state.is_in_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==7 or i==8 or i==9:
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_table_block())
+                continue
+
+            if i==10:
+                self.assertFalse(user.state.is_in_block())
+                self.assertFalse(user.state.is_in_table_block())
                 continue
 
 class TestLinkInDecoration(unittest.TestCase):
