@@ -481,15 +481,16 @@ def convert_step2(step1_converted_lines):
 
     # append_extra_insertion で処理できない分の後処理
     #
-    # - list
-    #     - list
+    # paragraph
+    #  list1
+    #   list2
     # ★ここに空行を差し込む処理(A)
-    # ```python
-    # print('hello')
+    #   code:py
+    #    print('hello')
     # ```
     #
-    # - ... ★ここに左記のようなダミーリストを差し込む処理(B)
-    #     - list
+    #  ... ★ここに左記のようなダミーリストを差し込む処理(B)
+    #   list2
 
     lines = outlines
     outlines = []
