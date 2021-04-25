@@ -413,6 +413,16 @@ def _step2_append_extra_insertion(outlines, prev_indentdepth, cur_indentdepth, i
 
     outlines.append(extra_insertion)
 
+def create_dummylist(cur_indentdepth, using_contents):
+    outlines = []
+    repcount = cur_indentdepth-1
+    for i in range(repcount):
+        space_count = 4*i
+        indent = ' '*space_count
+        line = '{}- {}'.format(indent, using_contents)
+        outlines.append(line)
+    return outlines
+
 def convert_step2(step1_converted_lines):
     # step2: インデントの深さに伴う終端処理
     # 終端として必要な文字列(extra insertion)を挿入する.

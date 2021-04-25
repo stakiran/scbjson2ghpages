@@ -544,5 +544,35 @@ class TestFuncs(unittest.TestCase):
         expect = '\t\t\t\t A\t\tA\t\tA\t\t'
         self.assertEqual(f(instr), expect)
 
+    def test_create_dummylist(self):
+        f = LIB.create_dummylist
+
+        using_content = '...'
+
+        cur_indentdepth = 1
+        expect = []
+        self.assertEqual(f(cur_indentdepth, using_content), expect)
+
+        cur_indentdepth = 2
+        expect = [
+            '- {}'.format(using_content),
+        ]
+        self.assertEqual(f(cur_indentdepth, using_content), expect)
+
+        cur_indentdepth = 3
+        expect = [
+            '- {}'.format(using_content),
+            '    - {}'.format(using_content),
+        ]
+        self.assertEqual(f(cur_indentdepth, using_content), expect)
+
+        cur_indentdepth = 4
+        expect = [
+            '- {}'.format(using_content),
+            '    - {}'.format(using_content),
+            '        - {}'.format(using_content),
+        ]
+        self.assertEqual(f(cur_indentdepth, using_content), expect)
+
 if __name__ == '__main__':
     unittest.main()
