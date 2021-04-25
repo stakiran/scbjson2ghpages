@@ -131,7 +131,7 @@ class TestInBlockStateUser(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test(self):
+    def test_about_code(self):
         user = LIB.InBlockStateUser()
 
         testdata = '''title
@@ -247,6 +247,43 @@ block in the list ★9
             if i==23:
                 self.assertFalse(user.is_left_just_now())
                 self.assertFalse(user.is_left_from_codeblock_just_now())
+                continue
+
+    def test_about_table(self):
+        user = LIB.InBlockStateUser()
+
+        testdata = '''title
+段落 ★1
+table:xxx ★2
+ a	b ★3
+ c	d ★4
+段落 ★5
+ list1 ★6
+ table:xxx ★7
+  a	b
+  c	d ★8
+ list1 ★9
+おしまい'''
+
+        def pair(index):
+            line = testdata_lines[index]
+            cur_indentdepth = LIB.count_indentdepth(line)
+            return [line, cur_indentdepth, lines_context]
+
+        testdata_lines = testdata.split('\n')
+        lines_context = LIB.LinesContext(testdata_lines)
+
+        for i,line in enumerate(testdata_lines):
+            user.update(*pair(i))
+
+            if i==1:
+                self.assertFalse(user.state.is_in_block())
+                self.assertFalse(user.state.is_in_table_block())
+                continue
+
+            if i==2:
+                self.assertTrue(user.state.is_in_block())
+                self.assertTrue(user.state.is_in_table_block())
                 continue
 
 class TestLinkInDecoration(unittest.TestCase):
