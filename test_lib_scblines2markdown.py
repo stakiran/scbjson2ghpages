@@ -281,7 +281,7 @@ table:xxx ★2
                 self.assertFalse(user.state.is_in_table_block())
                 continue
 
-            if i==2:
+            if i==2 or i==3 or i==4:
                 self.assertTrue(user.state.is_in_block())
                 self.assertTrue(user.state.is_in_table_block())
                 continue
