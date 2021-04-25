@@ -485,6 +485,7 @@ def convert_step2(step1_converted_lines):
             outlines.append(ADD_LINEFEED)
 
         # (B)
+        # - ただしここは tabletitle と tablecontents の間の空行を通る時にも入るので, 弾く
         if not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
             outlines.append('- ...')
 
