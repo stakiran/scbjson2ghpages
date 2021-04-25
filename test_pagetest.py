@@ -66,6 +66,8 @@ class TestModer(unittest.TestCase):
         expect_contents = LB.join(expect_lines)
         self.assertEqual(expect_contents, actual_contents)
 
+        LIB.dp_all_off()
+
     def test_page(self):
         self._test_onepage('page')
 
@@ -81,7 +83,6 @@ class TestModer(unittest.TestCase):
     def test_nestedblock(self):
         LIB.DP_judge_extra_insertion = True
         self._test_onepage('nested_block')
-        LIB.DP_judge_extra_insertion = False
 
 if __name__ == '__main__':
     unittest.main()

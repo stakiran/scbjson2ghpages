@@ -19,6 +19,11 @@ DP_judge_extra_insertion = False
 def dp_judge_extra_insertion(msg):
     dp(msg, DP_judge_extra_insertion)
 
+def dp_all_off():
+    DP_scb_to_markdown_in_line = False
+    DP_convert_step2_after_append = False
+    DP_judge_extra_insertion = False
+
 class MODE:
     INVALID = -1
     NOMODE = 0
@@ -540,13 +545,14 @@ def convert_step2(step1_converted_lines):
             ))
             lines_context.enable_table_top_blank()
 
+        # (A)
+        # - ただしテーブルの場合は(tabletitleをリストの一行として扱うのが自然なので)差し込まない
         if is_prev_in_list and not is_prev_in_block and is_cur_in_codeblock:
-            # (A)
-            # - ただしテーブルの場合は(tabletitleをリストの一行として扱うのが自然なので)差し込まない
             ADD_LINEFEED = ''
             outlines.append(ADD_LINEFEED)
-        elif not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
-            # (B)
+
+        # (B)
+        if not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
             dp_convert_step2_after_append('is_prev_in_list, cur_indent, is_cur_in_block = {}, {}, {}, L:{}'.format(
                 is_prev_in_list,
                 cur_indentdepth,
@@ -557,10 +563,6 @@ def convert_step2(step1_converted_lines):
             dummylist = create_dummylist(cur_indentdepth, DUMMYLIST_CONTENT)
             dp_convert_step2_after_append(dummylist)
             outlines.extend(dummylist)
-        elif is_prev_start_of_table and is_cur_in_tableblock:
-            # (C)
-            ADD_LINEFEED = ''
-            outlines.append(ADD_LINEFEED)
 
         outlines.append(line)
 
