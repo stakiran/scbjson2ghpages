@@ -417,9 +417,9 @@ def create_dummylist(cur_indentdepth, using_contents):
     outlines = []
     repcount = cur_indentdepth-1
     for i in range(repcount):
-        space_count = 4*i
+        space_count = i+1
         indent = ' '*space_count
-        line = '{}- {}'.format(indent, using_contents)
+        line = '{}{}'.format(indent, using_contents)
         outlines.append(line)
     return outlines
 
