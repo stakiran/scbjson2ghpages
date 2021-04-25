@@ -510,6 +510,8 @@ def convert_step2(step1_converted_lines):
     prev_indentdepth = -1
     is_cur_in_block = False
     is_prev_in_block = False
+    is_cur_start_of_table = False
+    is_prev_start_of_table = False
 
     for i,line in enumerate(lines):
         prev_indentdepth = cur_indentdepth
@@ -525,7 +527,10 @@ def convert_step2(step1_converted_lines):
 
         is_prev_in_list = prev_indentdepth > 0
 
+        is_prev_start_of_table = is_cur_start_of_table
         is_cur_start_of_table = Moder.is_start_of_table(line)
+
+        is_cur_in_tableblock = state.is_in_table_block()
 
         # (B)の除外判定用.
         # (B)は tabletitle と tablecontents の間の空行を通る時にも入るので弾く必要がある.
@@ -535,14 +540,13 @@ def convert_step2(step1_converted_lines):
             ))
             lines_context.enable_table_top_blank()
 
-        # (A)
-        # - ただしテーブルの場合は(tabletitleをリストの一行として扱うのが自然なので)差し込まない
         if is_prev_in_list and not is_prev_in_block and is_cur_in_codeblock:
+            # (A)
+            # - ただしテーブルの場合は(tabletitleをリストの一行として扱うのが自然なので)差し込まない
             ADD_LINEFEED = ''
             outlines.append(ADD_LINEFEED)
-
-        # (B)
-        if not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
+        elif not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
+            # (B)
             dp_convert_step2_after_append('is_prev_in_list, cur_indent, is_cur_in_block = {}, {}, {}, L:{}'.format(
                 is_prev_in_list,
                 cur_indentdepth,
@@ -553,9 +557,10 @@ def convert_step2(step1_converted_lines):
             dummylist = create_dummylist(cur_indentdepth, DUMMYLIST_CONTENT)
             dp_convert_step2_after_append(dummylist)
             outlines.extend(dummylist)
-
-        # (C)
-        
+        elif is_prev_start_of_table and is_cur_in_tableblock:
+            # (C)
+            ADD_LINEFEED = ''
+            outlines.append(ADD_LINEFEED)
 
         outlines.append(line)
 
