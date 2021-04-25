@@ -890,6 +890,8 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
         if Moder.is_start_of_table(line):
             lines_context.enable_table_top_blank()
             tabletitle = line
+            if is_in_list:
+                tabletitle = to_markdown_list_grammer(line, cur_indentdepth)
             return tabletitle
 
         # テーブルタイトルとテーブルコンテンツの間には空行がある.
