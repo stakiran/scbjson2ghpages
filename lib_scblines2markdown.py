@@ -15,6 +15,10 @@ DP_convert_step2_after_append = False
 def dp_convert_step2_after_append(msg):
     dp(msg, DP_convert_step2_after_append)
 
+DP_judge_extra_insertion = False
+def dp_judge_extra_insertion(msg):
+    dp(msg, DP_judge_extra_insertion)
+
 class MODE:
     INVALID = -1
     NOMODE = 0
@@ -189,12 +193,22 @@ class InBlockState:
 
 class Moder:
     @classmethod
-    def judge_extra_insertion(cls, prev_indentdepth, cur_indentdepth, inblockstate_user):
+    def judge_extra_insertion(cls, prev_indentdepth, cur_indentdepth, inblockstate_user, line_for_debug):
         ''' string への挿入を前提としているため, 行指向の場合は適宜解釈し直すこと.
         @return 余分に挿入すべき文字列.
         @retval '' 何も挿入する必要がない.
         
         アルゴリズムがえぐいので Scrapbox のメモも参照のこと. '''
+
+        is_in_list = cur_indentdepth>0
+        dp_judge_extra_insertion('indent:{}, B:{}, C:{}, T:{}, L:{}\t{}'.format(
+            cur_indentdepth,
+            inblockstate_user.state.is_in_block(),
+            inblockstate_user.state.is_in_code_block(),
+            inblockstate_user.state.is_in_table_block(),
+            is_in_list,
+            line_for_debug,
+        ))
 
         # returning values
         END_OF_CODE = '```\n'
@@ -399,8 +413,9 @@ def convert_step1(scblines):
 
     return outlines
 
-def _step2_append_extra_insertion(outlines, prev_indentdepth, cur_indentdepth, inblock_state):
-    extra_insertion = Moder.judge_extra_insertion(prev_indentdepth, cur_indentdepth, inblock_state)
+def _step2_append_extra_insertion(line, outlines, prev_indentdepth, cur_indentdepth, inblockstate_user):
+    line_for_debug = line
+    extra_insertion = Moder.judge_extra_insertion(prev_indentdepth, cur_indentdepth, inblockstate_user, line_for_debug)
 
     is_no_insertion = extra_insertion == ''
     if is_no_insertion:
@@ -460,7 +475,7 @@ def convert_step2(step1_converted_lines):
         if is_cur_blankline or is_prev_blankline:
             pass
         else:
-            _step2_append_extra_insertion(outlines, prev_indentdepth, cur_indentdepth, inblockstate_user)
+            _step2_append_extra_insertion(line, outlines, prev_indentdepth, cur_indentdepth, inblockstate_user)
 
         outlines.append(line)
 
