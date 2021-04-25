@@ -886,7 +886,8 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
             return tabletitle
 
         # テーブルタイトルとテーブルコンテンツの間には空行がある.
-        # コンテンツではないので無視.
+        # - コンテンツではないので無視する
+        # - table separator 挿入タイミングを検出できるのがここしかないので, ここで context に知らせておく
         if Moder.is_blankline(line):
             lines_context.enable_first_of_tablecontents()
             return ''
@@ -899,10 +900,16 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
         scb_tableline = restore_prefix_tabdelimitor(scb_tableline)
         newline = tab_delimitor_line_to_markdown_table_line(scb_tableline)
 
-        # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
-        # ないとみなして fall through しない.
-        # @todo と思ったけどリンクは使えるのでサポートしたい……
-        if lines_context.is_first_of_tablecontents():
+        # table separator を返すべきタイミングは二つある.
+        # - is first of tablecontents
+        #   - tabletitleとtabletitleに空行がある場合
+        #   - 通常はこっち
+        # - is table top blank
+        #   - 間に空行がない場合
+        #   - in list 中のtableはこっちになる
+        #
+        # @todo テーブルセル内のリンク記法をサポートしたい
+        if lines_context.is_first_of_tablecontents() or lines_context.is_table_top_blank():
             pipecount = len(newline.split('|')) - 1
             cellcount = pipecount - 1
             table_separator = '|' + ' - |'*cellcount
