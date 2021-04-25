@@ -449,12 +449,12 @@ def convert_step2(step1_converted_lines):
     #
     # - list
     #     - list
-    # ★ここに空行を差し込む処理
+    # ★ここに空行を差し込む処理(A)
     # ```python
     # print('hello')
     # ```
     #
-    # - ... ★ここに左記のようなダミーリストを差し込む処理
+    # - ... ★ここに左記のようなダミーリストを差し込む処理(B)
     #     - list
 
     lines = outlines
@@ -479,9 +479,14 @@ def convert_step2(step1_converted_lines):
 
         is_prev_in_list = prev_indentdepth > 0
 
+        # (A)
         if is_prev_in_list and not is_prev_in_block and is_cur_in_block:
             ADD_LINEFEED = ''
             outlines.append(ADD_LINEFEED)
+
+        # (B)
+        if not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
+            outlines.append('- ...')
 
         outlines.append(line)
 
