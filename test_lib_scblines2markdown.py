@@ -574,5 +574,20 @@ class TestFuncs(unittest.TestCase):
         ]
         self.assertEqual(f(cur_indentdepth, using_content), expect)
 
+    def test_to_markdown_list_grammer(self):
+        f = LIB.to_markdown_list_grammer
+
+        cur_indentdepth = 1
+        expect = '- aaa'
+        self.assertEqual(f('aaa', cur_indentdepth), expect)
+
+        cur_indentdepth = 2
+        expect = '    - aaa'
+        self.assertEqual(f('aaa', cur_indentdepth), expect)
+
+        cur_indentdepth = 3
+        expect = '        - aaa'
+        self.assertEqual(f('aaa', cur_indentdepth), expect)
+
 if __name__ == '__main__':
     unittest.main()
