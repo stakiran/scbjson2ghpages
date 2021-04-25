@@ -564,6 +564,11 @@ def convert_step2(step1_converted_lines):
             dp_convert_step2_after_append(dummylist)
             outlines.extend(dummylist)
 
+        # (C)
+        if is_prev_in_list and is_prev_start_of_table and is_cur_in_tableblock:
+            ADD_LINEFEED = ''
+            outlines.append(ADD_LINEFEED)
+
         outlines.append(line)
 
     return outlines
