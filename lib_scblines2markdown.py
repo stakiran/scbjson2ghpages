@@ -852,7 +852,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
         scb_tableline = clear_indent_from_tableblock_line(state.indentdepth_of_start, newline)
         scb_tableline = restore_prefix_tabdelimitor(scb_tableline)
         newline = tab_delimitor_line_to_markdown_table_line(scb_tableline)
-        newline = clear_indent_from_tableblock_line(state.indentdepth_of_start, newline)
 
         # テーブル中でも他の文法を使う表現は(Markdownには)あるが, Scrapboxにはないので
         # ないとみなして fall through しない.
