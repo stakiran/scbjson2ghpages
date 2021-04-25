@@ -483,13 +483,20 @@ def convert_step2(step1_converted_lines):
 
         is_prev_in_list = prev_indentdepth > 0
 
+        # (B)の除外判定用.
+        # (B)は tabletitle と tablecontents の間の空行を通る時にも入るので弾く必要がある.
+        if state.is_in_table_block() and Moder.is_start_of_table(line):
+            dp_convert_step2_after_append('enable table_top_blank about line:{}'.format(
+                line,
+            ))
+            lines_context.enable_table_top_blank()
+
         # (A)
         if is_prev_in_list and not is_prev_in_block and is_cur_in_block:
             ADD_LINEFEED = ''
             outlines.append(ADD_LINEFEED)
 
         # (B)
-        # - ただしここは tabletitle と tablecontents の間の空行を通る時にも入るので, 弾く
         if not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
             dp_convert_step2_after_append('is_prev_in_list, cur_indent, is_cur_in_block = {}, {}, {}, L:{}'.format(
                 is_prev_in_list,
