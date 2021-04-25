@@ -463,7 +463,7 @@ def convert_step2(step1_converted_lines):
     lines = outlines
     outlines = []
 
-    lines_context_dummy = LinesContext(lines)
+    lines_context = LinesContext(lines)
     inblockstate_user = InBlockStateUser()
     cur_indentdepth = -1
     prev_indentdepth = -1
@@ -474,7 +474,8 @@ def convert_step2(step1_converted_lines):
         prev_indentdepth = cur_indentdepth
         cur_indentdepth = count_indentdepth(line)
 
-        inblockstate_user.update(line, cur_indentdepth, lines_context_dummy)
+        lines_context.update(i)
+        inblockstate_user.update(line, cur_indentdepth, lines_context)
         state = inblockstate_user.state
 
         is_prev_in_block = is_cur_in_block
