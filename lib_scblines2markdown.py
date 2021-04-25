@@ -411,6 +411,12 @@ def _step2_append_extra_insertion(outlines, prev_indentdepth, cur_indentdepth, i
         outlines.append('')
         return
 
+    is_endofcode_insertion = extra_insertion == '```\n'
+    if is_endofcode_insertion:
+        outlines.append('```')
+        outlines.append('')
+        return
+
     outlines.append(extra_insertion)
 
 def create_dummylist(cur_indentdepth, using_contents):
