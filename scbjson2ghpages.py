@@ -209,6 +209,33 @@ total {lineNumber} lines. '''.format(
             lineNumber=line_number,
         )
 
+def ________Scb2md_and_save________():
+    pass
+
+def convert_one_page(scblines):
+    step1_converted_lines = lib_scblines2markdown.convert_step1(scblines)
+    step2_converted_lines = lib_scblines2markdown.convert_step2(step1_converted_lines)
+    markdown_lines = lib_scblines2markdown.convert_step3(step2_converted_lines)
+    return markdown_lines
+
+def save_one_file(markdown_lines, pagename, basedir):
+    # @todo lib側で実装予定の「ページ名から "有効なファイル名" に変換する」処理を使う
+    filename = '{}.md'.format(pagename)
+    filepath = os.path.join(basedir, filename)
+
+    #list2file(filepath, markdown_lines)
+    print('save {} lines to "{}".'.format(len(markdown_lines), filepath))
+
+def convert_and_save_all(project, basedir):
+    for page in project.pages:
+        page_inst = Page(page, project.name)
+        pagename = page_inst.title
+        scblines = page_inst.lines
+
+        markdown_lines = convert_one_page(scblines)
+
+        save_one_file(markdown_lines, pagename, basedir)
+
 def ________Argument________():
     pass
 
@@ -234,6 +261,7 @@ def ________Main________():
 if __name__ == '__main__':
     MYFULLPATH = os.path.abspath(sys.argv[0])
     MYDIR = os.path.dirname(MYFULLPATH)
+    OUTDIR = 'docs'
 
     args = parse_arguments()
 
@@ -248,3 +276,6 @@ if __name__ == '__main__':
         page = seeker.get(args.page_to_scb)
         print(page.rawstring)
         sys.exit(0)
+
+    BASEDIR = os.path.join(MYDIR, OUTDIR)
+    convert_and_save_all(proj, BASEDIR)
