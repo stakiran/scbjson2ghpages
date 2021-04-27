@@ -530,7 +530,8 @@ def convert_step2(step1_converted_lines):
 
         is_cur_in_tableblock = state.is_in_table_block()
 
-        dp_convert_step2_after_append('(pL, pB, pSoT), (cB, cCB, cTB, cSoT) = ({}, {}, {}), ({}, {}, {}, {}) L:{}'.format(
+        dp_convert_step2_after_append('(pL, pB, pSoT), (cB, cCB, cTB, cSoT) {} = ({}, {}, {}), ({}, {}, {}, {}) L:{}'.format(
+            cur_indentdepth,
             is_prev_in_list,
             is_prev_in_block,
             is_prev_start_of_table,
