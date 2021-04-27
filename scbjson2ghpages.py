@@ -230,12 +230,16 @@ def save_one_file(markdown_lines, pagename, basedir, use_dryrun):
 
 def convert_and_save_all(project, basedir, args):
     use_dryrun = args.dryrun
-    for page in project.pages:
+
+    for i,page in enumerate(project.pages):
         page_inst = Page(page, project.name)
         pagename = page_inst.title
         scblines = page_inst.lines
 
+        if args.display_pagename:
+            print('"{}"'.format(pagename))
         markdown_lines = convert_one_page(scblines)
+
         save_one_file(markdown_lines, pagename, basedir, use_dryrun)
 
 def ________Argument________():
@@ -256,6 +260,8 @@ def parse_arguments():
 
     parser.add_argument('--dryrun', default=False, action='store_true',
         help='If True, not save but display lines and filepath.')
+    parser.add_argument('--display-pagename', default=False, action='store_true',
+        help='If True, display pagename.')
 
     args = parser.parse_args()
     return args
