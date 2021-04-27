@@ -218,23 +218,25 @@ def convert_one_page(scblines):
     markdown_lines = lib_scblines2markdown.convert_step3(step2_converted_lines)
     return markdown_lines
 
-def save_one_file(markdown_lines, pagename, basedir):
+def save_one_file(markdown_lines, pagename, basedir, use_dryrun):
     # @todo lib側で実装予定の「ページ名から "有効なファイル名" に変換する」処理を使う
     filename = '{}.md'.format(pagename)
     filepath = os.path.join(basedir, filename)
 
+    if use_dryrun:
+        print('save {} lines to "{}".'.format(len(markdown_lines), filepath))
+        return
     list2file(filepath, markdown_lines)
-    #print('save {} lines to "{}".'.format(len(markdown_lines), filepath))
 
-def convert_and_save_all(project, basedir):
+def convert_and_save_all(project, basedir, args):
+    use_dryrun = args.dryrun
     for page in project.pages:
         page_inst = Page(page, project.name)
         pagename = page_inst.title
         scblines = page_inst.lines
 
         markdown_lines = convert_one_page(scblines)
-
-        save_one_file(markdown_lines, pagename, basedir)
+        save_one_file(markdown_lines, pagename, basedir, use_dryrun)
 
 def ________Argument________():
     pass
@@ -251,6 +253,9 @@ def parse_arguments():
 
     parser.add_argument('--page-to-scb', default=None, type=str,
         help='A page name to output the normalized contents .scb file.')
+
+    parser.add_argument('--dryrun', default=False, action='store_true',
+        help='If True, not save but display lines and filepath.')
 
     args = parser.parse_args()
     return args
@@ -280,4 +285,4 @@ if __name__ == '__main__':
     BASEDIR = os.path.join(MYDIR, OUTDIR)
     if not(os.path.isdir(BASEDIR)):
         raise RuntimeError('docs/ dir not found...')
-    convert_and_save_all(proj, BASEDIR)
+    convert_and_save_all(proj, BASEDIR, args)
