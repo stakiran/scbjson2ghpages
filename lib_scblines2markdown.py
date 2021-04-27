@@ -270,12 +270,11 @@ class Moder:
             return extra_insertion
 
         # list or block が続いている(インデントは変わらず)
-        if c==1 and p==1:
+        if c==p:
             return IGNORE
 
-        # list or block が続いている(インデントは変わらず or 深くなった)
-        # 先頭行のときもここに入る.
-        is_more_deepen = c>=p
+        # list or block が続いている(インデントは深くなった)
+        is_more_deepen = c>p
         if is_more_deepen:
             return IGNORE
 
