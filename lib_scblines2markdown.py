@@ -775,7 +775,7 @@ def clear_indent_from_tableblock_line(indentdepth, line):
     return clear_indent_from_codeblock_line(indentdepth, line)
 
 RE_CODE_BLOCK_START = re.compile(r'^( )*code\:(.+)$')
-def line_to_start_of_coedblock_if_possible(line):
+def line_to_start_of_codeblock_if_possible(line):
     newline = line
     newline = re.sub(RE_CODE_BLOCK_START, '```\\2', newline)
 
@@ -881,7 +881,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
     # コードブロックの中身
     if is_in_block and state.is_in_code_block():
         # code:xxx の開始行も in code block 判定なので, ここで置換処理をする.
-        newline = line_to_start_of_coedblock_if_possible(newline)
+        newline = line_to_start_of_codeblock_if_possible(newline)
         # markdown は nested codeblock が存在しないので、コードブロック内のインデントもクリアする.
         newline = clear_indent_from_codeblock_line(state.indentdepth_of_start, newline)
         return newline
