@@ -265,18 +265,13 @@ class Moder:
             return extra_insertion
 
         # list or block が始まった
-        if c==1 and p==0:
+        if c>=1 and p==0:
             extra_insertion = start_of_list_or_block(inblockstate_user)
             return extra_insertion
 
         # list or block が続いている(インデントは変わらず)
         if c==1 and p==1:
             return IGNORE
-
-        # list or blockが終わった
-        if p==0:
-            extra_insertion = end_of_list_or_block(inblockstate_user)
-            return extra_insertion
 
         # list or block が続いている(インデントは変わらず or 深くなった)
         # 先頭行のときもここに入る.
