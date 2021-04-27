@@ -278,8 +278,7 @@ class Moder:
         if is_more_deepen:
             return IGNORE
 
-        # list or block が続いている(インデントは変わらず or 深くなった or 浅くなった)
-        # インデント 1 以上の深さで block が終わっているケース, もここに入る.
+        # list or block が続いている(インデントは浅くなった)
         extra_insertion = continuous_indent(c, inblockstate_user)
         return extra_insertion
 
