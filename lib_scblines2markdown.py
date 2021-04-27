@@ -117,15 +117,17 @@ class InBlockStateUser:
     def _update_case_of_in_block(self, line, cur_indentdepth, lines_context):
         state = self.state
 
-        is_current_more_deep = cur_indentdepth > state.indentdepth_of_start
-        if is_current_more_deep:
-            return
-
         if lines_context.is_table_top_blank():
             # table top blank 問題
             # 
-            # tabletitle と tablecontents の間には step2 の都合上, 空行が入るが,
-            # テーブルは続いているので in block 状態は解除しない.
+            # - tabletitle と tablecontents の間には step2 の都合上, 空行が入るが,
+            #   テーブルは続いているので in block 状態は解除しない
+            # - この判定は enable_table_top_blank() の次行で実施する必要があるので
+            #   ここで(more deep判定の前で)行う
+            return
+
+        is_current_more_deep = cur_indentdepth > state.indentdepth_of_start
+        if is_current_more_deep:
             return
 
         if state.is_in_code_block():
