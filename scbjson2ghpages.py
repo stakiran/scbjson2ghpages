@@ -239,10 +239,11 @@ if __name__ == '__main__':
 
     filename = args.input
 
+    s = file2str(filename)
+    obj = str2obj(s)
+    proj = Project(obj)
+
     if args.page_to_scb:
-        s = file2str(filename)
-        obj = str2obj(s)
-        proj = Project(obj)
         seeker = PageSeeker(proj)
         page = seeker.get(args.page_to_scb)
         print(page.rawstring)
