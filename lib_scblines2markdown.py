@@ -559,8 +559,9 @@ def convert_step2(step1_converted_lines):
             outlines.append(ADD_LINEFEED)
 
         # (B)
-        #if not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1:
-        if not is_prev_in_list and cur_indentdepth>1:
+        is_satisfied_B = not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1
+        is_satisfied_B_case_of_start_of_tabe = not is_prev_in_list and cur_indentdepth>1 and is_cur_start_of_table
+        if is_satisfied_B or is_satisfied_B_case_of_start_of_tabe:
             DUMMYLIST_CONTENT = '...'
             dummylist = create_dummylist(cur_indentdepth, DUMMYLIST_CONTENT)
             outlines.extend(dummylist)
