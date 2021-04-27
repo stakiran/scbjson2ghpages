@@ -223,8 +223,8 @@ def save_one_file(markdown_lines, pagename, basedir):
     filename = '{}.md'.format(pagename)
     filepath = os.path.join(basedir, filename)
 
-    #list2file(filepath, markdown_lines)
-    print('save {} lines to "{}".'.format(len(markdown_lines), filepath))
+    list2file(filepath, markdown_lines)
+    #print('save {} lines to "{}".'.format(len(markdown_lines), filepath))
 
 def convert_and_save_all(project, basedir):
     for page in project.pages:
@@ -278,4 +278,6 @@ if __name__ == '__main__':
         sys.exit(0)
 
     BASEDIR = os.path.join(MYDIR, OUTDIR)
+    if not(os.path.isdir(BASEDIR)):
+        raise RuntimeError('docs/ dir not found...')
     convert_and_save_all(proj, BASEDIR)
