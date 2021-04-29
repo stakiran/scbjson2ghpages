@@ -790,7 +790,8 @@ def line_to_start_of_codeblock_if_possible(line):
         return line
 
     # 1
-    prefix, langname_part = newline.split('```')
+    MULTI_3BQ_IS_NO_NEED_TO_ASSUME = 1
+    prefix, langname_part = newline.split('```', MULTI_3BQ_IS_NO_NEED_TO_ASSUME)
     splitted_by_dot = langname_part.split('.')
     has_not_extension = len(splitted_by_dot)==1
     if has_not_extension:
