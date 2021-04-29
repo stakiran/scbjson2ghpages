@@ -390,6 +390,27 @@ class Moder:
 
         return False
 
+def fix_filename_to_windows_compatible(filename):
+    afterstr = '_'
+    newname = _fix_filename_to_windows_compatible_minimum(filename, afterstr)
+
+    newname = newname.replace(' ', afterstr)
+
+    return newname
+
+def _fix_filename_to_windows_compatible_minimum(filename, afterstr):
+    newname = filename
+    newname = newname.replace('\\', afterstr)
+    newname = newname.replace('/', afterstr)
+    newname = newname.replace(':', afterstr)
+    newname = newname.replace('*', afterstr)
+    newname = newname.replace('?', afterstr)
+    newname = newname.replace('"', afterstr)
+    newname = newname.replace('>', afterstr)
+    newname = newname.replace('<', afterstr)
+    newname = newname.replace('|', afterstr)
+    return newname
+
 def count_indentdepth(line):
     i = 0
     while line[i:i+1]==' ':

@@ -237,7 +237,7 @@ def convert_and_save_all(project, basedir, args):
         scblines = page_inst.lines
 
         if use_dryrun:
-            print('page "{}", '.format(pagename), end='')
+            print('No.{:05d} page "{}", '.format(i+1, pagename), end='')
         markdown_lines = convert_one_page(scblines)
 
         save_one_file(markdown_lines, pagename, basedir, use_dryrun)

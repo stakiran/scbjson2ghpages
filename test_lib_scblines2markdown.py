@@ -589,5 +589,25 @@ class TestFuncs(unittest.TestCase):
         expect = '        - aaa'
         self.assertEqual(f('aaa', cur_indentdepth), expect)
 
+
+    def test_fix_filename_to_windows_compatible(self):
+        f = LIB.fix_filename_to_windows_compatible
+
+        input  = 'scrapboxToMarkdown.md'
+        expect = input
+        self.assertEqual(f(input), expect)
+
+        input  = 'scrapbox to markdown.md'
+        expect = 'scrapbox_to_markdown.md'
+        self.assertEqual(f(input), expect)
+
+        input  = 'scrapbox -> markdown.md'
+        expect = 'scrapbox_-__markdown.md'
+        self.assertEqual(f(input), expect)
+
+        input  = 'allstars \\/:*?"<>|$%&,.;'
+        expect = 'allstars__________$%&,.;'
+        self.assertEqual(f(input), expect)
+
 if __name__ == '__main__':
     unittest.main()
