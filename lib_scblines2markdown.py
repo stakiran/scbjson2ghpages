@@ -903,6 +903,7 @@ RE_LINK_ANOTHER_PAGE = re.compile(r'\[([^\-\*/])(.+?)\]([^\(]|$)')
 RE_LINK_URL_TEXT = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(.+?)\]')
 RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
 RE_LINK_MEDIAURL = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
+RE_LINK_URL_ONLY = re.compile(r'(^| )(http)(s){0,1}(\:\/\/)(.+?)( |$)')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_context):
@@ -1029,6 +1030,11 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
     newline = re.sub(RE_LINK_MEDIAURL, '[media](\\1\\2\\3\\4)', newline)
 
     newline = re.sub(RE_LINK_ANOTHER_PAGE, '[\\1\\2](\\1\\2.md)\\3', newline)
+
+    # Jekyll
+    # - url 直書きを <> で囲む
+
+    newline = re.sub(RE_LINK_URL_ONLY, '\\1<\\2\\3\\4\\5>\\6', newline)
 
     # 装飾系単体
 
