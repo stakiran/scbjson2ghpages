@@ -411,7 +411,6 @@ def _fix_filename_to_windows_compatible_minimum(filename, afterstr):
     newname = newname.replace('|', afterstr)
     return newname
 
-
 RE_MARKDOWN_LINK = re.compile(r'\[(.+?)\]\((.+?)\)')
 def get_linkee_filename_from_markdown_line(line):
     filenames = []
@@ -1055,6 +1054,19 @@ def _icon_grammer_to_img_tag(line):
 
     return newline
 
+def _linkee_filename_to_windows_compatible(line):
+    target_filenames = get_linkee_filename_from_markdown_line(line)
+    if len(target_filenames)==0:
+        return line
+
+    newline = line
+    for target_filename in target_filenames:
+        windows_compatible_filename = fix_filename_to_windows_compatible(target_filename)
+        beforestr = '(' + target_filename + ')'
+        afterstr = windows_compatible_filename
+        newline = newline.replace(beforestr, afterstr)
+    return newline
+
 def convert_step3(step2_converted_lines):
     # step3: インラインの Scrapbox 記法を Markdown のものに変換
 
@@ -1077,9 +1089,9 @@ def convert_step3(step2_converted_lines):
             markdown_line = either_line_or_tablestarterset
             table_separator = ''
 
-        markdown_line_without_icon_grammer = _icon_grammer_to_img_tag(markdown_line)
+        markdown_line = _icon_grammer_to_img_tag(markdown_line)
+        outlines.append(markdown_line)
 
-        outlines.append(markdown_line_without_icon_grammer)
         if table_separator:
             outlines.append(table_separator)
 
