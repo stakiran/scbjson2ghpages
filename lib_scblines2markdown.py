@@ -1063,7 +1063,7 @@ def _linkee_filename_to_windows_compatible(line):
     for target_filename in target_filenames:
         windows_compatible_filename = fix_filename_to_windows_compatible(target_filename)
         beforestr = '(' + target_filename + ')'
-        afterstr = windows_compatible_filename
+        afterstr = '(' + windows_compatible_filename + ')'
         newline = newline.replace(beforestr, afterstr)
     return newline
 
@@ -1090,6 +1090,7 @@ def convert_step3(step2_converted_lines):
             table_separator = ''
 
         markdown_line = _icon_grammer_to_img_tag(markdown_line)
+        markdown_line = _linkee_filename_to_windows_compatible(markdown_line)
         outlines.append(markdown_line)
 
         if table_separator:
