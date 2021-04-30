@@ -904,7 +904,7 @@ RE_LINK_URL_TEXT = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(.+?)\]')
 RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
 RE_LINK_MEDIAURL = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_LINK_URL_ONLY = re.compile(r'(^| )(http)(s){0,1}(\:\/\/)(.+?)( |$)')
-RE_PIPE_IN_LINK_TEXT = re.compile(r'(\[)(.+?)(\|)(.+?)(\])')
+RE_PIPE_IN_LINK_TEXT = re.compile(r'(\[)(.+?)(\|)')
 RE_BOLD = re.compile(r'\[\*+( )(.+?)\]')
 RE_STRIKE = re.compile(r'\[\-( )(.+?)\]')
 def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_context):
@@ -1035,9 +1035,11 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
     # Jekyll
     # - url 直書きを <> で囲む
     # - [この中に含まれるパイプを-にする](url)
+    #   - 再帰的にn回実行する良い方法が思いつかないので, Amazonのパイプ4個をベースに決め打ち
 
     newline = re.sub(RE_LINK_URL_ONLY, '\\1<\\2\\3\\4\\5>\\6', newline)
-    newline = re.sub(RE_PIPE_IN_LINK_TEXT, '\\1\\2-\\4\\5', newline)
+    for _ in range(5):
+        newline = re.sub(RE_PIPE_IN_LINK_TEXT, '\\1\\2-', newline)
 
     # 装飾系単体
 
