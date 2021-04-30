@@ -628,5 +628,13 @@ class TestFuncs(unittest.TestCase):
         expect = ['head.md', 'ちゅーかん.md', 'matubi.md']
         self.assertEqual(f(input), expect)
 
+        input  = '[urlは変えません](https://github.com/stakiran/scbjson2ghpages/)'
+        expect = []
+        self.assertEqual(f(input), expect)
+
+        input  = '[markdownファイル以外へのリンクも変えません](aaa) ああ [markdownファイル以外へのリンクも変えません](aaa.txt)'
+        expect = []
+        self.assertEqual(f(input), expect)
+
 if __name__ == '__main__':
     unittest.main()

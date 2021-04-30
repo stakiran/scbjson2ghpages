@@ -425,13 +425,22 @@ def get_linkee_filename_from_markdown_line(line):
             return
 
         # [text](filename)
-        # textは奇数番目なので無視する
+        # - textは奇数番目なので無視する
+        # - filename として xxx.md のみ想定する
         for i,group in enumerate(groups):
             no = i+1
             is_the_current_number_odd = no%2==1
             if is_the_current_number_odd:
                 continue
             filename = group
+
+            is_no_markdown_extension = len(filename)<4
+            if is_no_markdown_extension:
+                continue
+            is_no_markdown_extension = filename[-3:].lower()!='.md'
+            if is_no_markdown_extension:
+                continue
+
             filenames.append(filename)
         return
 
