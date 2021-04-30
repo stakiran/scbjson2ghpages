@@ -219,8 +219,8 @@ def convert_one_page(scblines):
     return markdown_lines
 
 def save_one_file(markdown_lines, pagename, basedir, use_dryrun):
-    # @todo lib側で実装予定の「ページ名から "有効なファイル名" に変換する」処理を使う
-    filename = '{}.md'.format(pagename)
+    filename_based_on_pagename = '{}.md'.format(pagename)
+    filename = lib_scblines2markdown.fix_filename_to_windows_compatible(filename_based_on_pagename)
     filepath = os.path.join(basedir, filename)
 
     if use_dryrun:
