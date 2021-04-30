@@ -83,5 +83,8 @@ class TestModer(unittest.TestCase):
     def test_nestedblock(self):
         self._test_onepage('nested_block')
 
+    def test_jekyllproblem(self):
+        self._test_onepage('jekyll_problem')
+
 if __name__ == '__main__':
     unittest.main()
