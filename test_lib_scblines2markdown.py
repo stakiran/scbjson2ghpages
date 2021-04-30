@@ -609,5 +609,24 @@ class TestFuncs(unittest.TestCase):
         expect = 'allstars__________$%&,.;'
         self.assertEqual(f(input), expect)
 
+    def test_get_linkee_filename_from_markdown_line(self):
+        f = LIB.get_linkee_filename_from_markdown_line
+
+        input  = 'リンクがないline'
+        expect = []
+        self.assertEqual(f(input), expect)
+
+        input  = 'リンクが[一つだけある](一つだけある.md)line'
+        expect = ['一つだけある.md']
+        self.assertEqual(f(input), expect)
+
+        input  = '- リストだけど[リンク](aaa.md)、ちなみに[リンク2](bbb.md)複数回も問題ないよね？'
+        expect = ['aaa.md', 'bbb.md']
+        self.assertEqual(f(input), expect)
+
+        input  = '[先頭](head.md)ああ [中間](ちゅーかん.md) ああ[末尾](matubi.md)'
+        expect = ['head.md', 'ちゅーかん.md', 'matubi.md']
+        self.assertEqual(f(input), expect)
+
 if __name__ == '__main__':
     unittest.main()

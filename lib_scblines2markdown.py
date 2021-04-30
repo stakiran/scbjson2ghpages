@@ -411,6 +411,34 @@ def _fix_filename_to_windows_compatible_minimum(filename, afterstr):
     newname = newname.replace('|', afterstr)
     return newname
 
+
+RE_MARKDOWN_LINK = re.compile(r'\[(.+?)\]\((.+?)\)')
+def get_linkee_filename_from_markdown_line(line):
+    filenames = []
+
+    def repl(match_object):
+        groups = match_object.groups()
+        if len(groups)==0:
+            return
+
+        is_count_odd = len(groups)%2==1
+        if is_count_odd:
+            return
+
+        # [text](filename)
+        # textは奇数番目なので無視する
+        for i,group in enumerate(groups):
+            no = i+1
+            is_the_current_number_odd = no%2==1
+            if is_the_current_number_odd:
+                continue
+            filename = group
+            filenames.append(filename)
+        return
+
+    re.sub(RE_MARKDOWN_LINK, repl, line)
+    return filenames
+
 def count_indentdepth(line):
     i = 0
     while line[i:i+1]==' ':
