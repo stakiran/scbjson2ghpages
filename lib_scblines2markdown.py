@@ -1048,11 +1048,12 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
 
     return newline
 
-RE_ICON_TO_REMOVE = re.compile(r'\(.+?\.icon(\*[0-9]+){0,1}\.md\)')
+RE_ICON_TO_REMOVE = re.compile(r'(\])\(.+?\.icon(\*[0-9]+){0,1}(\.md){0,1}\)')
 RE_ICON_TO_REPLACE = re.compile(r'\[(.+?)(\.icon)(\*[0-9]+){0,1}\]')
 def _icon_grammer_to_img_tag(line):
     # icon記法は普通のリンクとして処理されているので, 以下のようになっている.
     #   [sta.icon*3](sta.icon*3.md)
+    #   [/icons/Twitter.icon](https://scrapbox.io/icons/Twitter.icon)
     # そのままだと鬱陶しいので, ひとまず :emoji: にしておく.
     #
     # Q:icon*3 のような n-repeat は反映しない?
@@ -1064,7 +1065,8 @@ def _icon_grammer_to_img_tag(line):
     # [sta.icon*3](sta.icon*3.md)
     #             ^^^^^^^^^^^^^^^
     #             まずこっちは要らないので消す
-    newline = re.sub(RE_ICON_TO_REMOVE, '', newline)
+    newline = re.sub(RE_ICON_TO_REMOVE, '\\1', newline)
+    print(newline)
 
     # [sta.icon*3]
     #   |
