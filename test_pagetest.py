@@ -71,19 +71,19 @@ class TestModer(unittest.TestCase):
     def test_page(self):
         self._test_onepage('page')
 
-    def xtest_image(self):
+    def test_image(self):
         self._test_onepage('image')
 
-    def xtest_codeblock(self):
+    def test_codeblock(self):
         self._test_onepage('codeblock')
 
-    def xtest_table(self):
+    def test_table(self):
         self._test_onepage('table')
 
-    def xtest_nestedblock(self):
+    def test_nestedblock(self):
         self._test_onepage('nested_block')
 
-    def xtest_jekyllproblem(self):
+    def test_jekyllproblem(self):
         self._test_onepage('jekyll_problem')
 
     def test_iconproblem(self):
