@@ -900,6 +900,8 @@ RE_QUOTE = re.compile(r'^( )*\>(.+)')
 RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
 RE_LINK_ANOTHER_PROJECT = re.compile(r'\[/(.+?)\]')
 RE_LINK_ANOTHER_PAGE = re.compile(r'\[([^\-\*/])(.+?)\]([^\(]|$)')
+RE_IMAGELINK_GYAZOURL_URL = re.compile(r'\[(https\:\/\/gyazo\.com\/)(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
+RE_IMAGELINK_URL_GYAZOURL = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(https\:\/\/gyazo\.com\/)(.+?)\]')
 RE_LINK_URL_TEXT = re.compile(r'\[http(s){0,1}\:\/\/(.+?)( )(.+?)\]')
 RE_LINK_TEXT_URL = re.compile(r'\[(.+?)( )http(s){0,1}\:\/\/(.+?)\]')
 RE_LINK_MEDIAURL = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
@@ -1017,6 +1019,7 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
     # link to another page の正規表現が扱える集合がえぐいので, 以下戦略を取る.
     # - 1: まずは限定的なリンク表記から処理する
     #      メディアもリンクの一種として扱う(記法が本質的にリンクと同じ)
+    #      画像は gyazo url なら /raw つければアクセスできるので画像記法にしてしまう
     # - 2: 最後に link to another page を処理する
     #      このとき, 1: で処理した分は markdown link 書式になっているため
     #      ] の直後に ( が来ないパターンを弾くことで 1: を弾ける
@@ -1024,6 +1027,9 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
     newline = re.sub(RE_HASHTAG, '\\1[#\\2](\\2.md)\\3', newline)
 
     newline = re.sub(RE_LINK_ANOTHER_PROJECT, '[/\\1](https://scrapbox.io/\\1)', newline)
+
+    newline = re.sub(RE_IMAGELINK_GYAZOURL_URL, '<a href="http\\4://\\5" target="_blank" rel="noopener noreferrer">![](\\1\\2/raw)</a>', newline)
+    newline = re.sub(RE_IMAGELINK_URL_GYAZOURL, '<a href="http\\1://\\2" target="_blank" rel="noopener noreferrer">![](\\4\\5/raw)</a>', newline)
 
     newline = re.sub(RE_LINK_URL_TEXT, '[\\4](http\\1://\\2)', newline)
     newline = re.sub(RE_LINK_TEXT_URL, '[\\1](http\\3://\\4)', newline)
