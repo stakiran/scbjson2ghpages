@@ -68,7 +68,7 @@ class TestModer(unittest.TestCase):
 
         LIB.dp_all_off()
 
-    def xtest_page(self):
+    def test_page(self):
         self._test_onepage('page')
 
     def xtest_image(self):
