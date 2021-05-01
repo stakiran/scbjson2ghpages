@@ -918,10 +918,6 @@ def scb_to_markdown_in_line(line, cur_indentdepth, inblockstate_user, lines_cont
     #   Ans: しない.
     #        個人的に使っていないから
     #        実装がだるいから(特に link in dcoration の部分)
-    #
-    # Q:画像はサポートしない？
-    #   Ans: しない.
-    #        実装が難しい(Gyazo APIからデータ取ってきて整形する等)ので今はしない.
 
     newline = line
 
