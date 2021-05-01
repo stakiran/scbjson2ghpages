@@ -1066,7 +1066,6 @@ def _icon_grammer_to_img_tag(line):
     #             ^^^^^^^^^^^^^^^
     #             まずこっちは要らないので消す
     newline = re.sub(RE_ICON_TO_REMOVE, '', newline)
-    print(newline)
 
     # [sta.icon*3]
     #   |
