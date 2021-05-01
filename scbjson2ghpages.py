@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+import copy
 import datetime
 import json
 import os
@@ -242,6 +243,37 @@ def convert_and_save_all(project, basedir, args):
 
         save_one_file(markdown_lines, pagename, basedir, use_dryrun)
 
+def save_one_special_pages(page_insts, basedir, basename):
+    filename = '{}.md'.format(basename)
+    filepath = os.path.join(basedir, filename)
+
+    outlines = []
+    for i,page_inst in enumerate(page_insts):
+        no = i+1
+        pagename = page_inst.title
+        filename_of_this_page = '{}.md'.format(pagename)
+        filename_of_this_page = lib_scblines2markdown.fix_filename_to_windows_compatible(filename_of_this_page)
+
+        outline = '- {:05d} [{}]({})'.format(no, pagename, filename_of_this_page)
+        outlines.append(outline)
+
+    list2file(filepath, outlines)
+
+def generate_and_save_special_pages(project, basedir, args):
+    use_dryrun = args.dryrun
+    if use_dryrun:
+        return
+
+    page_insts = []
+    for page in project.pages:
+        page_inst = Page(page, project.name)
+        page_insts.append(page_inst)
+
+    def title_by_asc_f(page):
+        return page.title
+    new_insts = sorted(page_insts, key=title_by_asc_f) 
+    save_one_special_pages(new_insts, basedir, 'index_title_by_asc')
+
 def ________Argument________():
     pass
 
@@ -257,6 +289,8 @@ def parse_arguments():
 
     parser.add_argument('--page-to-scb', default=None, type=str,
         help='A page name to output the normalized contents .scb file.')
+    parser.add_argument('--only-specials', default=False, action='store_true',
+        help='If True, do generate special pages only. About pages, will be not generated.')
 
     parser.add_argument('--dryrun', default=False, action='store_true',
         help='If True, not save but display lines and filepath.')
@@ -289,4 +323,9 @@ if __name__ == '__main__':
     BASEDIR = os.path.join(MYDIR, OUTDIR)
     if not(os.path.isdir(BASEDIR)):
         raise RuntimeError('docs/ dir not found...')
+
+    generate_and_save_special_pages(proj, BASEDIR, args)
+    if args.only_specials:
+        sys.exit(0)
+
     convert_and_save_all(proj, BASEDIR, args)
