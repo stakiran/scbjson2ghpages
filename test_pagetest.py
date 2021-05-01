@@ -89,5 +89,8 @@ class TestModer(unittest.TestCase):
     def test_iconproblem(self):
         self._test_onepage('icon記法problem')
 
+    def test_image_and_link_problem(self):
+        self._test_onepage('image_and_link')
+
 if __name__ == '__main__':
     unittest.main()
