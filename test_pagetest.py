@@ -86,5 +86,8 @@ class TestModer(unittest.TestCase):
     def test_jekyllproblem(self):
         self._test_onepage('jekyll_problem')
 
+    def test_iconproblem(self):
+        self._test_onepage('icon記法problem')
+
 if __name__ == '__main__':
     unittest.main()
