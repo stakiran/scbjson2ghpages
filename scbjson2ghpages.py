@@ -288,6 +288,22 @@ class Special_LineCount(SpecialPageInterface):
     def basename(self):
         return 'index_linecount'
 
+class Special_BodyLength(SpecialPageInterface):
+    def __init__(self):
+        super().__init__()
+
+    def sortkey_function(self, page_inst):
+        return len(page_inst.rawstring)
+
+    def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
+        bodylength = self.sortkey_function(page_inst)
+        outline = '- {} 文字: [{}]({})'.format(bodylength, pagename, filename_of_this_page)
+        return outline
+
+    @property
+    def basename(self):
+        return 'index_bodylength'
+
 def save_one_special_pages(page_insts, basedir, special_page_interface):
     basename = special_page_interface.basename
     filename = '{}.md'.format(basename)
@@ -320,6 +336,10 @@ def generate_and_save_special_pages(project, basedir, args):
     save_one_special_pages(new_insts, basedir, specialpage)
 
     specialpage = Special_LineCount()
+    new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
+    save_one_special_pages(new_insts, basedir, specialpage)
+
+    specialpage = Special_BodyLength()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
     save_one_special_pages(new_insts, basedir, specialpage)
 
