@@ -243,7 +243,53 @@ def convert_and_save_all(project, basedir, args):
 
         save_one_file(markdown_lines, pagename, basedir, use_dryrun)
 
-def save_one_special_pages(page_insts, basedir, basename):
+class SpecialPageInterface:
+    def __init__(self):
+        pass
+
+    def sortkey_function(self, page_inst):
+        raise NotImplementedError()
+
+    def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
+        raise NotImplementedError()
+
+    @property
+    def basename(self):
+        raise NotImplementedError()
+
+class Special_TitleByAsc(SpecialPageInterface):
+    def __init__(self):
+        super().__init__()
+
+    def sortkey_function(self, page_inst):
+        return page_inst.title
+
+    def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
+        outline = '- {:05d} [{}]({})'.format(no, pagename, filename_of_this_page)
+        return outline
+
+    @property
+    def basename(self):
+        return 'index_title_by_asc'
+
+class Special_LineCount(SpecialPageInterface):
+    def __init__(self):
+        super().__init__()
+
+    def sortkey_function(self, page_inst):
+        return len(page_inst.lines)
+
+    def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
+        linecount = self.sortkey_function(page_inst)
+        outline = '- {} lines: [{}]({})'.format(linecount, pagename, filename_of_this_page)
+        return outline
+
+    @property
+    def basename(self):
+        return 'index_linecount'
+
+def save_one_special_pages(page_insts, basedir, special_page_interface):
+    basename = special_page_interface.basename
     filename = '{}.md'.format(basename)
     filepath = os.path.join(basedir, filename)
 
@@ -254,7 +300,7 @@ def save_one_special_pages(page_insts, basedir, basename):
         filename_of_this_page = '{}.md'.format(pagename)
         filename_of_this_page = lib_scblines2markdown.fix_filename_to_windows_compatible(filename_of_this_page)
 
-        outline = '- {:05d} [{}]({})'.format(no, pagename, filename_of_this_page)
+        outline = special_page_interface.generate_outline(no, pagename, filename_of_this_page, page_inst)
         outlines.append(outline)
 
     list2file(filepath, outlines)
@@ -269,15 +315,13 @@ def generate_and_save_special_pages(project, basedir, args):
         page_inst = Page(page, project.name)
         page_insts.append(page_inst)
 
-    def title_by_asc_f(page):
-        return page.title
-    new_insts = sorted(page_insts, key=title_by_asc_f) 
-    save_one_special_pages(new_insts, basedir, 'index_title_by_asc')
+    specialpage = Special_TitleByAsc()
+    new_insts = sorted(page_insts, key=specialpage.sortkey_function) 
+    save_one_special_pages(new_insts, basedir, specialpage)
 
-    def linecount_f(page):
-        return len(page.lines)
-    new_insts = sorted(page_insts, key=linecount_f, reverse=True) 
-    save_one_special_pages(new_insts, basedir, 'index_linecount')
+    specialpage = Special_LineCount()
+    new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
+    save_one_special_pages(new_insts, basedir, specialpage)
 
 def ________Argument________():
     pass
