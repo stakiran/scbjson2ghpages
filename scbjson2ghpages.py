@@ -353,6 +353,34 @@ def save_index_page(lines, basedir):
     filepath = os.path.join(basedir, filename)
     list2file(filepath, lines)
 
+def generate_index_contents(project, specialpages):
+    outlines = []
+
+    outlines.append('# {}'.format(project.display_name))
+
+    outlines.append('- 案内ページ')
+    outlines.append('    - [このサイトについて](このサイトについて.md)')
+    outlines.append('    - [プロフィール](プロフィール.md)')
+
+    outlines.append('- 一覧ページ')
+    for specialpage in specialpages:
+        filename = '{}.md'.format(specialpage.basename)
+        text = specialpage.short_description
+        line = '    - [{}]({})'.format(text, filename)
+        outlines.append(line)
+
+    outlines.append('')
+
+    outlines.append('All {} pages.'.format(len(project.pages)))
+    outlines.append('')
+    outlines.append('Generated at {}, by {} from {}'.format(
+        today_datetimestr(),
+        '[scbjson2ghpages](https://github.com/stakiran/scbjson2ghpages)',
+        '[scrapbox/sta](https://scrapbox.io/sta/)',
+    ))
+
+    return outlines
+
 def generate_and_save_special_pages(project, basedir, args):
     use_dryrun = args.dryrun
     if use_dryrun:
@@ -380,19 +408,7 @@ def generate_and_save_special_pages(project, basedir, args):
     save_one_special_pages(new_insts, basedir, specialpage)
     specialpages.append(specialpage)
 
-    index_lines = []
-    index_lines.append('# {}'.format(project.display_name))
-    for specialpage in specialpages:
-        filename = '{}.md'.format(specialpage.basename)
-        text = specialpage.short_description
-        line = '- [{}]({})'.format(text, filename)
-        index_lines.append(line)
-    index_lines.append('')
-    index_lines.append('All {} pages, and generated at {}'.format(
-        len(project.pages),
-        today_datetimestr(),
-    ))
-    index_lines.append('')
+    index_lines = generate_index_contents(project, specialpages)
     save_index_page(index_lines, basedir)
 
 def ________Argument________():
