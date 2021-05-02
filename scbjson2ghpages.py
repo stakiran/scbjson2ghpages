@@ -40,6 +40,17 @@ def count_first_space_or_tab(s):
         break
     return count
 
+def today_datetimestr():
+    todaydt = datetime.datetime.today()
+    datestr = todaydt.strftime('%Y/%m/%d')
+    timestr = todaydt.strftime('%H:%M:%S')
+
+    wd =  todaydt.weekday()
+    dow_j = ['月',"火", "水", "木","金","土","日"][wd]
+    dow_e = ['Mon',"Tue","Wed","Thu","Fri","Sat","Sun"][wd]
+
+    return '{}({}) {}'.format(datestr, dow_j, timestr)
+
 def ________Wrapper________():
     pass
 
@@ -370,11 +381,18 @@ def generate_and_save_special_pages(project, basedir, args):
     specialpages.append(specialpage)
 
     index_lines = []
+    index_lines.append('# {}'.format(project.display_name))
     for specialpage in specialpages:
         filename = '{}.md'.format(specialpage.basename)
         text = specialpage.short_description
         line = '- [{}]({})'.format(text, filename)
         index_lines.append(line)
+    index_lines.append('')
+    index_lines.append('All {} pages, and generated at {}'.format(
+        len(project.pages),
+        today_datetimestr(),
+    ))
+    index_lines.append('')
     save_index_page(index_lines, basedir)
 
 def ________Argument________():
