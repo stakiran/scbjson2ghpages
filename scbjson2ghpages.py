@@ -274,6 +274,11 @@ def generate_and_save_special_pages(project, basedir, args):
     new_insts = sorted(page_insts, key=title_by_asc_f) 
     save_one_special_pages(new_insts, basedir, 'index_title_by_asc')
 
+    def linecount_f(page):
+        return len(page.lines)
+    new_insts = sorted(page_insts, key=linecount_f, reverse=True) 
+    save_one_special_pages(new_insts, basedir, 'index_linecount')
+
 def ________Argument________():
     pass
 
