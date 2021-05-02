@@ -281,7 +281,7 @@ class Special_LineCount(SpecialPageInterface):
 
     def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
         linecount = self.sortkey_function(page_inst)
-        outline = '- {} lines: [{}]({})'.format(linecount, pagename, filename_of_this_page)
+        outline = '- {} 行: [{}]({})'.format(linecount, pagename, filename_of_this_page)
         return outline
 
     @property
