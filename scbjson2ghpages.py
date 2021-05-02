@@ -257,6 +257,10 @@ class SpecialPageInterface:
     def basename(self):
         raise NotImplementedError()
 
+    @property
+    def short_description(self):
+        raise NotImplementedError()
+
 class Special_TitleByAsc(SpecialPageInterface):
     def __init__(self):
         super().__init__()
@@ -271,6 +275,10 @@ class Special_TitleByAsc(SpecialPageInterface):
     @property
     def basename(self):
         return 'index_title_by_asc'
+
+    @property
+    def short_description(self):
+        return 'ページタイトル昇順'
 
 class Special_LineCount(SpecialPageInterface):
     def __init__(self):
@@ -288,6 +296,10 @@ class Special_LineCount(SpecialPageInterface):
     def basename(self):
         return 'index_linecount'
 
+    @property
+    def short_description(self):
+        return 'ページ行数降順'
+
 class Special_BodyLength(SpecialPageInterface):
     def __init__(self):
         super().__init__()
@@ -303,6 +315,10 @@ class Special_BodyLength(SpecialPageInterface):
     @property
     def basename(self):
         return 'index_bodylength'
+
+    @property
+    def short_description(self):
+        return 'ページ文字数降順'
 
 def save_one_special_pages(page_insts, basedir, special_page_interface):
     basename = special_page_interface.basename
@@ -321,6 +337,11 @@ def save_one_special_pages(page_insts, basedir, special_page_interface):
 
     list2file(filepath, outlines)
 
+def save_index_page(lines, basedir):
+    filename = 'index.md'
+    filepath = os.path.join(basedir, filename)
+    list2file(filepath, lines)
+
 def generate_and_save_special_pages(project, basedir, args):
     use_dryrun = args.dryrun
     if use_dryrun:
@@ -331,17 +352,30 @@ def generate_and_save_special_pages(project, basedir, args):
         page_inst = Page(page, project.name)
         page_insts.append(page_inst)
 
+    specialpages = []
+
     specialpage = Special_TitleByAsc()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function) 
     save_one_special_pages(new_insts, basedir, specialpage)
+    specialpages.append(specialpage)
 
     specialpage = Special_LineCount()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
     save_one_special_pages(new_insts, basedir, specialpage)
+    specialpages.append(specialpage)
 
     specialpage = Special_BodyLength()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
     save_one_special_pages(new_insts, basedir, specialpage)
+    specialpages.append(specialpage)
+
+    index_lines = []
+    for specialpage in specialpages:
+        filename = '{}.md'.format(specialpage.basename)
+        text = specialpage.short_description
+        line = '- [{}]({})'.format(text, filename)
+        index_lines.append(line)
+    save_index_page(index_lines, basedir)
 
 def ________Argument________():
     pass
