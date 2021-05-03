@@ -252,6 +252,7 @@ def convert_and_save_all(project, basedir, args):
             print('No.{:05d} page "{}", '.format(i+1, pagename), end='')
         markdown_lines = convert_one_page(scblines)
 
+        markdown_lines.insert(0, '## {}'.format(pagename))
         save_one_file(markdown_lines, pagename, basedir, use_dryrun)
 
 class SpecialPageInterface:
