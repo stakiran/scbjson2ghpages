@@ -427,7 +427,7 @@ def fix_filename_to_jekyll_compatible(filename):
     # - 全角英数字は全部半角になる
     # これはそのまま半角に合わせる
     # 
-    # - . や # で始まるファイル名は認識されない
+    # - _ や . や # で始まるファイル名は認識されない
     # これは jekyll configuration 側の include でワイルドカード使えないせいできりがないので
     # 先頭に - を付与することで回避する
 
@@ -441,7 +441,7 @@ def fix_filename_to_jekyll_compatible(filename):
     newname = zenkaku2hankaku(newname)
 
     firstchar = newname[0]
-    if firstchar=='.' or firstchar=='#':
+    if firstchar=='.' or firstchar=='#' or firstchar=='_':
         newname = '-'+newname
 
     return newname
