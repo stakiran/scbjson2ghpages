@@ -412,7 +412,10 @@ def fix_filename_to_ghpages_compatible(filename):
 
 def fix_filename_to_jekyll_compatible(filename):
     # jekyll 側で施される謎挙動を吸収する.
-    # [](ここで使われている一部文字.md) が [](勝手に変換されてしまう.html)
+    # - [](ここで使われている一部文字.md) が [](勝手に変換されてしまう.html)
+    # - jekyll 側でどこで誰が処理してるかもわからないので, 観測ベースで対応していく方針
+
+    # 謎挙動とその対処
     #
     # - ？ が %3F になる
     # - ！ が ! になる
