@@ -417,16 +417,20 @@ def fix_filename_to_jekyll_compatible(filename):
     # - ？ が %3F になる
     # - ！ が ! になる
     # - 全角スペースが %E3%80%80 になる
-    #
     # - () はそもそも解釈されない(.html に変換されずにスルーされる)
+    # etc
+    # これは全部 _ に置き換えてしまう.
     #
     # - 全角英数字は全部半角になる
-    # ...
+    # これはそのまま半角に合わせる
     # 
-    # 謎挙動が起こらないよう, 全部 _ に置き換えてしまう作戦.
+    # - . や # で始まるファイル名は認識されない
+    # これは jekyll configuration 側の include でワイルドカード使えないせいできりがないので
+    # 先頭に - を付与することで回避する
+
     newname = filename
 
-    invalid_chars = ['(', ')', '（', '）', '！', '？', '　']
+    invalid_chars = ['(', ')', '（', '）', '！', '？', '　', '～']
     afterstr = '_'
     for invalid_char in invalid_chars:
         newname = newname.replace(invalid_char, afterstr)
