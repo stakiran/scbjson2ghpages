@@ -437,6 +437,10 @@ def fix_filename_to_jekyll_compatible(filename):
 
     newname = zenkaku2hankaku(newname)
 
+    firstchar = newname[0]
+    if firstchar=='.' or firstchar=='#':
+        newname = '-'+newname
+
     return newname
 
 def fix_filename_to_windows_compatible(filename):
