@@ -390,6 +390,19 @@ class Moder:
 
         return False
 
+def zenkaku2hankaku(s):
+    ret = s
+    ret = ret.replace('　', '  ')
+
+    before_strs = 'ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ０１２３４５６７８９'
+    after_strs  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    for i, char in enumerate(before_strs):
+        after_c = after_strs[i]
+        before_c = char
+        ret = ret.replace(before_c, after_c)
+
+    return ret
+
 def fix_filename_to_ghpages_compatible(filename):
     newname = filename
     newname = fix_filename_to_jekyll_compatible(newname)
@@ -404,15 +417,22 @@ def fix_filename_to_jekyll_compatible(filename):
     # - ？ が %3F になる
     # - ！ が ! になる
     # - 全角スペースが %E3%80%80 になる
+    #
     # - () はそもそも解釈されない(.html に変換されずにスルーされる)
+    #
+    # - 全角英数字は全部半角になる
     # ...
     # 
     # 謎挙動が起こらないよう, 全部 _ に置き換えてしまう作戦.
     newname = filename
+
     invalid_chars = ['(', ')', '（', '）', '！', '？', '　']
     afterstr = '_'
     for invalid_char in invalid_chars:
         newname = newname.replace(invalid_char, afterstr)
+
+    newname = zenkaku2hankaku(newname)
+
     return newname
 
 def fix_filename_to_windows_compatible(filename):
