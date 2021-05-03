@@ -341,7 +341,7 @@ def save_one_special_pages(page_insts, basedir, special_page_interface):
         no = i+1
         pagename = page_inst.title
         filename_of_this_page = '{}.md'.format(pagename)
-        filename_of_this_page = lib_scblines2markdown.fix_filename_to_windows_compatible(filename_of_this_page)
+        filename_of_this_page = lib_scblines2markdown.fix_filename_to_ghpages_compatible(filename_of_this_page)
 
         outline = special_page_interface.generate_outline(no, pagename, filename_of_this_page, page_inst)
         outlines.append(outline)

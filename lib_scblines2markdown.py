@@ -390,6 +390,17 @@ class Moder:
 
         return False
 
+def fix_filename_to_ghpages_compatible(filename):
+    newname = filename
+    newname = fix_filename_to_jekyll_compatible(newname)
+    newname = fix_filename_to_windows_compatible(newname)
+
+    return newname
+
+def fix_filename_to_jekyll_compatible(filename):
+    newname = filename
+    return newname
+
 def fix_filename_to_windows_compatible(filename):
     afterstr = '_'
     newname = _fix_filename_to_windows_compatible_minimum(filename, afterstr)
@@ -1080,16 +1091,16 @@ def _icon_grammer_to_img_tag(line):
 
     return newline
 
-def _linkee_filename_to_windows_compatible(line):
+def _linkee_filename_to_compatible(line):
     target_filenames = get_linkee_filename_from_markdown_line(line)
     if len(target_filenames)==0:
         return line
 
     newline = line
     for target_filename in target_filenames:
-        windows_compatible_filename = fix_filename_to_windows_compatible(target_filename)
+        compatible_filename = fix_filename_to_ghpages_compatible(target_filename)
         beforestr = '(' + target_filename + ')'
-        afterstr = '(' + windows_compatible_filename + ')'
+        afterstr = '(' + compatible_filename + ')'
         newline = newline.replace(beforestr, afterstr)
     return newline
 
@@ -1116,7 +1127,7 @@ def convert_step3(step2_converted_lines):
             table_separator = ''
 
         markdown_line = _icon_grammer_to_img_tag(markdown_line)
-        markdown_line = _linkee_filename_to_windows_compatible(markdown_line)
+        markdown_line = _linkee_filename_to_compatible(markdown_line)
         outlines.append(markdown_line)
 
         if table_separator:
