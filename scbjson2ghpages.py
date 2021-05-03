@@ -232,7 +232,7 @@ def convert_one_page(scblines):
 
 def save_one_file(markdown_lines, pagename, basedir, use_dryrun):
     filename_based_on_pagename = '{}.md'.format(pagename)
-    filename = lib_scblines2markdown.fix_filename_to_windows_compatible(filename_based_on_pagename)
+    filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(filename_based_on_pagename)
     filepath = os.path.join(basedir, filename)
 
     if use_dryrun:

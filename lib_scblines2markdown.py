@@ -408,7 +408,6 @@ def fix_filename_to_jekyll_compatible(filename):
     # ...
     # 
     # 謎挙動が起こらないよう, 全部 _ に置き換えてしまう作戦.
-
     newname = filename
     invalid_chars = ['(', ')', '（', '）', '！', '？', '　']
     afterstr = '_'
