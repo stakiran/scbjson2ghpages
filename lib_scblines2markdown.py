@@ -398,7 +398,22 @@ def fix_filename_to_ghpages_compatible(filename):
     return newname
 
 def fix_filename_to_jekyll_compatible(filename):
+    # jekyll 側で施される謎挙動を吸収する.
+    # [](ここで使われている一部文字.md) が [](勝手に変換されてしまう.html)
+    #
+    # - ？ が %3F になる
+    # - ！ が ! になる
+    # - 全角スペースが %E3%80%80 になる
+    # - () はそもそも解釈されない(.html に変換されずにスルーされる)
+    # ...
+    # 
+    # 謎挙動が起こらないよう, 全部 _ に置き換えてしまう作戦.
+
     newname = filename
+    invalid_chars = ['(', ')', '（', '）', '！', '？', '　']
+    afterstr = '_'
+    for invalid_char in invalid_chars:
+        newname = newname.replace(invalid_char, afterstr)
     return newname
 
 def fix_filename_to_windows_compatible(filename):
