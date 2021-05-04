@@ -51,6 +51,9 @@ def today_datetimestr():
 
     return '{}({}) {}'.format(datestr, dow_j, timestr)
 
+def remove_duplicates_in_list(ls):
+    return list(set(ls))
+
 def ________LinkConstructor________():
     pass
 

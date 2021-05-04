@@ -38,5 +38,9 @@ class TestLinkContruction(unittest.TestCase):
         actual = f(testdata_various_link)
         self.assertEqual(expect, actual)
 
+        expect = ['リンク', 'スペースを ふくむページへのリンク', '存在しないリンク'].sort()
+        actual = main.remove_duplicates_in_list(actual).sort()
+        self.assertEqual(expect, actual)
+
 if __name__ == '__main__':
     unittest.main()
