@@ -239,16 +239,13 @@ class Moder:
         # ★2のケース
         # ダミーリスト挿入はメタでやる.
         def continuous_indent(cur_indentdepth, inblockstate_user):
-            state = inblockstate_user.state
-
-            is_not_in_block = not state.is_in_block()
             is_left_from_block_just_now = inblockstate_user.is_left_just_now()
             is_left_from_codeblock_just_now = inblockstate_user.is_left_from_codeblock_just_now()
 
-            if is_not_in_block and is_left_from_codeblock_just_now:
+            if is_left_from_codeblock_just_now:
                 return END_OF_CODE
 
-            if is_not_in_block and is_left_from_block_just_now:
+            if is_left_from_block_just_now:
                 return ADD_LINEFEED
 
             return IGNORE
