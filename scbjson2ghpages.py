@@ -96,6 +96,18 @@ class LinkConstructor:
         re.sub(RE_LINK_ANOTHER_PAGE, repl, work)
         return pagenames
 
+    @staticmethod
+    def remove_ghost_page(pagenames, page_instances):
+        # インスタンスにしてキャッシュしようか
+        new_pagenames = []
+        for pagename in pagenames:
+            for page_inst in page_instances:
+                pagetitle = page_inst.title
+                if pagename==pagetitle:
+                    new_pagenames.append(pagename)
+                    break
+        return new_pagenames
+
 def ________Wrapper________():
     pass
 
