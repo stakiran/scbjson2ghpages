@@ -240,11 +240,10 @@ def save_one_file(markdown_lines, pagename, basedir, use_dryrun):
         return
     list2file(filepath, markdown_lines)
 
-def convert_and_save_all(project, basedir, args):
+def convert_and_save_all(project, page_instances, basedir, args):
     use_dryrun = args.dryrun
 
-    for i,page in enumerate(project.pages):
-        page_inst = Page(page, project.name)
+    for i,page_inst in enumerate(page_instances):
         pagename = page_inst.title
         scblines = page_inst.lines
 
@@ -466,4 +465,8 @@ if __name__ == '__main__':
     if args.only_specials:
         sys.exit(0)
 
-    convert_and_save_all(proj, BASEDIR, args)
+    page_instances = []
+    for page in proj.pages:
+        page_inst = Page(page, proj.name)
+        page_instances.append(page_inst)
+    convert_and_save_all(proj, page_instances, BASEDIR, args)
