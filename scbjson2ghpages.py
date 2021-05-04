@@ -51,7 +51,7 @@ def today_datetimestr():
 
     return '{}({}) {}'.format(datestr, dow_j, timestr)
 
-def ________ScbParser________():
+def ________LinkConstructor________():
     pass
 
 RE_LITERAL = re.compile(r'`(.+?)`')
@@ -60,35 +60,38 @@ RE_LINK_URL_OR_URL_FRONT = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_LINK_URL_BACK = re.compile(r'\[(.+?)( )(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_ICON = '\[(.+?)\.icon(\*[0-9]+){0,1}\]'
 RE_LINK_ANOTHER_PAGE = re.compile(r'\[(.+?)\]')
-def get_linkee_pagenames(s):
-    NO_MATCH = []
-    work = s
 
-    is_blank_line = len(work)==0
-    if is_blank_line:
-        return NO_MATCH
+class LinkConstructor:
+    @staticmethod
+    def get_linkee_pagenames(s):
+        NO_MATCH = []
+        work = s
 
-    not_found_bracket = work.find('[') == -1
-    if not_found_bracket:
-        return NO_MATCH
+        is_blank_line = len(work)==0
+        if is_blank_line:
+            return NO_MATCH
 
-    work = re.sub(RE_LITERAL, '', work)
-    work = re.sub(RE_SPECIAL_BRACKET, '', work)
-    work = re.sub(RE_LINK_URL_OR_URL_FRONT, '', work)
-    work = re.sub(RE_LINK_URL_BACK, '', work)
-    work = re.sub(RE_ICON, '', work)
+        not_found_bracket = work.find('[') == -1
+        if not_found_bracket:
+            return NO_MATCH
 
-    pagenames = []
-    def repl(match_object):
-        groups = match_object.groups()
-        if len(groups)==0:
+        work = re.sub(RE_LITERAL, '', work)
+        work = re.sub(RE_SPECIAL_BRACKET, '', work)
+        work = re.sub(RE_LINK_URL_OR_URL_FRONT, '', work)
+        work = re.sub(RE_LINK_URL_BACK, '', work)
+        work = re.sub(RE_ICON, '', work)
+
+        pagenames = []
+        def repl(match_object):
+            groups = match_object.groups()
+            if len(groups)==0:
+                return
+            for group in groups:
+                pagename = group
+                pagenames.append(pagename)
             return
-        for group in groups:
-            pagename = group
-            pagenames.append(pagename)
-        return
-    re.sub(RE_LINK_ANOTHER_PAGE, repl, work)
-    return pagenames
+        re.sub(RE_LINK_ANOTHER_PAGE, repl, work)
+        return pagenames
 
 def ________Wrapper________():
     pass

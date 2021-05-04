@@ -32,7 +32,7 @@ class TestLinkContruction(unittest.TestCase):
         pass
 
     def test_get_linkee_pagenames(self):
-        f = main.get_linkee_pagenames
+        f = main.LinkConstructor.get_linkee_pagenames
 
         expect = ['リンク', 'リンク', 'リンク', 'スペースを ふくむページへのリンク', '存在しないリンク']
         actual = f(testdata_various_link)
