@@ -81,7 +81,6 @@ class TestModer(unittest.TestCase):
         self._test_onepage('table')
 
     def test_nestedblock(self):
-        LIB.DP_judge_extra_insertion = True
         self._test_onepage('nested_block')
 
     def test_jekyllproblem(self):
