@@ -100,7 +100,14 @@ class InBlockStateUser:
 
         if state.is_in_block():
             self._update_case_of_in_block(line, cur_indentdepth, lines_context)
-            return
+            # block 抜けた直後に次の block に入ることがありえるので
+            # (1) 抜けた直後かどうかを判定して,
+            if self.is_left_just_now():
+                pass
+            else:
+                return
+            # (2) もし抜けた直後だった場合, not in-block 時の処理も行う.
+            #     つまり fall throuth する.
         self._update_case_of_not_in_block(line, cur_indentdepth)
 
     def _update_case_of_not_in_block(self, line, cur_indentdepth):
