@@ -47,3 +47,70 @@ print(os.environ)
 
 <br>
 
+code codeやらcode tableやらのパターン
+
+- nest1
+    - code code
+
+```py
+print('a')
+print('A')
+```
+
+- ...
+    - ...
+
+```js
+console.log('b')
+```
+
+- ...
+    - code table
+
+```py
+print('a')
+print('A')
+```
+
+- ...
+    - ...
+        - table:table1
+
+| a | b |
+| - | - |
+| c | d |
+
+- ...
+    - table code
+        - table:table1
+
+| a | b |
+| - | - |
+| c | d |
+
+- ...
+    - ...
+
+```py
+print('a')
+print('A')
+```
+
+- ...
+    - table table
+        - table:table1
+
+| a | b |
+| - | - |
+| c | d |
+
+- ...
+    - ....
+        - table:table2
+
+| A | B |
+| - | - |
+| C | D |
+
+<br>
+

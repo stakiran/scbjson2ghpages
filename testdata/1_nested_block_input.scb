@@ -27,3 +27,33 @@
    緊急		
    緊急でない		
 
+code codeやらcode tableやらのパターン
+ nest1
+  code code
+   code:a.py
+    print('a')
+    print('A')
+   code:b.js
+    console.log('b')
+  code table
+   code:a.py
+    print('a')
+    print('A')
+   table:table1
+    a	b
+    c	d
+  table code
+   table:table1
+    a	b
+    c	d
+   code:a.py
+    print('a')
+    print('A')
+  table table
+   table:table1
+    a	b
+    c	d
+   table:table2
+    A	B
+    C	D
+
