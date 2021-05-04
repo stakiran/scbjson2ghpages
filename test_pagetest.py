@@ -68,28 +68,29 @@ class TestModer(unittest.TestCase):
 
         LIB.dp_all_off()
 
-    def test_page(self):
+    def xtest_page(self):
         self._test_onepage('page')
 
-    def test_image(self):
+    def xtest_image(self):
         self._test_onepage('image')
 
-    def test_codeblock(self):
+    def xtest_codeblock(self):
         self._test_onepage('codeblock')
 
-    def test_table(self):
+    def xtest_table(self):
         self._test_onepage('table')
 
     def test_nestedblock(self):
+        LIB.DP_judge_extra_insertion = True
         self._test_onepage('nested_block')
 
-    def test_jekyllproblem(self):
+    def xtest_jekyllproblem(self):
         self._test_onepage('jekyll_problem')
 
-    def test_iconproblem(self):
+    def xtest_iconproblem(self):
         self._test_onepage('icon記法problem')
 
-    def test_image_and_link_problem(self):
+    def xtest_image_and_link_problem(self):
         self._test_onepage('image_and_link')
 
 if __name__ == '__main__':

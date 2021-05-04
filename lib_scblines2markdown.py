@@ -208,12 +208,14 @@ class Moder:
         アルゴリズムがえぐいので Scrapbox のメモも参照のこと. '''
 
         is_in_list = cur_indentdepth>0
-        dp_judge_extra_insertion('indent:{}, B:{}, C:{}, T:{}, L:{}\t{}'.format(
+        dp_judge_extra_insertion('indent:{}, B:{}, C:{}, T:{}, L:{} j:{} jc:{}\t{}'.format(
             cur_indentdepth,
             inblockstate_user.state.is_in_block(),
             inblockstate_user.state.is_in_code_block(),
             inblockstate_user.state.is_in_table_block(),
             is_in_list,
+            inblockstate_user.is_left_just_now(),
+            inblockstate_user.is_left_from_codeblock_just_now(),
             line_for_debug,
         ))
 
