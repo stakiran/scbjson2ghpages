@@ -11,6 +11,7 @@ o
  [リンク]と[リンク]
  [スペースを ふくむページへのリンク]
  [存在しないリンク] これは後続の「当該ページ名を持つページが実際に存在するか判定」で弾く
+ #hash1 は問題なく #hash2 #hash2 検出されるはず #hash3
 x
  `[りんく]`
  [* 太字]
@@ -34,11 +35,11 @@ class TestLinkContruction(unittest.TestCase):
     def test_get_linkee_pagenames(self):
         f = main.LinkConstructor.get_linkee_pagenames
 
-        expect = ['リンク', 'リンク', 'リンク', 'スペースを ふくむページへのリンク', '存在しないリンク']
+        expect = ['リンク', 'リンク', 'リンク', 'スペースを ふくむページへのリンク', '存在しないリンク', '#hash1', '#hash2', '#hash2', '#hash3']
         actual = f(testdata_various_link)
         self.assertEqual(expect, actual)
 
-        expect = ['リンク', 'スペースを ふくむページへのリンク', '存在しないリンク'].sort()
+        expect = ['リンク', 'スペースを ふくむページへのリンク', '存在しないリンク', '#hash1', '#hash2', '#hash3'].sort()
         actual = main.remove_duplicates_in_list(actual).sort()
         self.assertEqual(expect, actual)
 
