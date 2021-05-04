@@ -645,6 +645,8 @@ def convert_step2(step1_converted_lines):
 
         is_cur_in_tableblock = state.is_in_table_block()
 
+        is_cur_start_of_code =  Moder.is_start_of_code(line)
+
         dp_convert_step2_after_append('(pL, pB, pSoT), (cB, cCB, cTB, cSoT) {} = ({}, {}, {}), ({}, {}, {}, {}) L:{}'.format(
             cur_indentdepth,
             is_prev_in_list,
@@ -674,7 +676,8 @@ def convert_step2(step1_converted_lines):
         # (B)
         is_satisfied_B = not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1
         is_satisfied_B_case_of_start_of_table = not is_prev_in_list and cur_indentdepth>1 and is_cur_start_of_table
-        if is_satisfied_B or is_satisfied_B_case_of_start_of_table:
+        is_satisfied_B_case_of_start_of_code = not is_prev_in_list and cur_indentdepth>1 and is_cur_start_of_code
+        if is_satisfied_B or is_satisfied_B_case_of_start_of_table or is_satisfied_B_case_of_start_of_code:
             DUMMYLIST_CONTENT = '...'
             dummylist = create_dummylist(cur_indentdepth, DUMMYLIST_CONTENT)
             outlines.extend(dummylist)
