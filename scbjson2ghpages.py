@@ -58,6 +58,7 @@ RE_LITERAL = re.compile(r'`(.+?)`')
 RE_SPECIAL_BRACKET = re.compile(r'\[[\*\-\/](.+?)\]')
 RE_LINK_URL_OR_URL_FRONT = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_LINK_URL_BACK = re.compile(r'\[(.+?)( )(http)(s){0,1}(\:\/\/)(.+?)\]')
+RE_ICON = '\[(.+?)\.icon(\*[0-9]+){0,1}\]'
 RE_LINK_ANOTHER_PAGE = re.compile(r'\[(.+?)\]')
 def get_linkee_pagenames(s):
     NO_MATCH = []
@@ -75,6 +76,7 @@ def get_linkee_pagenames(s):
     work = re.sub(RE_SPECIAL_BRACKET, '', work)
     work = re.sub(RE_LINK_URL_OR_URL_FRONT, '', work)
     work = re.sub(RE_LINK_URL_BACK, '', work)
+    work = re.sub(RE_ICON, '', work)
 
     pagenames = []
     def repl(match_object):
