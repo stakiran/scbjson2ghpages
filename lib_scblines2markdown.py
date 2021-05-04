@@ -679,13 +679,20 @@ def convert_step2(step1_converted_lines):
             outlines.append(ADD_LINEFEED)
 
         # (B)
+        # - ただしコード開始時の場合は(次行がリストではなくコード開始になるので)空行が必要
         is_satisfied_B = not is_prev_in_list and not is_cur_in_block and cur_indentdepth>1
         is_satisfied_B_case_of_start_of_table = not is_prev_in_list and cur_indentdepth>1 and is_cur_start_of_table
         is_satisfied_B_case_of_start_of_code = not is_prev_in_list and cur_indentdepth>1 and is_cur_start_of_code
-        if is_satisfied_B or is_satisfied_B_case_of_start_of_table or is_satisfied_B_case_of_start_of_code:
+        if is_satisfied_B or is_satisfied_B_case_of_start_of_table:
             DUMMYLIST_CONTENT = '...'
             dummylist = create_dummylist(cur_indentdepth, DUMMYLIST_CONTENT)
             outlines.extend(dummylist)
+        elif is_satisfied_B_case_of_start_of_code:
+            DUMMYLIST_CONTENT = '...'
+            dummylist = create_dummylist(cur_indentdepth, DUMMYLIST_CONTENT)
+            outlines.extend(dummylist)
+            ADD_LINEFEED = ''
+            outlines.append(ADD_LINEFEED)
 
         # (C)
         if is_prev_in_list and is_prev_start_of_table and is_cur_in_tableblock:
