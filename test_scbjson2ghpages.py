@@ -16,9 +16,7 @@ o
 x
 hash#ここは検出されない
 `[りんく]` `#hash`
-[* 太字]
-[**** 太字]
-[- 斜体]
+[* 太字]や[** 太字]や[*** 太字]、あと普段使わないけど[/ 斜体]に[- 打ち消し線]
 [/sta]
 [http://www.google.co.jp google(text後)]
 [google(text前) http://www.google.co.jp]
