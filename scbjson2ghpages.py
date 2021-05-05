@@ -554,7 +554,6 @@ if __name__ == '__main__':
         dummyvalue = 1
         pagename = page_inst.title
         pagenames_by_dict[pagename] = dummyvalue
-    print(pagenames_by_dict)
 
     generate_and_save_special_pages(proj, BASEDIR, args)
     if args.only_specials:
