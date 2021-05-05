@@ -389,6 +389,10 @@ def generate_links(page_inst):
         if is_B_links_too_large:
             continue
 
+        # たくさん並べてもノイジーだしビルドひっかかるので, 適当に8個くらいにしてみる
+        if count_of_B>=8:
+            break
+
         B_pagename = B.title
         basename = '{}.md'.format(B_pagename)
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
@@ -400,8 +404,8 @@ def generate_links(page_inst):
         count_of_C_of_B = 0
         for C in B.linkfrom_page_instances:
             # jekyll ビルドが通らないので数減らしてみる
-            if count_of_C>2:
-                continue
+            if count_of_C_of_B>=3:
+                break
 
             C_pagename = C.title
 
