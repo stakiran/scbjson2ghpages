@@ -135,10 +135,17 @@ class LinkConstructor:
             page_inst.update_linkto(pagenames_in_project_by_dict)
 
         # linkfrom
-        for page_inst in page_instances:
-            for pagename_linked_from_thispage in page_inst.linkto_pagenames:
-                pageinst_linked_from_thispage = pageseeker.get(pagename_linked_from_thispage)
-                pageinst_linked_from_thispage.append_to_linkfrom(pagename_linked_from_thispage)
+        #
+        # A-->B
+        # |
+        # v
+        # C
+        for A in page_instances:
+            for pagename in A.linkto_pagenames:
+                pageinst_linked_from_A = pageseeker.get(pagename)
+                A_pagename = A.title
+                pageinst_linked_from_A.append_to_linkfrom(A_pagename)
+                print('{} linked from {}'.format(pageinst_linked_from_A.title, A_pagename))
 
 def ________Wrapper________():
     pass
