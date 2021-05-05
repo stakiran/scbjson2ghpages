@@ -520,6 +520,8 @@ def parse_arguments():
 
     parser.add_argument('--page-to-scb', default=None, type=str,
         help='A page name to output the normalized contents .scb file.')
+    parser.add_argument('--print-page', default=None, type=str,
+        help='A page name to output the information of the instance.')
     parser.add_argument('--only-specials', default=False, action='store_true',
         help='If True, do generate special pages only. About pages, will be not generated.')
 
@@ -567,6 +569,12 @@ if __name__ == '__main__':
         pagenames_by_dict[pagename] = dummyvalue
 
     LinkConstructor.construct(page_instances, pagenames_by_dict)
+
+    if args.print_page:
+        seeker = PageSeeker(proj)
+        page = seeker.get(args.print_page)
+        print(page)
+        sys.exit(0)
 
     generate_and_save_special_pages(proj, BASEDIR, args)
     if args.only_specials:
