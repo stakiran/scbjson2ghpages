@@ -378,6 +378,10 @@ def generate_links(page_inst):
     # ただし分量が多くなりがちなので適当に制御する.
     # (Scrapbox 本家のアルゴリズムはよくわからなかった)
 
+    is_no_linkto = len(A.linkto_page_instances)==0
+    if is_no_linkto:
+        return outlines
+
     outlines.append('## 2hop Links')
 
     count_of_B = 0
