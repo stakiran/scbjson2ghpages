@@ -430,6 +430,26 @@ class Special_BodyLength(SpecialPageInterface):
     def short_description(self):
         return 'ページ文字数降順'
 
+class Special_MostLinked(SpecialPageInterface):
+    def __init__(self):
+        super().__init__()
+
+    def sortkey_function(self, page_inst):
+        return len(page_inst.linkfrom_pagenames)
+
+    def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
+        linkfrom_count = self.sortkey_function(page_inst)
+        outline = '- {} links: [{}]({})'.format(linkfrom_count, pagename, filename_of_this_page)
+        return outline
+
+    @property
+    def basename(self):
+        return 'index_mostlinked'
+
+    @property
+    def short_description(self):
+        return '被リンク数順'
+
 def save_one_special_pages(page_insts, basedir, special_page_interface):
     basename = special_page_interface.basename
     filename = '{}.md'.format(basename)
@@ -503,6 +523,11 @@ def generate_and_save_special_pages(project, basedir, args):
     specialpages.append(specialpage)
 
     specialpage = Special_BodyLength()
+    new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
+    save_one_special_pages(new_insts, basedir, specialpage)
+    specialpages.append(specialpage)
+
+    specialpage = Special_MostLinked()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
     save_one_special_pages(new_insts, basedir, specialpage)
     specialpages.append(specialpage)
