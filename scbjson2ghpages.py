@@ -129,7 +129,7 @@ class LinkConstructor:
         return new_pagenames
 
     @staticmethod
-    def construct(page_instances, pagenames_in_project_by_dict):
+    def construct(page_instances, pagenames_in_project_by_dict, pageseeker):
         # linkto
         for page_inst in page_instances:
             page_inst.update_linkto(pagenames_in_project_by_dict)
@@ -553,10 +553,10 @@ if __name__ == '__main__':
     if not(os.path.isdir(BASEDIR)):
         raise RuntimeError('docs/ dir not found...')
 
-    LinkConstructor.construct(page_instances, pagenames_by_dict)
+    seeker = PageSeeker(page_instances)
+    LinkConstructor.construct(page_instances, pagenames_by_dict, seeker)
 
     if args.print_page:
-        seeker = PageSeeker(page_instances)
         page = seeker.get(args.print_page)
         print(page)
         sys.exit(0)
