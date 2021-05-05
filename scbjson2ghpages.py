@@ -134,6 +134,12 @@ class LinkConstructor:
         for page_inst in page_instances:
             page_inst.update_linkto(pagenames_in_project_by_dict)
 
+        # linkfrom
+        for page_inst in page_instances:
+            for pagename_linked_from_thispage in page_inst.linkto_pagenames:
+                pageinst_linked_from_thispage = pageseeker.get(pagename_linked_from_thispage)
+                pageinst_linked_from_thispage.append_to_linkfrom(pagename_linked_from_thispage)
+
 def ________Wrapper________():
     pass
 
@@ -190,6 +196,9 @@ class Page:
     def __init__(self, page_obj, project_name):
         self._project_name = project_name
         self._obj = page_obj
+
+        self._linkto_pagenames = []
+        self._linkfrom_pagenames = []
 
         self._lines_cache = []
 
@@ -272,6 +281,13 @@ class Page:
     def linkto_pagenames(self):
         return self._linkto_pagenames
 
+    def append_to_linkfrom(self, pagename):
+        self._linkfrom_pagenames.append(pagename)
+
+    @property
+    def linkfrom_pagenames(self):
+        return self._linkfrom_pagenames
+
     def __str__(self):
         lines = self.lines
         lineHeads = '\n'.join(lines[:3])
@@ -279,8 +295,9 @@ class Page:
         return '''{title}
 created at: {created}
 updated at: {updated}
-url: {url}
-linkto: {linktoCount}
+url       : {url}
+linkto    : {linktoCount}
+linkfrom  : {linktoCount}
 ---
 {lineHeads}...
 
@@ -290,6 +307,7 @@ total {lineNumber} lines. '''.format(
             updated=self.updated_by_datetime,
             url=self.url,
             linktoCount=len(self.linkto_pagenames),
+            linkFromCount=len(self.linkfrom_pagenames),
             lineHeads=lineHeads,
             lineNumber=line_number,
         )
