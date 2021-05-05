@@ -347,7 +347,27 @@ def save_one_file(markdown_lines, pagename, basedir, use_dryrun):
     list2file(filepath, markdown_lines)
 
 def generate_links(page_inst):
-    return []
+    A = page_inst
+
+    outlines = []
+    outlines.append('## Links')
+
+    # B -> A
+    for B in A.linkfrom_page_instances:
+        B_pagename = B.title
+        basename = '{}.md'.format(B_pagename)
+        filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
+        outlines.append('- :point_left: [{}]({})'.format(B_pagename, filename))
+
+    # A -> B
+    # linkto は本文でもわかるので linkfrom の後に表示する
+    for B in A.linkto_page_instances:
+        B_pagename = B.title
+        basename = '{}.md'.format(B_pagename)
+        filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
+        outlines.append('- :point_right: [{}]({})'.format(B_pagename, filename))
+
+    return outlines
 
 def convert_and_save_all(project, page_instances, basedir, args):
     use_dryrun = args.dryrun
