@@ -132,9 +132,7 @@ class LinkConstructor:
     def construct(page_instances, pagenames_in_project_by_dict, pageseeker):
         # linkto
         for page_inst in page_instances:
-            page_inst.update_linkto(pagenames_in_project_by_dict)
-
-        # 
+            page_inst.update_linkto(pagenames_in_project_by_dict, pageseeker)
 
         # linkfrom
         #
@@ -143,10 +141,9 @@ class LinkConstructor:
         # v
         # C
         for A in page_instances:
-            for pagename in A.linkto_pagenames:
-                pageinst_linked_from_A = pageseeker.get(pagename)
+            for pageinst_linked_from_A in A.linkto_page_instances:
                 A_pagename = A.title
-                pageinst_linked_from_A.append_to_linkfrom(A_pagename)
+                pageinst_linked_from_A.append_to_linkfrom(A)
 
 def ________Wrapper________():
     pass
@@ -200,13 +197,19 @@ class PageSeeker:
             raise RuntimeError('Not found page "{}".'.format(title))
         return self._page_instances_by_dict[title]
 
+    def get_pagenames(self):
+        pagenames = []
+        for pagename in self._page_instances_by_dict:
+            pagenames.append(pagename)
+        return pagenames
+
 class Page:
     def __init__(self, page_obj, project_name):
         self._project_name = project_name
         self._obj = page_obj
 
-        self._linkto_pagenames = []
-        self._linkfrom_pagenames = []
+        self._linkto_pageinsts = []
+        self._linkfrom_pageinsts = []
 
         self._lines_cache = []
 
@@ -278,23 +281,27 @@ class Page:
         lines = self.lines
         return '\n'.join(lines)
 
-    def update_linkto(self, pagenames_in_project_by_dict):
+    def update_linkto(self, pagenames_in_project_by_dict, pageseeker):
         content = self.rawstring
         linkee_pagenames = LinkConstructor.get_linkee_pagenames(content)
         linkee_pagenames = remove_duplicates_in_list(linkee_pagenames)
         linkee_pagenames = LinkConstructor.remove_ghost_page(linkee_pagenames, pagenames_in_project_by_dict)
-        self._linkto_pagenames = linkee_pagenames
+
+        self._linkto_pages = []
+        for pagename in linkee_pagenames:
+            page_inst = pageseeker.get(pagename)
+            self._linkto_pageinsts.append(page_inst)
 
     @property
-    def linkto_pagenames(self):
-        return self._linkto_pagenames
+    def linkto_page_instances(self):
+        return self._linkto_pageinsts
 
-    def append_to_linkfrom(self, pagename):
-        self._linkfrom_pagenames.append(pagename)
+    def append_to_linkfrom(self, pageinst):
+        self._linkfrom_pageinsts.append(pageinst)
 
     @property
-    def linkfrom_pagenames(self):
-        return self._linkfrom_pagenames
+    def linkfrom_page_instances(self):
+        return self._linkfrom_pageinsts
 
     def __str__(self):
         lines = self.lines
@@ -314,8 +321,8 @@ total {lineNumber} lines. '''.format(
             created=self.created_by_datetime,
             updated=self.updated_by_datetime,
             url=self.url,
-            linktoCount=len(self.linkto_pagenames),
-            linkFromCount=len(self.linkfrom_pagenames),
+            linktoCount=len(self.linkto_page_instances),
+            linkFromCount=len(self.linkfrom_page_instances),
             lineHeads=lineHeads,
             lineNumber=line_number,
         )
@@ -442,7 +449,7 @@ class Special_MostLinked(SpecialPageInterface):
         super().__init__()
 
     def sortkey_function(self, page_inst):
-        return len(page_inst.linkfrom_pagenames)
+        return len(page_inst.linkfrom_page_instances)
 
     def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
         linkfrom_count = self.sortkey_function(page_inst)
