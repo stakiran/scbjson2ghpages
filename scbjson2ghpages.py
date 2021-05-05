@@ -118,16 +118,13 @@ class LinkConstructor:
 
         return pagenames
 
-    @staticmethod
-    def remove_ghost_page(pagenames, page_instances):
-        # インスタンスにしてキャッシュしようか
+    def remove_ghost_page(pagenames, pagenames_in_project_by_dict):
         new_pagenames = []
         for pagename in pagenames:
-            for page_inst in page_instances:
-                pagetitle = page_inst.title
-                if pagename==pagetitle:
-                    new_pagenames.append(pagename)
-                    break
+            not_found = not pagename in pagenames_in_project_by_dict
+            if not_found:
+                continue
+            new_pagenames.append(found)
         return new_pagenames
 
 def ________Wrapper________():
