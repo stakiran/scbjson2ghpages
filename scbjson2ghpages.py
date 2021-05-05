@@ -500,16 +500,12 @@ def generate_index_contents(project, specialpages):
 
     return outlines
 
-def generate_and_save_special_pages(project, basedir, args):
+def generate_and_save_special_pages(project, page_instances, basedir, args):
     use_dryrun = args.dryrun
     if use_dryrun:
         return
 
-    page_insts = []
-    for page in project.pages:
-        page_inst = Page(page, project.name)
-        page_insts.append(page_inst)
-
+    page_insts = page_instances
     specialpages = []
 
     specialpage = Special_TitleByAsc()
@@ -615,7 +611,7 @@ if __name__ == '__main__':
     # I/O
     # ---
 
-    generate_and_save_special_pages(proj, BASEDIR, args)
+    generate_and_save_special_pages(proj, page_instances, BASEDIR, args)
     if args.only_specials:
         sys.exit(0)
     convert_and_save_all(proj, page_instances, BASEDIR, args)
