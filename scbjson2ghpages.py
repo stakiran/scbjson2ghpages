@@ -548,6 +548,13 @@ if __name__ == '__main__':
     for page in proj.pages:
         page_inst = Page(page, proj.name)
         page_instances.append(page_inst)
+    # 指定ページの存在確認を O(1) で行う用の辞書
+    pagenames_by_dict = {}
+    for page_inst in page_instances:
+        dummyvalue = 1
+        pagename = page_inst.title
+        pagenames_by_dict[pagename] = dummyvalue
+    print(pagenames_by_dict)
 
     generate_and_save_special_pages(proj, BASEDIR, args)
     if args.only_specials:
