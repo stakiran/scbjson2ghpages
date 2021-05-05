@@ -383,7 +383,7 @@ def generate_links(page_inst):
         B_pagename = B.title
         basename = '{}.md'.format(B_pagename)
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
-        outlines.append('## [{}]({})'.format(B_pagename, filename))
+        outlines.append('## → [{}]({})'.format(B_pagename, filename))
 
         for C in B.linkfrom_page_instances:
             C_pagename = C.title
