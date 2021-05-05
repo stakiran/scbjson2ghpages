@@ -171,38 +171,34 @@ exported at {exported}'''.format(
         )
 
 class PageSeeker:
-    def __init__(self, proj):
-        self._proj = proj
+    def __init__(self, page_instances):
+        self._page_instances = page_instances
         self._parse()
 
     def _parse(self):
-        projname = self._proj.name
-        pages = self._proj.pages
-
-        self._page_insts = {}
-        for page in pages:
-            page_inst = Page(page, projname)
+        self._page_instances_by_dict = {}
+        for page_inst in self._page_instances:
             title = page_inst.title
-            self._page_insts[title] = page_inst
+            self._page_instances_by_dict[title] = page_inst
 
     def get(self, title):
-        if not title in self._page_insts:
+        if not title in self._page_instances_by_dict:
             raise RuntimeError('Not found page "{}".'.format(title))
-        return self._page_insts[title]
+        return self._page_instances_by_dict[title]
 
     def find_partially_from_title(self, keyword):
         found_page_insts = []
-        for title in self._page_insts:
+        for title in self._page_instances_by_dict:
             if not keyword in title:
                 continue
-            page_inst = self._page_insts[title]
+            page_inst = self._page_instances_by_dict[title]
             found_page_insts.append(page_inst)
         return found_page_insts
 
     def find_partially_from_lines(self, keyword):
         found_page_insts = []
-        for title in self._page_insts:
-            page_inst = self._page_insts[title]
+        for title in self._page_instances_by_dict:
+            page_inst = self._page_instances_by_dict[title]
             lines_by_string = page_inst.rawstring
             if not keyword in lines_by_string:
                 continue
@@ -545,19 +541,12 @@ if __name__ == '__main__':
 
     filename = args.input
 
+    # parse json
+    # ----------
+
     s = file2str(filename)
     obj = str2obj(s)
     proj = Project(obj)
-
-    if args.page_to_scb:
-        seeker = PageSeeker(proj)
-        page = seeker.get(args.page_to_scb)
-        print(page.rawstring)
-        sys.exit(0)
-
-    BASEDIR = os.path.join(MYDIR, OUTDIR)
-    if not(os.path.isdir(BASEDIR)):
-        raise RuntimeError('docs/ dir not found...')
 
     page_instances = []
     for page in proj.pages:
@@ -570,13 +559,29 @@ if __name__ == '__main__':
         pagename = page_inst.title
         pagenames_by_dict[pagename] = dummyvalue
 
+    # proceed
+    # -------
+
+    if args.page_to_scb:
+        seeker = PageSeeker(page_instances)
+        page = seeker.get(args.page_to_scb)
+        print(page.rawstring)
+        sys.exit(0)
+
+    BASEDIR = os.path.join(MYDIR, OUTDIR)
+    if not(os.path.isdir(BASEDIR)):
+        raise RuntimeError('docs/ dir not found...')
+
     LinkConstructor.construct(page_instances, pagenames_by_dict)
 
     if args.print_page:
-        seeker = PageSeeker(proj)
+        seeker = PageSeeker(page_instances)
         page = seeker.get(args.print_page)
         print(page)
         sys.exit(0)
+
+    # I/O
+    # ---
 
     generate_and_save_special_pages(proj, BASEDIR, args)
     if args.only_specials:
