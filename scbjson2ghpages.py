@@ -128,6 +128,12 @@ class LinkConstructor:
             new_pagenames.append(pagename)
         return new_pagenames
 
+    @staticmethod
+    def construct(page_instances, pagenames_in_project_by_dict):
+        # linkto
+        for page_inst in page_instances:
+            page_inst.update_linkto(pagenames_in_project_by_dict)
+
 def ________Wrapper________():
     pass
 
@@ -278,11 +284,16 @@ class Page:
         lines = self.lines
         return '\n'.join(lines)
 
+    def update_linkto(self, pagenames_in_project_by_dict):
+        content = self.rawstring
+        linkee_pagenames = LinkConstructor.get_linkee_pagenames(content)
+        linkee_pagenames = remove_duplicates_in_list(linkee_pagenames)
+        linkee_pagenames = LinkConstructor.remove_ghost_page(linkee_pagenames, pagenames_in_project_by_dict)
+        self._linkto_pagenames = linkee_pagenames
+
     @property
-    def linkto(self):
-        lines = self.lines
-        for line in lines:
-            pass
+    def linkto_pagenames(self):
+        return self._linkto_pagenames
 
     def __str__(self):
         lines = self.lines
@@ -554,6 +565,8 @@ if __name__ == '__main__':
         dummyvalue = 1
         pagename = page_inst.title
         pagenames_by_dict[pagename] = dummyvalue
+
+    LinkConstructor.construct(page_instances, pagenames_by_dict)
 
     generate_and_save_special_pages(proj, BASEDIR, args)
     if args.only_specials:
