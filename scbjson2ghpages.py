@@ -125,7 +125,7 @@ class LinkConstructor:
             not_found = not pagename in pagenames_in_project_by_dict
             if not_found:
                 continue
-            new_pagenames.append(found)
+            new_pagenames.append(pagename)
         return new_pagenames
 
 def ________Wrapper________():
