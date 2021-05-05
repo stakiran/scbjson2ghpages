@@ -354,11 +354,15 @@ def generate_links(page_inst):
     outlines.append('## Links')
 
     # B -> A
+
     for B in A.linkfrom_page_instances:
         B_pagename = B.title
         basename = '{}.md'.format(B_pagename)
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
         outlines.append('- ← [{}]({})'.format(B_pagename, filename))
+
+    # A -> B
+    # 2hop-link でわかるので出さない.
 
     is_no_links = len(outlines)==1
     if is_no_links:
@@ -371,11 +375,16 @@ def generate_links(page_inst):
     # A -> B <- C
     #
     # このような C を, B ごとに列挙する.
-    # - A -> B は, この 2hop-link でわかるので出さない.
-    # - ただし B の links(linkto + linkfrom)が 100 を超える場合、でかすぎてノイジーなので無視する.
-    #   これは Scrapbox 本家でも行われている処理(たぶん).
+    # ただし分量が多くなりがちなので適当に制御する.
+    # (Scrapbox 本家のアルゴリズムはよくわからなかった)
+
+    outlines.append('## 2hop Links')
+
+    count_of_B = 0
+    count_of_C = 0
 
     for B in A.linkto_page_instances:
+        # でかすぎるリンクはノイジーなので無視
         is_B_links_too_large = len(B.linkfrom_page_instances)>=100
         if is_B_links_too_large:
             continue
@@ -383,24 +392,29 @@ def generate_links(page_inst):
         B_pagename = B.title
         basename = '{}.md'.format(B_pagename)
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
-        # 見出し部分で markdown error になると想像して, なくしてみる
+        # jekyll が見出し部分で markdown error になるっぽいので, 見出しはやめる
         #outlines.append('## → [{}]({})'.format(B_pagename, filename))
-        outlines.append('→ [{}]({})'.format(B_pagename, filename))
-        outlines.append(ADD_BLANKLINE)
+        #outlines.append(ADD_BLANKLINE)
+        outlines.append('- → [{}]({})'.format(B_pagename, filename))
 
-        for i,C in enumerate(B.linkfrom_page_instances):
+        count_of_C_of_B = 0
+        for C in B.linkfrom_page_instances:
             # jekyll ビルドが通らないので数減らしてみる
-            if i>2:
+            if count_of_C>2:
                 continue
+
             C_pagename = C.title
+
             is_self_2hop = C_pagename==A.title
             if is_self_2hop:
                 continue
+
             basename = '{}.md'.format(C_pagename)
             filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
-            outlines.append('- [{}]({})'.format(C_pagename, filename))
-
-        outlines.append(ADD_BLANKLINE)
+            outlines.append('    - ← [{}]({})'.format(C_pagename, filename))
+            count_of_C += 1
+            count_of_C_of_B += 1
+        count_of_B += 1
 
     return outlines
 
