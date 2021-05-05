@@ -339,6 +339,9 @@ def save_one_file(markdown_lines, pagename, basedir, use_dryrun):
         return
     list2file(filepath, markdown_lines)
 
+def generate_links(page_inst):
+    return []
+
 def convert_and_save_all(project, page_instances, basedir, args):
     use_dryrun = args.dryrun
 
@@ -349,6 +352,10 @@ def convert_and_save_all(project, page_instances, basedir, args):
         if use_dryrun:
             print('No.{:05d} page "{}", '.format(i+1, pagename), end='')
         markdown_lines = convert_one_page(scblines)
+
+        links_lines = []
+        links_lines = generate_links(page_inst)
+        markdown_lines.extend(links_lines)
 
         markdown_lines.insert(0, '## {}'.format(pagename))
         save_one_file(markdown_lines, pagename, basedir, use_dryrun)
