@@ -86,6 +86,9 @@ class LinkConstructor:
 
         pagenames = []
 
+        # link
+        # ----
+
         def repl(match_object):
             groups = match_object.groups()
             if len(groups)==0:
@@ -95,7 +98,24 @@ class LinkConstructor:
                 pagenames.append(pagename)
             return
         re.sub(RE_LINK_ANOTHER_PAGE, repl, work)
+
+        # hashtag
+        # -------
+
+        # aaa #hash #hash aaa
+        #    ^^^^^^^
+        #           ^
+        #         連続する場合の後半の開始がこうなるせいで
+        #         RE_HASHTAG ではキャプチャできない
+        #
+        # aaa #hash #hash aaa
+        # aaa #hash  #hash aaa
+        #           ^
+        #         ので, このように余分にスペース追加することで強引に対応...
+        work = work.replace(' #', '  #')
+
         re.sub(RE_HASHTAG, repl, work)
+
         return pagenames
 
     @staticmethod
