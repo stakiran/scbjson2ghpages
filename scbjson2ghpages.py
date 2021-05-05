@@ -303,6 +303,7 @@ class Page:
 created at: {created}
 updated at: {updated}
 url: {url}
+linkto: {linktoCount}
 ---
 {lineHeads}...
 
@@ -311,6 +312,7 @@ total {lineNumber} lines. '''.format(
             created=self.created_by_datetime,
             updated=self.updated_by_datetime,
             url=self.url,
+            linktoCount=len(self.linkto_pagenames),
             lineHeads=lineHeads,
             lineNumber=line_number,
         )
