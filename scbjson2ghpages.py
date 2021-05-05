@@ -186,25 +186,6 @@ class PageSeeker:
             raise RuntimeError('Not found page "{}".'.format(title))
         return self._page_instances_by_dict[title]
 
-    def find_partially_from_title(self, keyword):
-        found_page_insts = []
-        for title in self._page_instances_by_dict:
-            if not keyword in title:
-                continue
-            page_inst = self._page_instances_by_dict[title]
-            found_page_insts.append(page_inst)
-        return found_page_insts
-
-    def find_partially_from_lines(self, keyword):
-        found_page_insts = []
-        for title in self._page_instances_by_dict:
-            page_inst = self._page_instances_by_dict[title]
-            lines_by_string = page_inst.rawstring
-            if not keyword in lines_by_string:
-                continue
-            found_page_insts.append(page_inst)
-        return found_page_insts
-
 class Page:
     def __init__(self, page_obj, project_name):
         self._project_name = project_name
