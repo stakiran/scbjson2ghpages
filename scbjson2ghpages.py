@@ -62,7 +62,7 @@ RE_SPECIAL_BRACKET = re.compile(r'\[[\*\-\/](.+?)\]')
 RE_LINK_URL_OR_URL_FRONT = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_LINK_URL_BACK = re.compile(r'\[(.+?)( )(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_ICON = '\[(.+?)\.icon(\*[0-9]+){0,1}\]'
-RE_HASHTAG = re.compile(r'( |^|\n|\r){0,1}#(.+?)( |$|\n|\r)')
+RE_HASHTAG = re.compile(r'[ ^\n\r]#(.+?)[ $\n\r]')
 RE_LINK_ANOTHER_PAGE = re.compile(r'\[(.+?)\]')
 class LinkConstructor:
     @staticmethod
@@ -95,19 +95,7 @@ class LinkConstructor:
                 pagenames.append(pagename)
             return
         re.sub(RE_LINK_ANOTHER_PAGE, repl, work)
-
-        def repl_for_hashtag(match_object):
-            groups = match_object.groups()
-            if len(groups)==0:
-                return
-            for i,group in enumerate(groups):
-                # 始点と終点のキャプチャは要らないので無視
-                if i%3 != 1:
-                    continue
-                pagename = group
-                pagenames.append(pagename)
-            return
-        re.sub(RE_HASHTAG, repl_for_hashtag, work)
+        re.sub(RE_HASHTAG, repl, work)
         return pagenames
 
     @staticmethod
