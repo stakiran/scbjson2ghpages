@@ -385,7 +385,10 @@ def generate_links(page_inst):
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
         outlines.append('## → [{}]({})'.format(B_pagename, filename))
 
-        for C in B.linkfrom_page_instances:
+        for i,C in enumerate(B.linkfrom_page_instances):
+            # jekyll ビルドが通らないので数減らしてみる
+            if i>2:
+                continue
             C_pagename = C.title
             basename = '{}.md'.format(C_pagename)
             filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
