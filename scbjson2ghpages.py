@@ -367,6 +367,10 @@ def generate_links(page_inst):
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
         outlines.append('- :point_right: [{}]({})'.format(B_pagename, filename))
 
+    is_no_links = len(outlines)==1
+    if is_no_links:
+        outlines = []
+
     return outlines
 
 def convert_and_save_all(project, page_instances, basedir, args):
