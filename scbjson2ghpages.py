@@ -62,7 +62,7 @@ RE_SPECIAL_BRACKET = re.compile(r'\[[\*\-\/](.+?)\]')
 RE_LINK_URL_OR_URL_FRONT = re.compile(r'\[(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_LINK_URL_BACK = re.compile(r'\[(.+?)( )(http)(s){0,1}(\:\/\/)(.+?)\]')
 RE_ICON = '\[(.+?)\.icon(\*[0-9]+){0,1}\]'
-RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$)')
+RE_HASHTAG = re.compile(r'(^| )#(.+?)( |$|\n|\r)')
 RE_LINK_ANOTHER_PAGE = re.compile(r'\[(.+?)\]')
 class LinkConstructor:
     @staticmethod
