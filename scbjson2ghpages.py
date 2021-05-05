@@ -118,6 +118,7 @@ class LinkConstructor:
 
         return pagenames
 
+    @staticmethod
     def remove_ghost_page(pagenames, pagenames_in_project_by_dict):
         new_pagenames = []
         for pagename in pagenames:
