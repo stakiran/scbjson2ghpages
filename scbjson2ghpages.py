@@ -354,21 +354,11 @@ def generate_links(page_inst):
     outlines.append('## Links')
 
     # B -> A
-
     for B in A.linkfrom_page_instances:
         B_pagename = B.title
         basename = '{}.md'.format(B_pagename)
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
         outlines.append('- ← [{}]({})'.format(B_pagename, filename))
-
-    # A -> B
-    # linkto は本文でもわかるので linkfrom の後に表示する
-
-    for B in A.linkto_page_instances:
-        B_pagename = B.title
-        basename = '{}.md'.format(B_pagename)
-        filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
-        outlines.append('- → [{}]({})'.format(B_pagename, filename))
 
     is_no_links = len(outlines)==1
     if is_no_links:
@@ -376,11 +366,12 @@ def generate_links(page_inst):
     else:
         outlines.append(ADD_BLANKLINE)
 
-    # 2hoplink
+    # 2hop-link
     #
     # A -> B <- C
     #
     # このような C を, B ごとに列挙する.
+    # - A -> B は, この 2hop-link でわかるので出さない.
     # - ただし B の links(linkto + linkfrom)が 100 を超える場合、でかすぎてノイジーなので無視する.
     #   これは Scrapbox 本家でも行われている処理(たぶん).
 
