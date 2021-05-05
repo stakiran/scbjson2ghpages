@@ -357,7 +357,7 @@ def generate_links(page_inst):
         B_pagename = B.title
         basename = '{}.md'.format(B_pagename)
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
-        outlines.append('- :point_left: [{}]({})'.format(B_pagename, filename))
+        outlines.append('- ← [{}]({})'.format(B_pagename, filename))
 
     # A -> B
     # linkto は本文でもわかるので linkfrom の後に表示する
@@ -365,7 +365,7 @@ def generate_links(page_inst):
         B_pagename = B.title
         basename = '{}.md'.format(B_pagename)
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
-        outlines.append('- :point_right: [{}]({})'.format(B_pagename, filename))
+        outlines.append('- → [{}]({})'.format(B_pagename, filename))
 
     is_no_links = len(outlines)==1
     if is_no_links:
