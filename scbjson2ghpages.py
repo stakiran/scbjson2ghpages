@@ -544,12 +544,12 @@ if __name__ == '__main__':
     if not(os.path.isdir(BASEDIR)):
         raise RuntimeError('docs/ dir not found...')
 
-    generate_and_save_special_pages(proj, BASEDIR, args)
-    if args.only_specials:
-        sys.exit(0)
-
     page_instances = []
     for page in proj.pages:
         page_inst = Page(page, proj.name)
         page_instances.append(page_inst)
+
+    generate_and_save_special_pages(proj, BASEDIR, args)
+    if args.only_specials:
+        sys.exit(0)
     convert_and_save_all(proj, page_instances, BASEDIR, args)
