@@ -393,6 +393,9 @@ def generate_links(page_inst):
             if i>2:
                 continue
             C_pagename = C.title
+            is_self_2hop = C_pagename==A.title
+            if is_self_2hop:
+                continue
             basename = '{}.md'.format(C_pagename)
             filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
             outlines.append('- [{}]({})'.format(C_pagename, filename))
