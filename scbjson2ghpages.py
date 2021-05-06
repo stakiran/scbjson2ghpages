@@ -432,6 +432,11 @@ def generate_links(page_inst):
             outlines.append('    - ← [{}]({})'.format(C_pagename, filename))
             count_of_C += 1
             count_of_C_of_B += 1
+        is_not_2hoplink = count_of_C_of_B==0
+        if is_not_2hoplink:
+            # C が 0 個の B を表示しても仕方ないので消す
+            outlines = outlines[:-1]
+
         count_of_B += 1
 
     return outlines
