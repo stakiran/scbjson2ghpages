@@ -408,7 +408,9 @@ def generate_links(page_inst):
         count_of_C_of_B = 0
         for C in B.linkfrom_page_instances:
             # jekyll ビルドが通らないので数減らしてみる
-            if count_of_C_of_B>=3:
+            # - 3だと少なすぎるので適当に8
+            # - 本当はさらにスコアで並べて高い順に上位n, が良いんだろうけど
+            if count_of_C_of_B>=8:
                 break
 
             C_pagename = C.title
