@@ -355,11 +355,19 @@ def generate_links(page_inst):
 
     # B -> A
 
+    count_of_B = 0
+
     for B in A.linkfrom_page_instances:
+        # jekyll ビルド通すために間引く
+        # とりあえず適当に16
+        if count_of_B>=16:
+            break
+
         B_pagename = B.title
         basename = '{}.md'.format(B_pagename)
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
         outlines.append('- ← [{}]({})'.format(B_pagename, filename))
+        count_of_B += 1
 
     # A -> B
     # 2hop-link でわかるので出さない.
@@ -408,9 +416,9 @@ def generate_links(page_inst):
         count_of_C_of_B = 0
         for C in B.linkfrom_page_instances:
             # jekyll ビルドが通らないので数減らしてみる
-            # - 3だと少なすぎるので適当に8
+            # - 3だと少なすぎるので適当に~~8~~ でもまだ多いので4くらいで
             # - 本当はさらにスコアで並べて高い順に上位n, が良いんだろうけど
-            if count_of_C_of_B>=8:
+            if count_of_C_of_B>=4:
                 break
 
             C_pagename = C.title
