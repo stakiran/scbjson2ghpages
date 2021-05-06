@@ -1,14 +1,17 @@
 # scbjson2ghpages
 Scrapbox Exported JSON to Markdown for GitHub Pages.
 
-## how to use
+## Demo
+- https://stakiran.github.io/scrapbox-sta/
+
+## How to use
 Create and docs/*.md for ghpages.
 
 ```terminal
 python scbjson2ghpages.py -i YOUR-EXPORTED-JSON.json
 ```
 
-## how to test
+## How to test
 
 ```terminal
 $ python test_lib_scblines2markdown.py
