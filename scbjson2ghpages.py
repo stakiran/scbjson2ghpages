@@ -687,6 +687,13 @@ def parse_arguments():
     parser.add_argument('--only-specials', default=False, action='store_true',
         help='If True, do generate special pages only. About pages, will be not generated.')
 
+    parser.add_argument('--flimit', default=16, type=int,
+        help='A limit count of linkfrom of a specific page.')
+    parser.add_argument('--tlimit', default=8, type=int,
+        help='A limit count of linkto of a specific page.')
+    parser.add_argument('--hlimit', default=4, type=int,
+        help='A limit count of 2hop-link of a specific page.')
+
     parser.add_argument('--dryrun', default=False, action='store_true',
         help='If True, not save but display lines and filepath.')
     parser.add_argument('--no-dryrun-pagename', default=False, action='store_true',
