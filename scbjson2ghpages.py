@@ -360,7 +360,8 @@ def generate_links(page_inst, args):
     count_of_B = 0
 
     for B in A.linkfrom_page_instances:
-        if count_of_B >= args.flimit:
+        use_flimit = not args.no_flimit
+        if use_flimit and count_of_B >= args.flimit:
             break
 
         B_pagename = B.title
@@ -403,7 +404,8 @@ def generate_links(page_inst, args):
         if is_B_links_too_large:
             continue
 
-        if count_of_B >= args.tlimit:
+        use_tlimit = not args.no_tlimit
+        if use_tlimit and count_of_B >= args.tlimit:
             break
 
         B_pagename = B.title
@@ -416,7 +418,8 @@ def generate_links(page_inst, args):
 
         count_of_C_of_B = 0
         for C in B.linkfrom_page_instances:
-            if count_of_C_of_B >= args.hlimit:
+            use_hlimit = not args.no_hlimit
+            if use_hlimit and count_of_C_of_B >= args.hlimit:
                 break
 
             C_pagename = C.title
@@ -702,6 +705,12 @@ def parse_arguments():
         help='A limit count of 2hop-link of a specific page.')
     parser.add_argument('--print-linkcount', default=False, action='store_true',
         help='If True, display the total links count of all pages.')
+    parser.add_argument('--no-flimit', default=False, action='store_true',
+        help='If True, No use --flimit option.')
+    parser.add_argument('--no-tlimit', default=False, action='store_true',
+        help='If True, No use --tlimit option.')
+    parser.add_argument('--no-hlimit', default=False, action='store_true',
+        help='If True, No use --hlimit option.')
 
     parser.add_argument('--dryrun', default=False, action='store_true',
         help='If True, not save but display lines and filepath.')
