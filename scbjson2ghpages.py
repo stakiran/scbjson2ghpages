@@ -344,11 +344,12 @@ def save_one_file(markdown_lines, pagename, basedir):
 
 def generate_links(page_inst, args):
     ''' ページ page_inst の Links と 2hop-links をつくる.
-    リンク数多すぎると jekyll ビルドが間に合わないので, オプションにて間引けるようにしている.
-    '''
+    - リンク数多すぎると jekyll ビルドが間に合わないので, オプションにて間引けるようにしている.
+    - 生成されたリンク数を知るために, allcount_of_links で記録している. '''
 
     A = page_inst
     ADD_BLANKLINE = ''
+    allcount_of_links = 0
 
     outlines = []
     outlines.append('## Links')
@@ -367,6 +368,7 @@ def generate_links(page_inst, args):
         filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(basename)
         outlines.append('- ← [{}]({})'.format(B_pagename, filename))
         count_of_B += 1
+        allcount_of_links += 1
 
     # A の linkto、は 2hop-link でわかるので出さない.
     # A -> B
@@ -387,7 +389,7 @@ def generate_links(page_inst, args):
 
     is_no_linkto = len(A.linkto_page_instances)==0
     if is_no_linkto:
-        return outlines
+        return [outlines, allcount_of_links]
 
     outlines.append('## 2hop Links')
 
@@ -428,18 +430,22 @@ def generate_links(page_inst, args):
             outlines.append('    - ← [{}]({})'.format(C_pagename, filename))
             count_of_C += 1
             count_of_C_of_B += 1
+            allcount_of_links += 1
+
         is_not_2hoplink = count_of_C_of_B==0
         if is_not_2hoplink:
             # C が 0 個の B を表示しても仕方ないので消す
             outlines = outlines[:-1]
 
         count_of_B += 1
+        allcount_of_links += 1
 
-    return outlines
+    return [outlines, allcount_of_links]
 
 def convert_and_save_all(project, page_instances, basedir, args):
     use_dryrun = args.dryrun
 
+    linkcount_of_allpages = 0
     for i,page_inst in enumerate(page_instances):
         pagename = page_inst.title
         scblines = page_inst.lines
@@ -447,10 +453,12 @@ def convert_and_save_all(project, page_instances, basedir, args):
         markdown_lines = convert_one_page(scblines)
 
         links_lines = []
-        links_lines = generate_links(page_inst, args)
-        markdown_lines.extend(links_lines)
+        links_lines, linkcount = generate_links(page_inst, args)
 
+        markdown_lines.extend(links_lines)
         markdown_lines.insert(0, '## {}'.format(pagename))
+
+        linkcount_of_allpages += linkcount
 
         if use_dryrun:
             if args.no_dryrun_pagename:
@@ -459,6 +467,9 @@ def convert_and_save_all(project, page_instances, basedir, args):
                 print('No.{:05d} page "{}"'.format(i+1, pagename))
             continue
         save_one_file(markdown_lines, pagename, basedir)
+
+    if args.print_linkcount:
+        print('Link count is about {}.'.format(linkcount_of_allpages))
 
 class SpecialPageInterface:
     def __init__(self):
@@ -689,6 +700,8 @@ def parse_arguments():
         help='A limit count of linkto of a specific page.')
     parser.add_argument('--hlimit', default=4, type=int,
         help='A limit count of 2hop-link of a specific page.')
+    parser.add_argument('--print-linkcount', default=False, action='store_true',
+        help='If True, display the total links count of all pages.')
 
     parser.add_argument('--dryrun', default=False, action='store_true',
         help='If True, not save but display lines and filepath.')
