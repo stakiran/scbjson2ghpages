@@ -457,7 +457,10 @@ def convert_and_save_all(project, page_instances, basedir, args):
         markdown_lines.insert(0, '## {}'.format(pagename))
 
         if use_dryrun:
-            print('No.{:05d} page "{}", '.format(i+1, pagename), end='')
+            if args.no_dryrun_pagename:
+                pass
+            else:
+                print('No.{:05d} page "{}"'.format(i+1, pagename))
             continue
         save_one_file(markdown_lines, pagename, basedir, use_dryrun)
 
@@ -686,6 +689,8 @@ def parse_arguments():
 
     parser.add_argument('--dryrun', default=False, action='store_true',
         help='If True, not save but display lines and filepath.')
+    parser.add_argument('--no-dryrun-pagename', default=False, action='store_true',
+        help='If True, no display about pagename')
 
     args = parser.parse_args()
     return args
