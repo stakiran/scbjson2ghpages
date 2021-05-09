@@ -336,14 +336,10 @@ def convert_one_page(scblines):
     markdown_lines = lib_scblines2markdown.convert_step3(step2_converted_lines)
     return markdown_lines
 
-def save_one_file(markdown_lines, pagename, basedir, use_dryrun):
+def save_one_file(markdown_lines, pagename, basedir):
     filename_based_on_pagename = '{}.md'.format(pagename)
     filename = lib_scblines2markdown.fix_filename_to_ghpages_compatible(filename_based_on_pagename)
     filepath = os.path.join(basedir, filename)
-
-    if use_dryrun:
-        print('saving {} lines to "{}"...'.format(len(markdown_lines), filename))
-        return
     list2file(filepath, markdown_lines)
 
 def generate_links(page_inst, args):
@@ -462,7 +458,7 @@ def convert_and_save_all(project, page_instances, basedir, args):
             else:
                 print('No.{:05d} page "{}"'.format(i+1, pagename))
             continue
-        save_one_file(markdown_lines, pagename, basedir, use_dryrun)
+        save_one_file(markdown_lines, pagename, basedir)
 
 class SpecialPageInterface:
     def __init__(self):
