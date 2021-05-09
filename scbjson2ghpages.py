@@ -346,21 +346,24 @@ def save_one_file(markdown_lines, pagename, basedir, use_dryrun):
         return
     list2file(filepath, markdown_lines)
 
-def generate_links(page_inst):
+def generate_links(page_inst, args):
+    ''' ページ page_inst の Links と 2hop-links をつくる.
+    リンク数多すぎると jekyll ビルドが間に合わないので, オプションにて間引けるようにしている.
+    '''
+
     A = page_inst
     ADD_BLANKLINE = ''
 
     outlines = []
     outlines.append('## Links')
 
+    # A の linkfrom
     # B -> A
 
     count_of_B = 0
 
     for B in A.linkfrom_page_instances:
-        # jekyll ビルド通すために間引く
-        # とりあえず適当に16
-        if count_of_B>=16:
+        if count_of_B >= args.flimit:
             break
 
         B_pagename = B.title
@@ -369,8 +372,8 @@ def generate_links(page_inst):
         outlines.append('- ← [{}]({})'.format(B_pagename, filename))
         count_of_B += 1
 
+    # A の linkto、は 2hop-link でわかるので出さない.
     # A -> B
-    # 2hop-link でわかるので出さない.
 
     is_no_links = len(outlines)==1
     if is_no_links:
@@ -378,7 +381,7 @@ def generate_links(page_inst):
     else:
         outlines.append(ADD_BLANKLINE)
 
-    # 2hop-link
+    # A の 2hop-link
     #
     # A -> B <- C
     #
@@ -396,13 +399,13 @@ def generate_links(page_inst):
     count_of_C = 0
 
     for B in A.linkto_page_instances:
-        # でかすぎるリンクはノイジーなので無視
+        # でかすぎる linkto はノイジーなので無視
+        # (これはたぶん Scrapbox 本家でも搭載されている)
         is_B_links_too_large = len(B.linkfrom_page_instances)>=100
         if is_B_links_too_large:
             continue
 
-        # たくさん並べてもノイジーだしビルドひっかかるので, 適当に8個くらいにしてみる
-        if count_of_B>=8:
+        if count_of_B >= args.tlimit:
             break
 
         B_pagename = B.title
@@ -415,10 +418,7 @@ def generate_links(page_inst):
 
         count_of_C_of_B = 0
         for C in B.linkfrom_page_instances:
-            # jekyll ビルドが通らないので数減らしてみる
-            # - 3だと少なすぎるので適当に~~8~~ でもまだ多いので4くらいで
-            # - 本当はさらにスコアで並べて高い順に上位n, が良いんだろうけど
-            if count_of_C_of_B>=4:
+            if count_of_C_of_B >= args.hlimit:
                 break
 
             C_pagename = C.title
@@ -451,7 +451,7 @@ def convert_and_save_all(project, page_instances, basedir, args):
         markdown_lines = convert_one_page(scblines)
 
         links_lines = []
-        links_lines = generate_links(page_inst)
+        links_lines = generate_links(page_inst, args)
         markdown_lines.extend(links_lines)
 
         markdown_lines.insert(0, '## {}'.format(pagename))
