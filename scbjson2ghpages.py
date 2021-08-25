@@ -591,10 +591,12 @@ class Special_MostLinking(SpecialPageInterface):
     def short_description(self):
         return 'リンク数順'
 
-def save_one_special_pages(page_insts, basedir, special_page_interface):
+def save_one_special_pages(page_insts, basedir, special_page_interface, args):
     basename = special_page_interface.basename
     filename = '{}.md'.format(basename)
     filepath = os.path.join(basedir, filename)
+
+    use_link_to_scrapbox = args.link_to_scrapbox
 
     outlines = []
     for i,page_inst in enumerate(page_insts):
@@ -602,6 +604,10 @@ def save_one_special_pages(page_insts, basedir, special_page_interface):
         pagename = page_inst.title
         filename_of_this_page = '{}.md'.format(pagename)
         filename_of_this_page = lib_scblines2markdown.fix_filename_to_ghpages_compatible(filename_of_this_page)
+
+        if use_link_to_scrapbox:
+            pageurl = page_inst.url
+            filename_of_this_page = pageurl
 
         outline = special_page_interface.generate_outline(no, pagename, filename_of_this_page, page_inst)
         outlines.append(outline)
@@ -651,27 +657,27 @@ def generate_and_save_special_pages(project, page_instances, basedir, args):
 
     specialpage = Special_TitleByAsc()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function) 
-    save_one_special_pages(new_insts, basedir, specialpage)
+    save_one_special_pages(new_insts, basedir, specialpage, args)
     specialpages.append(specialpage)
 
     specialpage = Special_LineCount()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
-    save_one_special_pages(new_insts, basedir, specialpage)
+    save_one_special_pages(new_insts, basedir, specialpage, args)
     specialpages.append(specialpage)
 
     specialpage = Special_BodyLength()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
-    save_one_special_pages(new_insts, basedir, specialpage)
+    save_one_special_pages(new_insts, basedir, specialpage, args)
     specialpages.append(specialpage)
 
     specialpage = Special_MostLinked()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
-    save_one_special_pages(new_insts, basedir, specialpage)
+    save_one_special_pages(new_insts, basedir, specialpage, args)
     specialpages.append(specialpage)
 
     specialpage = Special_MostLinking()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
-    save_one_special_pages(new_insts, basedir, specialpage)
+    save_one_special_pages(new_insts, basedir, specialpage, args)
     specialpages.append(specialpage)
 
     index_lines = generate_index_contents(project, specialpages)
@@ -696,6 +702,9 @@ def parse_arguments():
         help='A page name to output the information of the instance.')
     parser.add_argument('--only-specials', default=False, action='store_true',
         help='If True, do generate special pages only. About pages, will be not generated.')
+
+    parser.add_argument('--link-to-scrapbox', default=False, action='store_true',
+        help='If True, Use the link to scrapbox project page about special pages.')
 
     parser.add_argument('--flimit', default=16, type=int,
         help='A limit count of linkfrom of a specific page.')
