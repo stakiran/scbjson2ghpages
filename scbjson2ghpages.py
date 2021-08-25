@@ -623,11 +623,6 @@ def generate_index_contents(project, specialpages):
     outlines = []
 
     outlines.append('# {}'.format(project.display_name))
-
-    outlines.append('- 案内ページ')
-    outlines.append('    - [このサイトについて](このサイトについて.md)')
-    outlines.append('    - [プロフィール](プロフィール.md)')
-
     outlines.append('- 一覧ページ')
     for specialpage in specialpages:
         filename = '{}.md'.format(specialpage.basename)
