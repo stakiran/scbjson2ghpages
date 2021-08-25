@@ -2,7 +2,7 @@
 Scrapbox Exported JSON to Markdown for GitHub Pages.
 
 ## Demo
-- https://stakiran.github.io/scrapbox-sta/
+- ~~https://stakiran.github.io/scrapbox-sta/~~ NO LONGER MAINTAINED.
 
 ## How to use
 Create and docs/*.md for ghpages.
