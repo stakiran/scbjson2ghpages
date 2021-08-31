@@ -51,6 +51,16 @@ def today_datetimestr():
 
     return '{}({}) {}'.format(datestr, dow_j, timestr)
 
+def datetimeobj_to_datetimestr(dtojb):
+    datestr = dtojb.strftime('%Y/%m/%d')
+    timestr = dtojb.strftime('%H:%M:%S')
+
+    wd =  dtojb.weekday()
+    dow_j = ['月',"火", "水", "木","金","土","日"][wd]
+    dow_e = ['Mon',"Tue","Wed","Thu","Fri","Sat","Sun"][wd]
+
+    return '{}({}) {}'.format(datestr, dow_j, timestr)
+
 def remove_duplicates_in_list(ls):
     return list(set(ls))
 
@@ -591,6 +601,27 @@ class Special_MostLinking(SpecialPageInterface):
     def short_description(self):
         return 'リンク数順'
 
+class Special_DateCreated(SpecialPageInterface):
+    def __init__(self):
+        super().__init__()
+
+    def sortkey_function(self, page_inst):
+        return page_inst.created_by_unixtime
+
+    def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
+        dtobj = page_inst.created_by_datetime
+        dtstr = datetimeobj_to_datetimestr(dtobj)
+        outline = '- {}: [{}]({})'.format(dtstr, pagename, filename_of_this_page)
+        return outline
+
+    @property
+    def basename(self):
+        return 'index_date_created'
+
+    @property
+    def short_description(self):
+        return '作成日時順'
+
 def save_one_special_pages(page_insts, basedir, special_page_interface, args):
     basename = special_page_interface.basename
     filename = '{}.md'.format(basename)
@@ -671,6 +702,11 @@ def generate_and_save_special_pages(project, page_instances, basedir, args):
     specialpages.append(specialpage)
 
     specialpage = Special_MostLinking()
+    new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
+    save_one_special_pages(new_insts, basedir, specialpage, args)
+    specialpages.append(specialpage)
+
+    specialpage = Special_DateCreated()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
     save_one_special_pages(new_insts, basedir, specialpage, args)
     specialpages.append(specialpage)
