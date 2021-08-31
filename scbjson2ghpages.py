@@ -42,14 +42,7 @@ def count_first_space_or_tab(s):
 
 def today_datetimestr():
     todaydt = datetime.datetime.today()
-    datestr = todaydt.strftime('%Y/%m/%d')
-    timestr = todaydt.strftime('%H:%M:%S')
-
-    wd =  todaydt.weekday()
-    dow_j = ['月',"火", "水", "木","金","土","日"][wd]
-    dow_e = ['Mon',"Tue","Wed","Thu","Fri","Sat","Sun"][wd]
-
-    return '{}({}) {}'.format(datestr, dow_j, timestr)
+    return datetimeobj_to_datetimestr(todaydt)
 
 def datetimeobj_to_datetimestr(dtojb):
     datestr = dtojb.strftime('%Y/%m/%d')
