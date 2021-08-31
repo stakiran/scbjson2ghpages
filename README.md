@@ -2,13 +2,25 @@
 Scrapbox Exported JSON to Markdown for GitHub Pages.
 
 ## Demo
-- ~~https://stakiran.github.io/scrapbox-sta/~~ NO LONGER MAINTAINED.
+~~https://stakiran.github.io/scrapbox-sta/~~ NO LONGER MAINTAINED.
 
 ## How to use
-Create and docs/*.md for ghpages.
+Generate docs/*.md for ghpages.
 
 ```terminal
-python scbjson2ghpages.py -i YOUR-EXPORTED-JSON.json
+$ python scbjson2ghpages.py -i YOUR-EXPORTED-JSON.json
+```
+
+Generate only index pages.
+
+```terminal
+$ python scbjson2ghpages.py -i YOUR-EXPORTED-JSON.json --only-specials
+```
+
+Generate only index pages and use direct link to the scrapbox.
+
+```terminal
+$ python scbjson2ghpages.py -i YOUR-EXPORTED-JSON.json --only-specials --link-to-scrapbox
 ```
 
 ## How to test
