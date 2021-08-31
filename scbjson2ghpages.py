@@ -611,7 +611,7 @@ class Special_DateCreated(SpecialPageInterface):
     def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
         dtobj = page_inst.created_by_datetime
         dtstr = datetimeobj_to_datetimestr(dtobj)
-        outline = '- {}: [{}]({})'.format(dtstr, pagename, filename_of_this_page)
+        outline = '- {} [{}]({})'.format(dtstr, pagename, filename_of_this_page)
         return outline
 
     @property
