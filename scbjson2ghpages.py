@@ -292,6 +292,14 @@ class Page:
             return False
         return True
 
+    def contains_link_without_rexical(self, pagename_without_brackets):
+        rawstr = self.rawstring
+        query = '[{}]'.format(pagename_without_brackets)
+        notfound = rawstr.find(query)==-1
+        if notfound:
+            return False
+        return True
+
     def update_linkto(self, pagenames_in_project_by_dict, pageseeker):
         content = self.rawstring
         linkee_pagenames = LinkConstructor.get_linkee_pagenames(content)
@@ -739,7 +747,8 @@ def generate_and_save_special_pages(project, page_instances, basedir, args):
     for tag in tags:
         filtered_page_insts = []
         filtered_page_insts = [
-            page_inst for page_inst in page_insts if page_inst.contains_tag_without_rexical(tag)
+            page_inst for page_inst in page_insts \
+            if page_inst.contains_tag_without_rexical(tag) or page_inst.contains_link_without_rexical(tag)
         ]
         
         specialpage = Special_SpecificTag()
