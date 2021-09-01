@@ -743,6 +743,11 @@ def generate_and_save_special_pages(project, page_instances, basedir, args):
     tags = [
         '大企業病',
         '創作ネタ',
+        '開発ネタ',
+        '読んだ',
+        '読んだマンガ',
+        '読んだラノベ',
+        '読んだアニメ',
     ]
     for tag in tags:
         filtered_page_insts = []
