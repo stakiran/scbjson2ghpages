@@ -284,6 +284,14 @@ class Page:
         lines = self.lines
         return '\n'.join(lines)
 
+    def contains_tag_without_rexical(self, tagname_without_sharp):
+        rawstr = self.rawstring
+        query = '#{}'.format(tagname_without_sharp)
+        notfound = rawstr.find(query)==-1
+        if notfound:
+            return False
+        return True
+
     def update_linkto(self, pagenames_in_project_by_dict, pageseeker):
         content = self.rawstring
         linkee_pagenames = LinkConstructor.get_linkee_pagenames(content)
@@ -615,6 +623,26 @@ class Special_DateCreated(SpecialPageInterface):
     def short_description(self):
         return '作成日時順'
 
+# 継承がネストしてて不吉な臭い……
+# どの順で並び替えたいかはスーパークラスで指定する。。。
+class Special_SpecificTag(Special_DateCreated):
+    def __init__(self):
+        super().__init__()
+
+    def set_basename(self, basename):
+        self._basename = basename
+
+    def set_short_description(self, short_description):
+        self._short_description = short_description
+
+    @property
+    def basename(self):
+        return self._basename
+
+    @property
+    def short_description(self):
+        return self._short_description
+
 def save_one_special_pages(page_insts, basedir, special_page_interface, args):
     basename = special_page_interface.basename
     filename = '{}.md'.format(basename)
@@ -703,6 +731,23 @@ def generate_and_save_special_pages(project, page_instances, basedir, args):
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
     save_one_special_pages(new_insts, basedir, specialpage, args)
     specialpages.append(specialpage)
+
+    tags = [
+        '大企業病',
+        '創作ネタ',
+    ]
+    for tag in tags:
+        filtered_page_insts = []
+        filtered_page_insts = [
+            page_inst for page_inst in page_insts if page_inst.contains_tag_without_rexical(tag)
+        ]
+        
+        specialpage = Special_SpecificTag()
+        specialpage.set_basename('index_date_created_{}'.format(tag))
+        specialpage.set_short_description('作成日時順_{}'.format(tag))
+        new_insts = sorted(filtered_page_insts, key=specialpage.sortkey_function, reverse=True)
+        save_one_special_pages(new_insts, basedir, specialpage, args)
+        specialpages.append(specialpage)
 
     index_lines = generate_index_contents(project, specialpages)
     save_index_page(index_lines, basedir)
