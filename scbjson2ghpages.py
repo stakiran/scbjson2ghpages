@@ -631,6 +631,37 @@ class Special_DateCreated(SpecialPageInterface):
     def short_description(self):
         return '作成日時順'
 
+class Special_DateDiff(SpecialPageInterface):
+    def __init__(self):
+        super().__init__()
+
+    def sortkey_function(self, page_inst):
+        diff = page_inst.updated_by_unixtime - page_inst.created_by_unixtime
+        return diff
+
+    def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
+        diff_sec = self.sortkey_function(page_inst)
+        min = diff_sec / 60.0
+        hour = min / 60.0
+        day = hour / 24.0
+
+        month = day / 30.0
+        year = day / 365.0
+
+        day_rounded = round(day, 1)
+        year_rounded = round(year, 2)
+
+        outline = '- {}Year({}Day) [{}]({})'.format(year_rounded, day_rounded, pagename, filename_of_this_page)
+        return outline
+
+    @property
+    def basename(self):
+        return 'index_date_diff'
+
+    @property
+    def short_description(self):
+        return '更新近傍順'
+
 # 継承がネストしてて不吉な臭い……
 # どの順で並び替えたいかはスーパークラスで指定する。。。
 class Special_SpecificTag(Special_DateCreated):
@@ -736,6 +767,11 @@ def generate_and_save_special_pages(project, page_instances, basedir, args):
     specialpages.append(specialpage)
 
     specialpage = Special_DateCreated()
+    new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
+    save_one_special_pages(new_insts, basedir, specialpage, args)
+    specialpages.append(specialpage)
+
+    specialpage = Special_DateDiff()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
     save_one_special_pages(new_insts, basedir, specialpage, args)
     specialpages.append(specialpage)
