@@ -610,6 +610,29 @@ class Special_MostLinking(SpecialPageInterface):
     def short_description(self):
         return 'リンク数順'
 
+class Special_MostDegree(SpecialPageInterface):
+    def __init__(self):
+        super().__init__()
+
+    def sortkey_function(self, page_inst):
+        linkto = len(page_inst.linkto_page_instances)
+        linkfrom = len(page_inst.linkfrom_page_instances)
+        degree = linkto + linkfrom
+        return degree
+
+    def generate_outline(self, no, pagename, filename_of_this_page, page_inst):
+        degree = self.sortkey_function(page_inst)
+        outline = '- {}: [{}]({})'.format(degree, pagename, filename_of_this_page)
+        return outline
+
+    @property
+    def basename(self):
+        return 'index_mostdegree'
+
+    @property
+    def short_description(self):
+        return '次数順'
+
 class Special_DateCreated(SpecialPageInterface):
     def __init__(self):
         super().__init__()
@@ -762,6 +785,11 @@ def generate_and_save_special_pages(project, page_instances, basedir, args):
     specialpages.append(specialpage)
 
     specialpage = Special_MostLinking()
+    new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
+    save_one_special_pages(new_insts, basedir, specialpage, args)
+    specialpages.append(specialpage)
+
+    specialpage = Special_MostDegree()
     new_insts = sorted(page_insts, key=specialpage.sortkey_function, reverse=True)
     save_one_special_pages(new_insts, basedir, specialpage, args)
     specialpages.append(specialpage)
