@@ -812,6 +812,7 @@ def generate_and_save_special_pages(project, page_instances, basedir, args):
         '読んだマンガ',
         '読んだラノベ',
         '読んだアニメ',
+        '吉良野すた',
     ]
     for tag in tags:
         filtered_page_insts = []
